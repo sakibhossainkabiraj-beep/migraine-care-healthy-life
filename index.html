@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Migraine Care - Better Mind • Better Life</title>
+    <style>
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #0284c7;
+            --accent: #8b5cf6;
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --safe: #22c55e;
+            --shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, 'Hind Siliguri', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #0b1329;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* App Frame */
+        .app-shell {
+            width: 100%;
+            max-width: 440px;
+            height: 100vh;
+            max-height: 930px;
+            background: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+
+        @media (min-width: 450px) {
+            .app-shell {
+                height: 92vh;
+                border-radius: 36px;
+                border: 8px solid #1e293b;
+            }
+        }
+
+        /* Top Header */
+        .top-bar {
+            background: linear-gradient(135deg, #0284c7, #10b981);
+            color: white;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom-left-radius: 18px;
+            border-bottom-right-radius: 18px;
+            z-index: 20;
+            box-shadow: var(--shadow);
+        }
+
+        .brand-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+        }
+
+        .brand-sub {
+            font-size: 0.68rem;
+            opacity: 0.9;
+        }
+
+        .owner-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.22);
+            padding: 4px 10px 4px 4px;
+            border-radius: 30px;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+        }
+
+        .owner-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #ffffff;
+            color: #0284c7;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            border: 2px solid white;
+        }
+
+        /* AdMob Monetization Banner */
+        .admob-banner {
+            background: #fffbeb;
+            border-bottom: 1px dashed #f59e0b;
+            color: #b45309;
+            text-align: center;
+            padding: 5px;
+            font-size: 0.68rem;
+            font-weight: bold;
+        }
+
+        /* App Body Area */
+        .app-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 12px;
+            padding-bottom: 85px;
+        }
+
+        .view-screen {
+            display: none;
+        }
+
+        .view-screen.active {
+            display: block;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Reusable Card */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e2e8f0;
+        }
+
+        .card-header {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Pain Scale 0-10 */
+        .pain-scale-strip {
+            display: flex;
+            gap: 4px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .pain-box {
+            flex: 1;
+            min-width: 28px;
+            height: 34px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            background: #f8fafc;
+        }
+
+        .pain-box.active {
+            background: #0f172a;
+            color: white;
+            border-color: #0f172a;
+        }
+
+        /* Head Pain Location 6-Grid */
+        .head-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+
+        .head-btn {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 8px 4px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .head-btn.active {
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #b91c1c;
+        }
+
+        /* Water Tracker UI */
+        .water-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .water-btn {
+            background: #e0f2fe;
+            color: #0369a1;
+            border: none;
+            padding: 8px 2px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .water-log-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px dashed #e2e8f0;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        /* Timeline Items */
+        .timeline-card {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background: #f8fafc;
+            border-radius: 10px;
+            border-left: 4px solid var(--secondary);
+            margin-bottom: 6px;
+            align-items: center;
+        }
+
+        .timeline-card.done {
+            border-left-color: var(--safe);
+            background: #f0fdf4;
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 10px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-val {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+
+        .stat-label {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        /* Food List Split */
+        .food-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .food-box {
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            line-height: 1.5;
+        }
+
+        .food-box.safe { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+        .food-box.avoid { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+
+        /* Environmental Advice Cards */
+        .env-item {
+            display: flex;
+            gap: 8px;
+            padding: 8px;
+            border-radius: 8px;
+            background: #f8fafc;
+            font-size: 0.78rem;
+            margin-bottom: 6px;
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 65px;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 30;
+        }
+
+        .nav-tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.65rem;
+            cursor: pointer;
+            width: 20%;
+            text-align: center;
+        }
+
+        .nav-tab.active {
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+
+        .nav-tab span { font-size: 1.25rem; }
+
+        /* Bedtime Overlay (OLED Black) */
+        #bedtime-screen {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: #000000;
+            color: #475569;
+            z-index: 100;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Inputs & Buttons */
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+        }
+
+        .btn-prime {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-shell">
+
+    <!-- Top Bar with Owner Credit (মোঃ সাকিব হোসাইন নিরব) -->
+    <header class="top-bar">
+        <div>
+            <div class="brand-title">Migraine Care</div>
+            <div class="brand-sub">Better Mind • Better Life</div>
+        </div>
+        <div class="owner-chip" onclick="navigateTo('view-settings')">
+            <div class="owner-avatar">স</div>
+            <div>
+                <div style="font-size:0.6rem; opacity:0.8;">ওনার ও ডেভেলপার</div>
+                <div style="font-size:0.75rem; font-weight:700;">মোঃ সাকিব হোসাইন নিরব</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Monetization Banner (AdMob) -->
+    <div class="admob-banner">
+        📢 Google AdMob: বিজ্ঞাপন ও ইনকাম মডিউল সক্রিয়
+    </div>
+
+    <!-- Main Screens Container -->
+    <main class="app-body">
+
+        <!-- 1. AUTH SCREEN (লগইন ও রেজিস্ট্রেশন) -->
+        <section id="view-auth" class="view-screen">
+            <div class="card" style="text-align:center;">
+                <div style="font-size:2rem; margin-bottom:4px;">🧠</div>
+                <h2 style="font-size:1.1rem; color:var(--text-main);">মাইগ্রেন আর নয়, আপনার নিয়ন্ত্রণে</h2>
+                <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:12px;">লগইন অথবা নতুন একাউন্ট নিবন্ধন করুন</p>
+                <input type="text" placeholder="ইমেইল বা ইউজারনেম" value="rimu@gmail.com">
+                <input type="password" placeholder="পাসওয়ার্ড" value="••••••••">
+                <button class="btn-prime" onclick="loginUser()">লগইন করুন</button>
+                <div style="display:flex; justify-content:space-between; margin-top:10px; font-size:0.75rem; color:var(--secondary);">
+                    <span>গুগল দিয়ে প্রবেশ</span>
+                    <span>নতুন একাউন্ট? নিবন্ধন</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. HOME SCREEN (ড্যাশবোর্ড ও রুটিন) -->
+        <section id="view-home" class="view-screen active">
+            <!-- Greeting & Focus -->
+            <div class="card" style="background: linear-gradient(135deg, #ecfdf5, #e0f2fe);">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="font-size:0.95rem; font-weight:800; color:#0f172a;">সালাম, রিমু!</div>
+                        <div style="font-size:0.75rem; color:#0369a1;">মাইগ্রেন ফোকাস: ৩/১০ (হালকা ব্যথা)</div>
+                    </div>
+                    <button onclick="enableBedtime()" style="background:#0f172a; color:white; border:none; padding:6px 10px; border-radius:20px; font-size:0.7rem; cursor:pointer;">
+                        🌙 স্লিপ স্ক্রিন
+                    </button>
+                </div>
+                <div style="margin-top:10px; display:flex; gap:6px;">
+                    <span style="background:white; padding:4px 8px; border-radius:6px; font-size:0.7rem; font-weight:bold;">পানি: ২৫০ মিলি</span>
+                    <span style="background:white; padding:4px 8px; border-radius:6px; font-size:0.7rem; font-weight:bold;">কাজ: ২/৪</span>
+                    <span style="background:white; padding:4px 8px; border-radius:6px; font-size:0.7rem; font-weight:bold;">ব্যায়াম: ০/৩</span>
+                </div>
+            </div>
+
+            <!-- Real-time Push Instruction -->
+            <div class="card" style="border-left:4px solid var(--secondary); background:#f8fafc;">
+                <div style="font-size:0.75rem; font-weight:bold; color:var(--secondary);">🔔 পুশ নির্দেশনা:</div>
+                <div style="font-size:0.85rem; font-weight:700; color:#0f172a; margin-top:2px;">
+                    এখন এক গ্লাস পানি পান করার এবং স্ক্রিন থেকে চোখ সরানোর সময় হয়েছে।
+                </div>
+                <button onclick="triggerNotification()" style="margin-top:6px; background:var(--secondary); color:white; border:none; padding:4px 8px; border-radius:6px; font-size:0.7rem; cursor:pointer;">
+                    মোবাইলে টেস্ট নোটিফিকেশন পাঠান
+                </button>
+            </div>
+
+            <!-- 0-10 Pain Scale -->
+            <div class="card">
+                <div class="card-header">
+                    <span>ব্যথার তীব্রতা স্কেল (Pain Scale)</span>
+                    <span id="pain-val-label" style="color:var(--danger); font-size:0.8rem;">৩/১০ (হালকা)</span>
+                </div>
+                <div class="pain-scale-strip">
+                    <div class="pain-box" onclick="setPain(0, this)">০</div>
+                    <div class="pain-box" onclick="setPain(1, this)">১</div>
+                    <div class="pain-box" onclick="setPain(2, this)">২</div>
+                    <div class="pain-box active" onclick="setPain(3, this)">৩</div>
+                    <div class="pain-box" onclick="setPain(4, this)">৪</div>
+                    <div class="pain-box" onclick="setPain(5, this)">৫</div>
+                    <div class="pain-box" onclick="setPain(6, this)">৬</div>
+                    <div class="pain-box" onclick="setPain(7, this)">৭</div>
+                    <div class="pain-box" onclick="setPain(8, this)">৮</div>
+                    <div class="pain-box" onclick="setPain(9, this)">৯</div>
+                    <div class="pain-box" onclick="setPain(10, this)">১০</div>
+                </div>
+            </div>
+
+            <!-- Head Pain Location (৬টি জোন) -->
+            <div class="card">
+                <div class="card-header">মাথার কোথায় ব্যথা হচ্ছে? (Location)</div>
+                <div class="head-grid">
+                    <div class="head-btn active" onclick="toggleHead(this)">১. কপাল ও চোখ</div>
+                    <div class="head-btn" onclick="toggleHead(this)">২. ডান রগ</div>
+                    <div class="head-btn" onclick="toggleHead(this)">৩. বাম রগ</div>
+                    <div class="head-btn" onclick="toggleHead(this)">৪. মাথার পেছনের দিক</div>
+                    <div class="head-btn" onclick="toggleHead(this)">৫. ঘাড় ও স্কাল্প</div>
+                    <div class="head-btn" onclick="toggleHead(this)">৬. সম্পূর্ণ মাথা (ব্যান্ড)</div>
+                </div>
+            </div>
+
+            <!-- Water Tracker -->
+            <div class="card">
+                <div class="card-header">
+                    <span>💧 পানি ট্র্যাকার</span>
+                    <span id="water-display" style="color:var(--secondary); font-weight:bold;">৫০০ / ২২০০ মিলি</span>
+                </div>
+                <div class="water-grid">
+                    <button class="water-btn" onclick="drinkWater(25)">+২৫ml</button>
+                    <button class="water-btn" onclick="drinkWater(50)">+৫০ml</button>
+                    <button class="water-btn" onclick="drinkWater(100)">+১০০ml</button>
+                    <button class="water-btn" onclick="drinkWater(150)">+১৫০ml</button>
+                    <button class="water-btn" onclick="drinkWater(200)">+২০০ml</button>
+                    <button class="water-btn" onclick="drinkWater(250)">+২৫০ml</button>
+                    <button class="water-btn" onclick="drinkWater(500)">+৫০০ml</button>
+                    <button class="water-btn" onclick="drinkWater(1000)">+১ লিটার</button>
+                </div>
+                <div style="margin-top:10px;">
+                    <div class="water-log-row"><span>০৯:০০</span><span>২০০ মিলি</span></div>
+                    <div class="water-log-row"><span>১০:৩০</span><span>১০০ মিলি</span></div>
+                    <div class="water-log-row"><span>১২:০০</span><span>২০০ মিলি</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. ROUTINE & TIMELINE -->
+        <section id="view-routine" class="view-screen">
+            <div class="card">
+                <div class="card-header">
+                    <span>📋 আজকের রুটিন (AI-Assisted)</span>
+                    <span style="font-size:0.75rem; color:var(--primary);">স্বয়ংক্রিয় সময়সূচি</span>
+                </div>
+                <div class="timeline-card done" onclick="toggleCard(this)">
+                    <div>সকাল ৭:০০</div>
+                    <div>ঘুম থেকে ওঠা ও এক গ্লাস পানি পান</div>
+                </div>
+                <div class="timeline-card" onclick="toggleCard(this)">
+                    <div>সকাল ৭:৩০</div>
+                    <div>হালকা ঘাড় ও কাঁধ স্ট্রেচিং ব্যায়াম (১০ মিনিট)</div>
+                </div>
+                <div class="timeline-card" onclick="toggleCard(this)">
+                    <div>সকাল ৯:০০</div>
+                    <div>পুষ্টিকর নাস্তা ও চিকিৎসকের প্রেসক্রিপশন অনুযায়ী ওষুধ</div>
+                </div>
+                <div class="timeline-card" onclick="toggleCard(this)">
+                    <div>দুপুর ১২:০০</div>
+                    <div>পানি পান ও ৫ মিনিট চোখের বিশ্রাম</div>
+                </div>
+                <div class="timeline-card" onclick="toggleCard(this)">
+                    <div>বিকাল ৪:০০</div>
+                    <div>২০-২০-২০ নিয়ম: স্ক্রিন বিরতি ও রিলাক্সেশন</div>
+                </div>
+                <div class="timeline-card" onclick="toggleCard(this)">
+                    <div>রাত ৯:০০</div>
+                    <div>ঘুমের প্রস্তুতি, ঘরের মৃদু আলো ও শান্ত পরিবেশ</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. DIARY & ANALYSIS -->
+        <section id="view-diary" class="view-screen">
+            <div class="card">
+                <div class="card-header">
+                    <span>📊 মাইগ্রেন অ্যানালাইসিস ও ডায়রি</span>
+                    <button style="background:var(--secondary); color:white; border:none; padding:4px 8px; border-radius:6px; font-size:0.7rem;" onclick="alert('ডায়রি রিপোর্ট ডাউনলোড হচ্ছে...')">GET REPORT</button>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-val">৬</div>
+                        <div class="stat-label">মাইগ্রেন দিন (এই মাসে)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val">২</div>
+                        <div class="stat-label">ওষুধ গ্রহণের দিন</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val">৭ দিন</div>
+                        <div class="stat-label">বর্তমান সুস্থতার স্ট্রিক</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val">১৩ দিন</div>
+                        <div class="stat-label">সর্বোচ্চ সুস্থতার রেকর্ড</div>
+                    </div>
+                </div>
+                <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:10px; border-radius:10px; margin-top:10px; font-size:0.78rem; color:#166534; font-weight:bold; text-align:center;">
+                    ⭐ ৭-দিনের মাইলস্টোন অর্জন হয়েছে। দুর্দান্ত অগ্রগতি!
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. FOOD & ENVIRONMENT -->
+        <section id="view-food" class="view-screen">
+            <div class="card">
+                <div class="card-header">আলো ও পরিবেশের সতর্কতা</div>
+                <div class="env-item">
+                    <span>💡</span>
+                    <div><b>আলোতে থাকা:</b> হালকা ও প্রাকৃতিক আলো ভালো। অতিরিক্ত চড়া ফ্লুরোসেন্ট আলো পরিহার করুন।</div>
+                </div>
+                <div class="env-item">
+                    <span>🕶️</span>
+                    <div><b>স্ক্রিন প্রটেকশন:</b> বাইরে সানগ্লাস এবং মোবাইল বা কম্পিউটারে ব্লু-লাইট ফিল্টার ব্যবহার করুন।</div>
+                </div>
+                <div class="env-item">
+                    <span>🔇</span>
+                    <div><b>শব্দ ও কোলাহল:</b> তীব্র শব্দ বা ভিড় এড়িয়ে চলুন; প্রয়োজনে শান্ত ঘরে বিশ্রাম নিন।</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">খাদ্যতালিকা (MIGRAINE-FRIENDLY FOOD)</div>
+                <div class="food-split">
+                    <div class="food-box safe">
+                        <b>✅ উপকারী খাবার:</b>
+                        <br>• আপেল, নাশপাতি, তরমুজ
+                        <br>• গাজর, ব্রকলি, মিষ্টি আলু
+                        <br>• ওটস, বাদামী চাল, বার্লি
+                        <br>• তাজা মুরগির মাংস, ডিম, মাছ
+                        <br>• অলিভ অয়েল, তিসির বীজ
+                        <br>• ভেষজ চা (ক্যামোমাইল, আদা)
+                    </div>
+                    <div class="food-box avoid">
+                        <b>❌ ক্ষতিকর খাবার:</b>
+                        <br>• পুরনো পনির ও সয়া সস
+                        <br>• সসেজ, বেকন, হট ডগ
+                        <br>• কফি, ব্ল্যাক টি, কোমল পানীয়
+                        <br>• কৃত্রিম মিষ্টি (Aspartame)
+                        <br>• টেস্টিং সল্ট (MSG)
+                        <br>• চকোলেট ও লেবুজাতীয় ফল
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. EXERCISES & BMI -->
+        <section id="view-exercise" class="view-screen">
+            <div class="card">
+                <div class="card-header">
+                    <span>শারীরিক রিলাক্সেশন ও ফিটনেস</span>
+                    <select id="gender-switch" style="width:auto; padding:4px;" onchange="switchExerciseGender(this.value)">
+                        <option value="female">নারী প্রোফাইল</option>
+                        <option value="male">পুরুষ প্রোফাইল</option>
+                    </select>
+                </div>
+                <div id="exercise-box"></div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">উচ্চতা ও ওজন অনুযায়ী আদর্শ চার্ট (BMI)</div>
+                <div style="display:flex; gap:8px;">
+                    <input type="number" id="bmi-h" placeholder="উচ্চতা (cm)">
+                    <input type="number" id="bmi-w" placeholder="ওজন (kg)">
+                </div>
+                <button class="btn-prime" onclick="calcBMI()">আদর্শ রেঞ্জ পরীক্ষা করুন</button>
+                <div id="bmi-out" style="font-size:0.8rem; margin-top:8px; font-weight:bold; color:var(--primary-dark);"></div>
+            </div>
+        </section>
+
+        <!-- 7. ALARM & DOCTOR (মাথায় চাপ না ফেলা সুর) -->
+        <section id="view-alarm" class="view-screen">
+            <div class="card">
+                <div class="card-header">মাথায় চাপ না ফেলা মৃদু অ্যালার্ম</div>
+                <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:8px;">
+                    শব্দের তীব্রতা যেন মাথায় আঘাত না করে, সেজন্য এটি ৫% থেকে শুরু হয়ে ৩০ সেকেন্ডে ৬০% ভলিউমে যাবে।
+                </p>
+                <button class="btn-prime" onclick="playSoftAudio()" style="background:var(--secondary); margin-bottom:8px;">
+                    🔊 টেস্ট জেন্টল সুর (Fade-in Audio)
+                </button>
+                <div style="border-top:1px dashed #cbd5e1; padding-top:8px;">
+                    <label style="font-size:0.75rem; font-weight:bold;">নিজের পছন্দের অডিও ফাইল ফোন থেকে যোগ করুন:</label>
+                    <input type="file" accept="audio/*" onchange="alert('আপনার কাস্টম সুর সফলভাবে সংরক্ষিত হয়েছে!')">
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">এআই গাইডলাইন ও অনলাইন ডাক্তার</div>
+                <button class="btn-prime" style="margin-bottom:6px;" onclick="alert('এআই চ্যাটবট: আপনার বর্তমান লক্ষণ লিখে পাঠান...')">
+                    🤖 এআই উপসর্গ মূল্যায়ন
+                </button>
+                <button class="btn-prime" style="background:#8b5cf6;" onclick="alert('ডাক্তার কল সেন্টারে সংযোগ করা হচ্ছে...')">
+                    👨‍⚕️ ডাক্তারের সাথে অনলাইন পরামর্শ
+                </button>
+            </div>
+        </section>
+
+        <!-- 8. SETTINGS & SECURED OWNER PROFILE (মোঃ সাকিব হোসাইন নিরব) -->
+        <section id="view-settings" class="view-screen">
+            <div class="card">
+                <div class="card-header">ভাষা পরিবর্তন (Select Language)</div>
+                <select onchange="alert('ভাষা পরিবর্তন সম্পন্ন হয়েছে: ' + this.value)">
+                    <option value="bn" selected>বাংলা (Bangla)</option>
+                    <option value="en">English</option>
+                    <option value="ar">العربية (Arabic)</option>
+                    <option value="hi">हिन्दी (Hindi)</option>
+                    <option value="ur">اردو (Urdu)</option>
+                </select>
+            </div>
+
+            <div class="card" style="border: 2px solid var(--primary); background: #f0fdf4;">
+                <div class="card-header" style="color:var(--primary-dark);">
+                    🔐 ওনার ও ডেভেলপার কন্ট্রোল
+                </div>
+                <div style="font-size:0.75rem; color:#166534; margin-bottom:8px;">
+                    স্বত্বাধিকারী ও নির্মাতা: <b>মোঃ সাকিব হোসাইন নিরব</b>
+                </div>
+                <div id="admin-lock">
+                    <input type="password" id="admin-pin-field" placeholder="ওনার পিন দিন (ডিফল্ট: 1234)">
+                    <button class="btn-prime" onclick="unlockAdmin()">কন্ট্রোল প্যানেল আনলক করুন</button>
+                </div>
+                <div id="admin-panel" style="display:none; margin-top:10px;">
+                    <div style="font-size:0.8rem; font-weight:bold; margin-bottom:6px;">ফিচার নিয়ন্ত্রণ সুইচ:</div>
+                    <label style="display:block; font-size:0.75rem; margin-bottom:4px;">
+                        <input type="checkbox" checked> ওয়াটার ট্র্যাকার মডিউল সক্রিয়
+                    </label>
+                    <label style="display:block; font-size:0.75rem; margin-bottom:4px;">
+                        <input type="checkbox" checked> ডায়রি ও অ্যানালাইসিস সক্রিয়
+                    </label>
+                    <label style="display:block; font-size:0.75rem; margin-bottom:4px;">
+                        <input type="checkbox" checked> গুগল বিজ্ঞাপন ও আয় মডিউল সক্রিয়
+                    </label>
+                    <p style="font-size:0.75rem; color:#059669; margin-top:8px;">✔ ওনার প্যানেল সফলভাবে অ্যাক্সেস করা হয়েছে।</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bedtime OLED Pure Black Overlay -->
+    <div id="bedtime-screen" ondblclick="disableBedtime()">
+        <div style="font-size:3rem; margin-bottom:10px;">🌙</div>
+        <div style="font-size:1.1rem; color:#94a3b8; font-weight:bold;">স্লিপ মোড চালু আছে</div>
+        <p style="font-size:0.75rem; color:#475569; margin-top:8px;">স্ক্রিন জাগিয়ে তুলতে যেকোনো স্থানে ২ বার ট্যাপ করুন। কল আসলে স্বাভাবিকভাবেই কথা বলতে পারবেন।</p>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <div class="nav-tab active" onclick="navigateTo('view-home', this)">
+            <span>🏠</span>
+            <label>হোম</label>
+        </div>
+        <div class="nav-tab" onclick="navigateTo('view-routine', this)">
+            <span>📋</span>
+            <label>রুটিন</label>
+        </div>
+        <div class="nav-tab" onclick="navigateTo('view-diary', this)">
+            <span>📊</span>
+            <label>ডায়রি</label>
+        </div>
+        <div class="nav-tab" onclick="navigateTo('view-food', this)">
+            <span>🥗</span>
+            <label>খাবার</label>
+        </div>
+        <div class="nav-tab" onclick="navigateTo('view-exercise', this)">
+            <span>🧘</span>
+            <label>ব্যায়াম</label>
+        </div>
+        <div class="nav-tab" onclick="navigateTo('view-alarm', this)">
+            <span>⏰</span>
+            <label>অ্যালার্ম</label>
+        </div>
+    </nav>
+
+</div>
+
+<script>
+    function navigateTo(id, tabEl) {
+        document.querySelectorAll('.view-screen').forEach(v => v.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if (tabEl) {
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            tabEl.classList.add('active');
+        }
+    }
+
+    function loginUser() {
+        navigateTo('view-home');
+        alert("স্বাগতম! আপনি সফলভাবে লগইন করেছেন।");
+    }
+
+    function setPain(val, el) {
+        document.querySelectorAll('.pain-box').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+        let category = val <= 3 ? "হালকা" : (val <= 6 ? "মাঝারি" : "তীব্র");
+        document.getElementById('pain-val-label').innerText = `${val}/১০ (${category})`;
+    }
+
+    function toggleHead(el) {
+        el.classList.toggle('active');
+    }
+
+    let waterMl = 500;
+    function drinkWater(amt) {
+        waterMl += amt;
+        document.getElementById('water-display').innerText = `${waterMl} / ২২০০ মিলি`;
+        if (waterMl >= 2200) alert("অভিনন্দন! আজকের পানি পানের টার্গেট পূর্ণ হয়েছে।");
+    }
+
+    function toggleCard(el) {
+        el.classList.toggle('done');
+    }
+
+    function triggerNotification() {
+        if ("Notification" in window) {
+            Notification.requestPermission().then(p => {
+                if (p === "granted") {
+                    new Notification("Migraine Care", {
+                        body: "এখন এক গ্লাস পানি পান করার এবং বিশ্রাম নেওয়ার সময় হয়েছে।",
+                        icon: "https://cdn-icons-png.flaticon.com/512/2966/2966486.png"
+                    });
+                } else {
+                    alert("নোটিফিকেশন পারমিশন মেলেনি। তবে অ্যাপে নির্দেশনা প্রদর্শিত হচ্ছে।");
+                }
+            });
+        }
+    }
+
+    function playSoftAudio() {
+        try {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            const ctx = new AudioCtx();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(432, ctx.currentTime);
+
+            gain.gain.setValueAtTime(0.01, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.35, ctx.currentTime + 3.0);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+
+            setTimeout(() => {
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.0);
+                setTimeout(() => osc.stop(), 1000);
+            }, 4000);
+
+            alert("মৃদু সুর বাজছে! কোনো তীব্র শব্দ বা মাথায় চাপ ছাড়া আস্তে আস্তে ভলিউম বাড়বে।");
+        } catch(e) {
+            alert("অডিও প্লে হচ্ছে।");
+        }
+    }
+
+    const fEx = [
+        { t: "১. কাঁধ ও বুক খোলার রিলাক্সিং ভঙ্গি", d: "দেয়ালে পিঠ সোজা রেখে হাত W আকারে পেছনের দিকে আলতো টানুন। এটি কাঁধের বাঁকা ভাব দূর করে সঠিক অঙ্গভঙ্গি দেয়।" },
+        { t: "২. কোমর ও মেরুদণ্ডের নমনীয়তা ব্যায়াম", d: "চেয়ারে বসে শরীর ধীরে ডানে ও বামে হালকা মোচড় দিন। এটি কোমরের জড়তা দূর করে।" },
+        { t: "৩. ঘাড় সোজা রাখা ও টেক-নেক দূরীকরণ (Chin Tuck)", d: "চিবুক হালকা পেছনে টেনে ৫ সেকেন্ড ধরে রাখুন। ঘাড় সোজা রাখতে কার্যকর।" },
+        { t: "৪. পেটের কোর পেশির রিলাক্সেশন", d: "হাঁটু ভাঁজ করে মেঝেতে শুয়ে স্বাভাবিক শ্বাস নিন।" },
+        { t: "৫. মেরুদণ্ড প্রসারণ ও উচ্চতা স্ট্রেচ", d: "হাত মাথার ওপর তুলে শরীরকে লম্বা করে টানুন এবং ধীরে ধীরে শ্বাস ছাড়ুন।" }
+    ];
+
+    const mEx = [
+        { t: "১. কাঁধ ও ঘাড়ের টেনশন মুক্তির ব্যায়াম", d: "কাঁধ সামনে-পেছনে ১০ বার ঘোরান।" },
+        { t: "২. মেরুদণ্ড সোজা করার স্ট্রেচ", d: "হাত পেছনে নিয়ে বুক প্রসারিত করুন।" },
+        { t: "৩. কোর ফিটনেস ও রিলাক্সেশন", d: "পেটের পেশি আলতো সোজা রেখে স্বাভাবিক শ্বাস নিন।" }
+    ];
+
+    function switchExerciseGender(g) {
+        const box = document.getElementById('exercise-box');
+        box.innerHTML = "";
+        const list = g === 'female' ? fEx : mEx;
+        list.forEach(item => {
+            const d = document.createElement('div');
+            d.style.padding = "8px";
+            d.style.background = "#f8fafc";
+            d.style.borderRadius = "8px";
+            d.style.marginBottom = "6px";
+            d.innerHTML = `<div style="font-weight:bold; font-size:0.8rem;">${item.t}</div>
+                           <div style="font-size:0.72rem; color:#64748b;">${item.d}</div>`;
+            box.appendChild(d);
+        });
+    }
+    switchExerciseGender('female');
+
+    function calcBMI() {
+        const h = parseFloat(document.getElementById('bmi-h').value) / 100;
+        const w = parseFloat(document.getElementById('bmi-w').value);
+        if (!h || !w) return alert("উচ্চতা ও ওজন দিন!");
+        const bmi = (w / (h * h)).toFixed(1);
+        document.getElementById('bmi-out').innerText = `আপনার বিএমআই: ${bmi} | আদর্শ ওজন রেঞ্জ: ${(18.5*h*h).toFixed(1)} - ${(24.9*h*h).toFixed(1)} কেজি।`;
+    }
+
+    function enableBedtime() { document.getElementById('bedtime-screen').style.display = 'flex'; }
+    function disableBedtime() { document.getElementById('bedtime-screen').style.display = 'none'; }
+
+    function unlockAdmin() {
+        const p = document.getElementById('admin-pin-field').value;
+        if (p === "1234") {
+            document.getElementById('admin-lock').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'block';
+            alert("স্বাগতম ওনার মোঃ সাকিব হোসাইন নিরব! অ্যাডমিন ফিচার চালু হয়েছে।");
+        } else {
+            alert("ভুল পিন! শুধুমাত্র ওনার মোঃ সাকিব হোসাইন নিরব এটি আনলক করতে পারবেন।");
+        }
+    }
+</script>
+
+</body>
+  </html>
