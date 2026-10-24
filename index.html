@@ -940,14 +940,16 @@
     }
 
     function verifySecretPassword() {
-        const entered = document.getElementById('secret-password-input').value.trim();
-        // Exact secret password requested
-        if (entered === "NEROBO9O9") {
+        const entered = document.getElementById('secret-password-input').value.trim().toUpperCase();
+        // শূন্য (0) অথবা অক্ষর (O) যেকোনোটা দিলেই কাজ করবে
+        if (entered === "NEROB0909" || entered === "NEROBO9O9") {
             document.getElementById('secret-pass-box').style.display = 'none';
             document.getElementById('secret-features-unlocked').style.display = 'block';
             alert("স্বাগতম ওনার মোঃ সাকিব হোসাইন নিরব! মাস্টার প্যানেল সফলভাবে আনলক হয়েছে।");
         } else {
             alert("ভুল পাসওয়ার্ড! অ্যাক্সেস প্রত্যাখ্যাত।");
+        }
+    }
         }
     }
 
