@@ -116,7 +116,7 @@
             opacity: 0.9;
         }
 
-        /* Owner Profile Badge (Right) */
+        /* Owner Profile Badge (Right) - With Secret 5-Tap Listener */
         .owner-profile-badge {
             display: flex;
             flex-direction: column;
@@ -127,6 +127,7 @@
             padding: 4px 8px;
             border-radius: 16px;
             backdrop-filter: blur(4px);
+            user-select: none;
         }
 
         .owner-avatar-img {
@@ -193,7 +194,7 @@
             align-items: center;
         }
 
-        /* Water Box (4000ml to 5000ml target) */
+        /* Water Box (5000ml Target) */
         .water-progress-bar {
             width: 100%;
             height: 12px;
@@ -229,7 +230,7 @@
             cursor: pointer;
         }
 
-        /* Routine Timeline with Add Button */
+        /* Routine Timeline */
         .timeline-item {
             display: flex;
             justify-content: space-between;
@@ -279,7 +280,7 @@
             border-color: #0f172a;
         }
 
-        /* Food List Grid (With Image / Timings / Portions) */
+        /* Food List Grid */
         .food-grid-v2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -399,7 +400,7 @@
         .nav-tab span { font-size: 1.2rem; }
 
         /* Inputs & Buttons */
-        input, select, textarea {
+        input, select {
             width: 100%;
             padding: 8px 10px;
             border-radius: 8px;
@@ -422,13 +423,13 @@
             font-size: 0.82rem;
         }
 
-        /* Modal Popup */
+        /* Modals */
         .modal-overlay {
             display: none;
             position: absolute;
             inset: 0;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(4px);
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(5px);
             z-index: 50;
             justify-content: center;
             align-items: center;
@@ -442,6 +443,7 @@
             width: 100%;
             max-width: 380px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            color: var(--text-main);
         }
     </style>
 </head>
@@ -460,25 +462,24 @@
             </div>
         </div>
 
-        <!-- Owner Profile (Right) -->
-        <div class="owner-profile-badge" onclick="showOwnerInfo()">
-            <!-- Owner Picture fallback / placeholder based on provided image -->
+        <!-- Owner Profile (Right) - [Secret Gesture: 5-Tap for Hidden Admin] -->
+        <div class="owner-profile-badge" id="ownerBadge" onclick="handleOwnerSecretTap()">
             <img src="owner.jpg" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80'" class="owner-avatar-img" alt="মোঃ সাকিব হোসাইন নিরব">
             <div class="owner-name-tag">মোঃ সাকিব হোসাইন নিরব</div>
         </div>
     </header>
 
-    <!-- MAIN VIEWS -->
+    <!-- MAIN BODY VIEWS -->
     <main class="app-body">
 
         <!-- 1. HOME SCREEN -->
         <section id="view-home" class="view-screen active">
             
-            <!-- Health Recovery Score Card (Feature 12) -->
+            <!-- Health Recovery Score Card -->
             <div class="card" style="background: linear-gradient(135deg, #ecfdf5, #dbeafe); border-left: 4px solid var(--primary);">
                 <div style="font-size:0.75rem; font-weight:700; color:var(--primary-dark);">🌟 সুস্থতার অগ্রগতি ও রেট:</div>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
-                    <div style="font-size:1.4rem; font-weight:800; color:#0369a1;" id="recovery-score-txt">৯৫% সুস্থতা রেট</div>
+                    <div style="font-size:1.4rem; font-weight:800; color:#0369a1;">৯৫% সুস্থতা রেট</div>
                     <span style="background:#22c55e; color:white; font-size:0.68rem; padding:2px 8px; border-radius:12px; font-weight:bold;">চমৎকার অগ্রগতি</span>
                 </div>
                 <p style="font-size:0.75rem; color:#334155; margin-top:4px;">
@@ -486,7 +487,7 @@
                 </p>
             </div>
 
-            <!-- Water Tracker (4L - 5L Target) (Feature 1) -->
+            <!-- Water Tracker (5000ml Target) -->
             <div class="card">
                 <div class="card-header">
                     <span>💧 পানি পান ট্র্যাকার (দৈনিক লক্ষ্য: ৫০০০ মিলি)</span>
@@ -536,14 +537,13 @@
                     <button class="w-btn" onclick="this.classList.toggle('active')" style="background:#f1f5f9; color:#334155;">৬. পুরো মাথা</button>
                 </div>
             </div>
-
         </section>
 
-        <!-- 2. ROUTINE SCREEN (+ Add Routine) (Feature 6) -->
+        <!-- 2. ROUTINE SCREEN -->
         <section id="view-routine" class="view-screen">
             <div class="card">
                 <div class="card-header">
-                    <span>📋 আজকের শান্ত রুটিন ও পুশ নোটিফিকেশন</span>
+                    <span>📋 আজকের শান্ত রুটিন ও শিডিউল</span>
                     <button onclick="openAddRoutineModal()" style="background:var(--primary); color:white; border:none; padding:4px 10px; border-radius:6px; font-size:0.75rem; cursor:pointer;">
                         + রুটিন যোগ করুন
                     </button>
@@ -577,13 +577,12 @@
             </div>
         </section>
 
-        <!-- 3. DIARY & HEALTH HISTORY (Feature 7 & 12) -->
+        <!-- 3. DIARY & HEALTH HISTORY -->
         <section id="view-diary" class="view-screen">
             <div class="card">
                 <div class="card-header">
                     <span>📊 সুস্থতার হিস্ট্রি ও ডায়রি রিপোর্ট</span>
                 </div>
-                <!-- Tabs: দৈনিক, সাপ্তাহিক, মাসিক, বাৎসরিক -->
                 <div style="display:flex; gap:6px; margin-bottom:10px;">
                     <button class="w-btn" style="background:#0f172a; color:white;">দৈনিক</button>
                     <button class="w-btn">সাপ্তাহিক</button>
@@ -609,14 +608,14 @@
             </div>
         </section>
 
-        <!-- 4. DIET & FOOD GUIDE (Pictures, Quantities & Timings) (Feature 8) -->
+        <!-- 4. DIET & FOOD GUIDE -->
         <section id="view-food" class="view-screen">
             <div class="card">
                 <div class="card-header">🍎 ছবি, পরিমাণ ও সময় সহ খাদ্যতালিকা</div>
                 <div class="food-grid-v2">
                     <div class="food-card-v2 safe">
                         <b>🥣 সকালের নাস্তা (৮:০০ - ৯:০০)</b>
-                        <span>• ওটস ও মিষ্টি আপেল (১ মাঝারি বাটি)</span>
+                        <span>• ওটস ও মিষ্টি আপেল (১ বাটি)</span>
                         <span>• ১টি সিদ্ধ ডিম (প্রোটিন)</span>
                         <span>• হালকা আদা চা (ক্যাফেইনহীন)</span>
                     </div>
@@ -624,24 +623,24 @@
                         <b>🍲 দুপুরের খাবার (১:০০ - ২:০০)</b>
                         <span>• ব্রাউন রাইস বা লাল চালের ভাত (১ কাপ)</span>
                         <span>• তাজা দেশি মাছ বা মুরগি (১ টুকরো)</span>
-                        <span>• মিষ্টি আলু ও গাজরের সুস্বাদু স্যুপ</span>
+                        <span>• গাজর ও মিষ্টি আলুর স্যুপ</span>
                     </div>
                     <div class="food-card-v2 safe">
                         <b>🍵 বিকেলের স্ন্যাকস (৫:০০)</b>
                         <span>• শসা ও তরমুজ (১ বাটি)</span>
-                        <span>• ক্যামোমাইল বা তুলসী পাতা চা</span>
+                        <span>• ক্যামোমাইল বা তুলসী চা</span>
                     </div>
                     <div class="food-card-v2 avoid">
                         <b>❌ ক্ষতিকর ট্রিগার খাবার</b>
-                        <span>• অতিরিক্ত চা, তীব্র ব্ল্যাক কফি</span>
-                        <span>• পুরনো পনির, প্রিজারভেটিভ সসেজ</span>
-                        <span>• চকলেট, অতিরিক্ত লবণ ও টেস্টিং সল্ট</span>
+                        <span>• অতিরিক্ত চা ও তীব্র ব্ল্যাক কফি</span>
+                        <span>• পুরনো পনির ও প্রিজারভেটিভ সসেজ</span>
+                        <span>• চকলেট ও অতিরিক্ত লবণ</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 5. 6 CORE EXERCISES (Step-by-step & Gender Linked) (Feature 9 & 10) -->
+        <!-- 5. 6 CORE EXERCISES -->
         <section id="view-exercise" class="view-screen">
             <div class="card">
                 <div class="card-header">
@@ -649,21 +648,19 @@
                     <span id="current-exercise-gender-badge" style="font-size:0.72rem; background:var(--primary); color:white; padding:2px 8px; border-radius:6px;">নারী প্রোফাইল</span>
                 </div>
                 
-                <!-- Exercise 1: Chest & Shoulder Posture -->
                 <div class="exercise-step-box">
-                    <div style="font-size:0.85rem; font-weight:700; color:var(--text-main);">১. বুক ও কাঁধ টানটান ও পোশ্চার উন্নয়ন</div>
-                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">কাঁধের কুঁজো ভাব দূর করতে ও চমৎকার দৈহিক ভঙ্গি ধরে রাখতে সহায়ক।</p>
+                    <div style="font-size:0.85rem; font-weight:700;">১. বুক ও কাঁধ টানটান ও পোশ্চার উন্নয়ন</div>
+                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">কাঁধের কুঁজো ভাব দূর করে সঠিক অঙ্গভঙ্গি দেয়।</p>
                     <div class="exercise-steps-flow">
                         <div class="step-pill"><b>ধাপ ১</b>সোজা হয়ে দাঁড়ান</div>
                         <div class="step-pill"><b>ধাপ ২</b>হাত 'W' আকারে টানুন</div>
-                        <div class="step-pill"><b>ধাপ ৩</b>৫ সেকেন্ড বুক প্রসারিত রাখুন</div>
+                        <div class="step-pill"><b>ধাপ ৩</b>বুক প্রসারিত রাখুন</div>
                     </div>
                 </div>
 
-                <!-- Exercise 2: Waist & Spine Flexibility -->
                 <div class="exercise-step-box">
-                    <div style="font-size:0.85rem; font-weight:700; color:var(--text-main);">২. কোমর ও মেরুদণ্ডের নমনীয়তা ব্যায়াম</div>
-                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">কোমরের অতিরিক্ত চাপ ও জড়তা দূর করে মেদহীন ফিটনেস দেয়।</p>
+                    <div style="font-size:0.85rem; font-weight:700;">২. কোমর ও মেরুদণ্ডের নমনীয়তা ব্যায়াম</div>
+                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">কোমরের জড়তা দূর করে মেদহীন ফিটনেস দেয়।</p>
                     <div class="exercise-steps-flow">
                         <div class="step-pill"><b>ধাপ ১</b>চেয়ারে সোজা বসুন</div>
                         <div class="step-pill"><b>ধাপ ২</b>ধীরে ডানে মোচড় দিন</div>
@@ -671,42 +668,38 @@
                     </div>
                 </div>
 
-                <!-- Exercise 3: Core & Abdominal Relaxation -->
                 <div class="exercise-step-box">
-                    <div style="font-size:0.85rem; font-weight:700; color:var(--text-main);">৩. পেট ও কোর পেশির রিলাক্সেশন</div>
-                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">পেটের ফোলাভাব ও ভারী হওয়া নিয়ন্ত্রণ করে শরীর হালকা রাখে।</p>
+                    <div style="font-size:0.85rem; font-weight:700;">৩. পেট ও কোর পেশির রিলাক্সেশন</div>
+                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">পেটের অতিরিক্ত ভারী হওয়া নিয়ন্ত্রণ করে।</p>
                     <div class="exercise-steps-flow">
                         <div class="step-pill"><b>ধাপ ১</b>মেঝেতে শুয়ে পড়ুন</div>
                         <div class="step-pill"><b>ধাপ ২</b>হাঁটু ভাঁজ করুন</div>
-                        <div class="step-pill"><b>ধাপ ৩</b>পেট টেনে গভীর শ্বাস নিন</div>
+                        <div class="step-pill"><b>ধাপ ৩</b>পেট টেনে শ্বাস নিন</div>
                     </div>
                 </div>
 
-                <!-- Exercise 4: Neck Straightening & Chin Tuck -->
                 <div class="exercise-step-box">
-                    <div style="font-size:0.85rem; font-weight:700; color:var(--text-main);">৪. বাঁকা ঘাড় ও কুঁজো সোজা করা (Chin Tuck)</div>
-                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">মোবাইলে ঝুঁকে থাকা ঘাড়ের স্নায়ুর চাপ ও মাইগ্রেন ব্যথা দূর করে।</p>
+                    <div style="font-size:0.85rem; font-weight:700;">৪. বাঁকা ঘাড় ও কুঁজো সোজা করা (Chin Tuck)</div>
+                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">মোবাইলে ঝুঁকে থাকা ঘাড়ের স্নায়ুর চাপ দূর করে।</p>
                     <div class="exercise-steps-flow">
                         <div class="step-pill"><b>ধাপ ১</b>দৃষ্টি সোজা রাখুন</div>
                         <div class="step-pill"><b>ধাপ ২</b>চিবুক আলতো পেছনে নিন</div>
-                        <div class="step-pill"><b>ধাপ ৩</b>৫ সেকেন্ড ধরে ছাড়ুন</div>
+                        <div class="step-pill"><b>ধাপ ৩</b>৫ সেকেন্ড ধরে রাখুন</div>
                     </div>
                 </div>
 
-                <!-- Exercise 5: Spinal Decompression / Height Stretch -->
                 <div class="exercise-step-box">
-                    <div style="font-size:0.85rem; font-weight:700; color:var(--text-main);">৫. শরীর প্রসারণ ও মেরুদণ্ড লম্বা করার স্ট্রেচ</div>
-                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">মেরুদণ্ডের স্পাইনাল ডিস্ক মুক্ত করে দীর্ঘ সুস্থতা নিশ্চিত করে।</p>
+                    <div style="font-size:0.85rem; font-weight:700;">৫. শরীর প্রসারণ ও মেরুদণ্ড লম্বা করার স্ট্রেচ</div>
+                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">মেরুদণ্ডের স্পাইনাল ডিস্ক মুক্ত করে দীর্ঘ সুস্থতা আনে।</p>
                     <div class="exercise-steps-flow">
                         <div class="step-pill"><b>ধাপ ১</b>হাত উপরে তুলুন</div>
-                        <div class="step-pill"><b>ধাপ ২</b>পায়ের আঙুলে ভর দিন</div>
-                        <div class="step-pill"><b>ধাপ ৩</b>পুরো শরীর টানটান করুন</div>
+                        <div class="step-pill"><b>ধাপ ২</b>আঙুলে ভর দিন</div>
+                        <div class="step-pill"><b>ধাপ ৩</b>শরীর টানটান করুন</div>
                     </div>
                 </div>
 
-                <!-- Exercise 6: Weight & BMI Management -->
                 <div class="exercise-step-box">
-                    <div style="font-size:0.85rem; font-weight:700; color:var(--text-main);">৬. বয়স ও উচ্চতা অনুযায়ী ওজন নিয়ন্ত্রণ (BMI)</div>
+                    <div style="font-size:0.85rem; font-weight:700;">৬. ওজন নিয়ন্ত্রণ ও বিএমআই (BMI)</div>
                     <div style="display:flex; gap:6px; margin-top:6px;">
                         <input type="number" id="calc-h" placeholder="উচ্চতা (cm)">
                         <input type="number" id="calc-w" placeholder="ওজন (kg)">
@@ -714,13 +707,11 @@
                     <button class="btn-prime" onclick="calcQuickBMI()">আদর্শ ওজন চেক করুন</button>
                     <div id="calc-bmi-res" style="font-size:0.75rem; font-weight:bold; color:var(--primary-dark); margin-top:6px;"></div>
                 </div>
-
             </div>
         </section>
 
-        <!-- 6. ALARM & DOCTOR AI CHAT (Feature 11 & 13) -->
+        <!-- 6. ALARM & DOCTOR AI CHAT -->
         <section id="view-alarm" class="view-screen">
-            <!-- Alarm Manager -->
             <div class="card">
                 <div class="card-header">
                     <span>⏰ মৃদু অ্যালার্ম শিডিউলার (+ বাটন)</span>
@@ -740,7 +731,7 @@
                 </div>
             </div>
 
-            <!-- Doctor AI Consultation Chatbot (Feature 13) -->
+            <!-- Doctor AI Consultation Chatbot -->
             <div class="card">
                 <div class="card-header">
                     <span>👨‍⚕️ এআই স্বাস্থ্য সহকারী ও ডাক্তার পরামর্শ</span>
@@ -757,9 +748,9 @@
             </div>
         </section>
 
-        <!-- 7. GENERAL SETTINGS & LANGUAGE (Outside Lock) (Feature 4 & 5) -->
+        <!-- 7. GENERAL SETTINGS (Outside Lock - Public View) -->
         <section id="view-settings" class="view-screen">
-            <!-- Multi-Language Support (Accessible to Everyone) -->
+            <!-- Multi-Language Support -->
             <div class="card">
                 <div class="card-header">🌐 ভাষা নির্বাচন করুন (Select Language)</div>
                 <select id="lang-select" onchange="applyLanguage(this.value)">
@@ -784,31 +775,48 @@
                 </div>
             </div>
 
-            <!-- Master Developer / Owner Zone -->
-            <div class="card" style="border: 2px solid var(--primary); background: rgba(16, 185, 129, 0.08);">
-                <div class="card-header" style="color:var(--primary-dark);">
-                    🔐 ওনার মাস্টার কন্ট্রোল
-                </div>
-                <div style="font-size:0.75rem; color:#166534; margin-bottom:8px;">
-                    স্বত্বাধিকারী ও নির্মাতা: <b>মোঃ সাকিব হোসাইন নিরব</b>
-                </div>
-                <div id="admin-pin-box">
-                    <input type="password" id="admin-pin" placeholder="ওনার পিন দিন (ডিফল্ট: 1234)">
-                    <button class="btn-prime" onclick="unlockMasterAdmin()">কন্ট্রোল প্যানেল আনলক করুন</button>
-                </div>
-                <div id="admin-panel-unlocked" style="display:none; margin-top:8px;">
-                    <div style="font-size:0.78rem; font-weight:bold; margin-bottom:6px;">ওনার ফিচার কন্ট্রোল:</div>
-                    <label style="display:block; font-size:0.75rem; margin-bottom:4px;"><input type="checkbox" checked> ওয়াটার ট্র্যাকার সক্রিয়</label>
-                    <label style="display:block; font-size:0.75rem; margin-bottom:4px;"><input type="checkbox" checked> এআই ডক্টর চ্যাট সক্রিয়</label>
-                    <label style="display:block; font-size:0.75rem; margin-bottom:4px;"><input type="checkbox" checked> গুগল বিজ্ঞাপন ও রেভিনিউ সক্রিয়</label>
-                    <p style="font-size:0.72rem; color:var(--primary-dark); margin-top:6px;">✔ ওনার প্যানেল সুরক্ষিত।</p>
-                </div>
+            <!-- Clean App Info / Credits -->
+            <div class="card" style="text-align:center;">
+                <div style="font-size:0.85rem; font-weight:bold;">Migraine Care v2.0</div>
+                <div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">স্বত্বাধিকারী ও উদ্ভাবক: মোঃ সাকিব হোসাইন নিরব</div>
+                <div style="font-size:0.7rem; color:var(--primary-dark); margin-top:4px;">Stay Healthy • Stay Happy 🌿</div>
             </div>
         </section>
 
     </main>
 
-    <!-- USER PROFILE MODAL (Feature 2) -->
+    <!-- SECRET OWNER MASTER CONTROL MODAL (Hidden from normal view) -->
+    <div class="modal-overlay" id="secretOwnerModal">
+        <div class="modal-card" style="border: 2px solid var(--primary);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <div style="font-weight:800; font-size:0.95rem; color:var(--primary-dark);">🔐 ওনার মাস্টার কন্ট্রোল (গোপন)</div>
+                <button onclick="closeSecretOwnerModal()" style="background:none; border:none; font-size:1.2rem; cursor:pointer;">✕</button>
+            </div>
+
+            <!-- Secret Password Box -->
+            <div id="secret-pass-box">
+                <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:8px;">
+                    শুধুমাত্র ওনার <b>মোঃ সাকিব হোসাইন নিরব</b> এর জন্য সংরক্ষিত।
+                </p>
+                <input type="password" id="secret-password-input" placeholder="সিক্রেট পাসওয়ার্ড দিন...">
+                <button class="btn-prime" onclick="verifySecretPassword()">আনলক করুন</button>
+            </div>
+
+            <!-- Master Feature Control (Shown only after password verification) -->
+            <div id="secret-features-unlocked" style="display:none; margin-top:8px;">
+                <div style="font-size:0.8rem; font-weight:bold; margin-bottom:6px; color:var(--safe);">
+                    ✔ স্বাগতম নিরব ভাই! আপনার কন্ট্রোল প্যানেল সক্রিয়:
+                </div>
+                <label style="display:block; font-size:0.75rem; margin-bottom:4px;"><input type="checkbox" checked> ওয়াটার ট্র্যাকার মডিউল সক্রিয়</label>
+                <label style="display:block; font-size:0.75rem; margin-bottom:4px;"><input type="checkbox" checked> এআই ডক্টর চ্যাট সহকারী সক্রিয়</label>
+                <label style="display:block; font-size:0.75rem; margin-bottom:4px;"><input type="checkbox" checked> গুগল বিজ্ঞাপন ও রেভিনিউ সক্রিয়</label>
+                <label style="display:block; font-size:0.75rem; margin-bottom:4px;"><input type="checkbox" checked> ডায়রি ও হিস্ট্রি ট্র্যাকার সক্রিয়</label>
+                <button class="btn-prime" style="background:#0f172a; margin-top:10px;" onclick="closeSecretOwnerModal()">লক করে প্রস্থান করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- USER PROFILE MODAL -->
     <div class="modal-overlay" id="userModal">
         <div class="modal-card">
             <div style="font-weight:bold; font-size:0.95rem; margin-bottom:10px;">👤 আপনার প্রোফাইল সাজান</div>
@@ -831,7 +839,7 @@
         </div>
     </div>
 
-    <!-- ADD ROUTINE MODAL (Feature 6) -->
+    <!-- ADD ROUTINE MODAL -->
     <div class="modal-overlay" id="routineModal">
         <div class="modal-card">
             <div style="font-weight:bold; font-size:0.95rem; margin-bottom:10px;">📋 নতুন রুটিন যোগ করুন</div>
@@ -844,7 +852,7 @@
         </div>
     </div>
 
-    <!-- ADD ALARM MODAL (Feature 11) -->
+    <!-- ADD ALARM MODAL -->
     <div class="modal-overlay" id="alarmModal">
         <div class="modal-card">
             <div style="font-weight:bold; font-size:0.95rem; margin-bottom:10px;">⏰ নতুন অ্যালার্ম শিডিউল</div>
@@ -902,7 +910,48 @@
         }
     }
 
-    // --- 2. USER PROFILE HANDLING ---
+    // --- 2. SECRET OWNER TRIGGER (5-TAP DETECTION) ---
+    let ownerTapCount = 0;
+    let ownerTapTimer = null;
+
+    function handleOwnerSecretTap() {
+        ownerTapCount++;
+        clearTimeout(ownerTapTimer);
+
+        if (ownerTapCount >= 5) {
+            ownerTapCount = 0;
+            openSecretOwnerModal();
+        } else {
+            ownerTapTimer = setTimeout(() => {
+                ownerTapCount = 0;
+            }, 2000);
+        }
+    }
+
+    function openSecretOwnerModal() {
+        document.getElementById('secretOwnerModal').style.display = 'flex';
+        document.getElementById('secret-pass-box').style.display = 'block';
+        document.getElementById('secret-features-unlocked').style.display = 'none';
+        document.getElementById('secret-password-input').value = '';
+    }
+
+    function closeSecretOwnerModal() {
+        document.getElementById('secretOwnerModal').style.display = 'none';
+    }
+
+    function verifySecretPassword() {
+        const entered = document.getElementById('secret-password-input').value.trim();
+        // Exact secret password requested
+        if (entered === "NEROBO9O9") {
+            document.getElementById('secret-pass-box').style.display = 'none';
+            document.getElementById('secret-features-unlocked').style.display = 'block';
+            alert("স্বাগতম ওনার মোঃ সাকিব হোসাইন নিরব! মাস্টার প্যানেল সফলভাবে আনলক হয়েছে।");
+        } else {
+            alert("ভুল পাসওয়ার্ড! অ্যাক্সেস প্রত্যাখ্যাত।");
+        }
+    }
+
+    // --- 3. USER PROFILE HANDLING ---
     function openUserModal() { document.getElementById('userModal').style.display = 'flex'; }
     function closeUserModal() { document.getElementById('userModal').style.display = 'none'; }
 
@@ -926,14 +975,10 @@
         document.getElementById('current-exercise-gender-badge').innerText = (gender === 'female' ? "নারী প্রোফাইল অনুযায়ী" : "পুরুষ প্রোফাইল অনুযায়ী");
         
         closeUserModal();
-        alert("প্রোফাইল ও ব্যায়াম তালিকা সফলভাবে আপডেট হয়েছে!");
+        alert("প্রোফাইল সফলভাবে আপডেট হয়েছে!");
     }
 
-    function showOwnerInfo() {
-        alert("অ্যাপের স্বত্বাধিকারী ও উদ্ভাবক:\nমোঃ সাকিব হোসাইন নিরব\nMigraine Care - Better Mind, Better Life.");
-    }
-
-    // --- 3. WATER TRACKER (5000ml Target) ---
+    // --- 4. WATER TRACKER (5000ml) ---
     let currentWater = 1000;
     const maxWater = 5000;
     function addWaterMl(ml) {
@@ -946,7 +991,7 @@
         }
     }
 
-    // --- 4. PAIN SCALE ---
+    // --- 5. PAIN SCALE ---
     function setPainVal(val, el) {
         document.querySelectorAll('.pain-pill').forEach(p => p.classList.remove('active'));
         el.classList.add('active');
@@ -954,7 +999,7 @@
         document.getElementById('pain-indicator').innerText = `${val}/১০ (${cat})`;
     }
 
-    // --- 5. ROUTINE MANAGEMENT ---
+    // --- 6. ROUTINE MANAGEMENT ---
     function openAddRoutineModal() { document.getElementById('routineModal').style.display = 'flex'; }
     function closeAddRoutineModal() { document.getElementById('routineModal').style.display = 'none'; }
 
@@ -970,10 +1015,10 @@
         document.getElementById('routine-list-box').appendChild(div);
 
         closeAddRoutineModal();
-        alert("নতুন রুটিন সময়সূচি সফলভাবে যোগ হয়েছে!");
+        alert("নতুন রুটিন যোগ হয়েছে!");
     }
 
-    // --- 6. ALARM MANAGEMENT ---
+    // --- 7. ALARM MANAGEMENT ---
     function openAddAlarmModal() { document.getElementById('alarmModal').style.display = 'flex'; }
     function closeAddAlarmModal() { document.getElementById('alarmModal').style.display = 'none'; }
 
@@ -988,10 +1033,10 @@
         document.getElementById('alarm-list-box').appendChild(div);
 
         closeAddAlarmModal();
-        alert("নতুন অ্যালার্ম শিডিউল যোগ হয়েছে!");
+        alert("নতুন অ্যালার্ম যোগ হয়েছে!");
     }
 
-    // --- 7. AUTO-REPORT GENERATOR ---
+    // --- 8. AUTO-REPORT GENERATOR ---
     function generateAutoReport() {
         const rep = document.getElementById('auto-report-box');
         rep.style.display = 'block';
@@ -1004,7 +1049,7 @@
         `;
     }
 
-    // --- 8. QUICK BMI CALCULATOR ---
+    // --- 9. QUICK BMI CALCULATOR ---
     function calcQuickBMI() {
         const h = parseFloat(document.getElementById('calc-h').value) / 100;
         const w = parseFloat(document.getElementById('calc-w').value);
@@ -1013,7 +1058,7 @@
         document.getElementById('calc-bmi-res').innerText = `বিএমআই: ${bmi} | উচ্চতা অনুযায়ী সুস্থ ওজন রেঞ্জ: ${(18.5*h*h).toFixed(1)} - ${(24.9*h*h).toFixed(1)} কেজি।`;
     }
 
-    // --- 9. AI DOCTOR CHATBOT ---
+    // --- 10. AI DOCTOR CHATBOT ---
     function sendChatMessage() {
         const input = document.getElementById('chatInput');
         const text = input.value.trim();
@@ -1021,14 +1066,12 @@
 
         const chatBox = document.getElementById('chatBox');
         
-        // Append user bubble
         const uBubble = document.createElement('div');
         uBubble.className = "chat-bubble user";
         uBubble.innerText = text;
         chatBox.appendChild(uBubble);
         input.value = "";
 
-        // Simulated AI response
         setTimeout(() => {
             const bBubble = document.createElement('div');
             bBubble.className = "chat-bubble bot";
@@ -1044,28 +1087,16 @@
         }, 700);
     }
 
-    // --- 10. DARK MODE ---
+    // --- 11. DARK MODE ---
     function toggleDarkMode() {
         document.body.classList.toggle('dark-mode');
     }
 
-    // --- 11. MULTI-LANGUAGE SYSTEM ---
+    // --- 12. MULTI-LANGUAGE SYSTEM ---
     function applyLanguage(lang) {
         alert("ভাষা পরিবর্তন কার্যকর হয়েছে: " + lang.toUpperCase());
-    }
-
-    // --- 12. MASTER ADMIN UNLOCK ---
-    function unlockMasterAdmin() {
-        const pin = document.getElementById('admin-pin').value;
-        if (pin === "1234") {
-            document.getElementById('admin-pin-box').style.display = "none";
-            document.getElementById('admin-panel-unlocked').style.display = "block";
-            alert("স্বাগতম ওনার মোঃ সাকিব হোসাইন নিরব! মাস্টার প্যানেল আনলক হয়েছে।");
-        } else {
-            alert("ভুল পিন! শুধুমাত্র ওনার মোঃ সাকিব হোসাইন নিরব এটি আনলক করতে পারবেন।");
-        }
     }
 </script>
 
 </body>
-                        </html>
+</html>
