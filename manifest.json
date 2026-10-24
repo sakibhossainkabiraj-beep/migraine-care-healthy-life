@@ -1,0 +1,20 @@
+{
+  "background_color": "#060306",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "Migraine Care",
+  "orientation": "any",
+  "scope": "./",
+  "short_name": "MigraineCare",
+  "start_url": "./index.html",
+  "theme_color": "#ffffff",
+  "description": "Migraine Care & Health Routine App by Md. Sakib Hossain Nirob",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2966/2966486.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
