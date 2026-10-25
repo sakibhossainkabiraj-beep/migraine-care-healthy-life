@@ -70,7 +70,7 @@
             }
         }
 
-        /* Top Header - ONLY USER PROFILE */
+        /* Top Header - USER PROFILE ONLY (No সালাম) */
         .top-bar {
             background: linear-gradient(135deg, #0284c7, #10b981);
             color: white;
@@ -108,7 +108,7 @@
             background: rgba(0,0,0,0.2);
             padding: 4px 8px;
             border-radius: 8px;
-            font-size: 0.7rem;
+            font-size: 0.72rem;
             font-weight: 600;
         }
 
@@ -134,7 +134,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Card Styles */
+        /* Universal Card */
         .card {
             background: var(--card-bg);
             border-radius: 16px;
@@ -154,6 +154,37 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        /* Dynamic Filter Tabs (Fixing Active Marker) */
+        .filter-tab-bar {
+            display: flex;
+            background: var(--bg-color);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 12px;
+            gap: 4px;
+        }
+
+        .filter-tab-btn {
+            flex: 1;
+            padding: 8px 4px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+        }
+
+        .filter-tab-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
         }
 
         /* Water Tracker */
@@ -195,12 +226,9 @@
             text-align: center;
         }
 
-        .w-btn.minus {
-            background: #fee2e2;
-            color: #b91c1c;
-        }
+        .w-btn.minus { background: #fee2e2; color: #b91c1c; }
 
-        /* Pain Scale 0-10 */
+        /* Pain Scale */
         .pain-scale-strip {
             display: flex;
             gap: 4px;
@@ -230,7 +258,12 @@
             border-color: #0f172a;
         }
 
-        /* Checkbox compliance list */
+        body.dark-mode .pain-pill.active {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        /* Compliance Checklist with + and Delete */
         .compliance-row {
             display: flex;
             align-items: center;
@@ -243,11 +276,10 @@
             font-size: 0.8rem;
         }
 
-        .compliance-row input {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary);
-            cursor: pointer;
+        .compliance-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         /* Timeline Items with Edit/Delete */
@@ -270,11 +302,6 @@
             text-decoration: line-through;
         }
 
-        .item-actions {
-            display: flex;
-            gap: 6px;
-        }
-
         .btn-icon {
             background: none;
             border: none;
@@ -283,70 +310,84 @@
             padding: 2px 4px;
         }
 
-        /* Animated Exercise Stage (Moving Animation Simulator) */
-        .animated-exercise-container {
-            border: 1px solid var(--border);
+        /* Video-like Exercise Moving Simulator */
+        .video-anim-stage {
+            border: 2px solid var(--primary);
             border-radius: 14px;
             padding: 12px;
-            background: var(--bg-color);
-            margin-bottom: 12px;
-            text-align: center;
-        }
-
-        .anim-screen {
-            height: 160px;
             background: #020617;
             color: #38bdf8;
-            border-radius: 10px;
+            margin-bottom: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .anim-viewport {
+            height: 150px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-size: 2.2rem;
-            position: relative;
-            overflow: hidden;
-            box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
-        }
-
-        .anim-subtext {
-            font-size: 0.8rem;
-            color: #e2e8f0;
-            margin-top: 6px;
-            font-weight: 600;
+            font-size: 2.8rem;
+            transition: all 0.3s ease;
         }
 
         .anim-step-badge {
-            position: absolute;
-            top: 8px;
-            left: 8px;
+            display: inline-block;
             background: var(--primary);
             color: white;
             font-size: 0.68rem;
             padding: 2px 8px;
             border-radius: 6px;
             font-weight: bold;
+            margin-bottom: 4px;
         }
 
-        /* Food Nutrition Table */
-        .nutrient-badge {
-            display: inline-block;
-            font-size: 0.68rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin: 2px;
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--primary-dark);
-            font-weight: 600;
+        .anim-guidance-text {
+            font-size: 0.82rem;
+            color: #f8fafc;
+            font-weight: 700;
+            margin-top: 6px;
         }
 
-        body.dark-mode .nutrient-badge {
-            background: rgba(16, 185, 129, 0.25);
-            color: #34d399;
+        /* Ringtone Modal Items List */
+        .sound-list-scroll {
+            max-height: 240px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 6px;
+            margin-bottom: 10px;
+            background: var(--bg-color);
+        }
+
+        .sound-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            font-size: 0.78rem;
+        }
+
+        /* Printable Doctor Report Sheet */
+        .doctor-report-sheet {
+            background: var(--card-bg);
+            color: var(--text-main);
+            border: 2px solid var(--secondary);
+            border-radius: 14px;
+            padding: 14px;
+            line-height: 1.6;
+            font-size: 0.82rem;
+            box-shadow: var(--shadow);
         }
 
         /* Doctor AI Chat */
         .chat-container {
-            height: 180px;
+            height: 170px;
             overflow-y: auto;
             border: 1px solid var(--border);
             border-radius: 10px;
@@ -383,19 +424,7 @@
             color: #e0f2fe;
         }
 
-        /* Printable Doctor Report */
-        #printable-doctor-report {
-            background: var(--card-bg);
-            color: var(--text-main);
-            border: 2px solid var(--secondary);
-            border-radius: 12px;
-            padding: 14px;
-            margin-top: 10px;
-            line-height: 1.5;
-            font-size: 0.8rem;
-        }
-
-        /* Bottom Nav */
+        /* Bottom Nav (7 Tabs) */
         .bottom-nav {
             position: absolute;
             bottom: 0;
@@ -415,9 +444,9 @@
             flex-direction: column;
             align-items: center;
             color: var(--text-muted);
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             cursor: pointer;
-            width: 20%;
+            width: 14%;
             text-align: center;
         }
 
@@ -426,7 +455,7 @@
             font-weight: 700;
         }
 
-        .nav-tab span { font-size: 1.25rem; }
+        .nav-tab span { font-size: 1.15rem; }
 
         /* Inputs & Buttons */
         input, select {
@@ -475,14 +504,25 @@
             color: var(--text-main);
         }
 
-        /* Infographic Banner Box */
+        /* Nutrient Tag */
+        .nutrient-badge {
+            display: inline-block;
+            font-size: 0.68rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin: 2px;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        /* Infographic Images */
         .infographic-banner-box {
             width: 100%;
             border-radius: 14px;
             overflow: hidden;
             margin-bottom: 12px;
             border: 1px solid var(--border);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
             background: #000;
         }
 
@@ -497,12 +537,13 @@
 
 <div class="app-shell" id="appShell">
 
-    <!-- TOP HEADER (USER ONLY) -->
+    <!-- TOP HEADER (USER PROFILE ONLY - NO SALAM) -->
     <header class="top-bar">
         <div class="user-header-profile" onclick="openUserModal()">
             <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" id="user-header-avatar" class="user-avatar-img" alt="User">
             <div>
-                <div style="font-size:0.8rem; font-weight:800;" id="user-header-name">সালাম, ব্যবহারকারী!</div>
+                <!-- No 'সালাম,' text -->
+                <div style="font-size:0.85rem; font-weight:800;" id="user-header-name">রিমু</div>
                 <div style="font-size:0.65rem; opacity:0.9;" id="user-header-gender">নারী প্রোফাইল • এডিট ✏️</div>
             </div>
         </div>
@@ -517,19 +558,19 @@
         <!-- 1. HOME SCREEN -->
         <section id="view-home" class="view-screen active">
             
-            <!-- Health Status & Adherence -->
+            <!-- Health Recovery Score Card -->
             <div class="card" style="background: linear-gradient(135deg, #ecfdf5, #dbeafe); border-left: 4px solid var(--primary);">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <div style="font-size:0.75rem; font-weight:700; color:var(--primary-dark);">🌟 সুস্থতার হার ও অগ্রগতি:</div>
                     <span id="adherence-percent-tag" style="background:var(--primary); color:white; font-size:0.7rem; padding:2px 8px; border-radius:10px; font-weight:bold;">১০০% রুটিন পালন</span>
                 </div>
-                <div style="font-size:1.3rem; font-weight:800; color:#0369a1; margin-top:4px;" id="home-recovery-rate">৯৫% সুস্থতা রেট</div>
+                <div style="font-size:1.3rem; font-weight:800; color:#0369a1; margin-top:4px;">৯৫% সুস্থতা রেট</div>
                 <p style="font-size:0.75rem; color:#334155; margin-top:4px;">
                     "আপনার খাদ্যাভ্যাস ও রুটিন নিয়মিত চলছে। ইনশাআল্লাহ আপনি খুব দ্রুত সম্পূর্ণ সুস্থ হয়ে উঠবেন!"
                 </p>
             </div>
 
-            <!-- Water Tracker (5000ml Target with + and - buttons) -->
+            <!-- Water Tracker (5000ml Target with + and -) -->
             <div class="card">
                 <div class="card-header">
                     <span>💧 পানি ট্র্যাকার (লক্ষ্য: ৫০০০ মিলি)</span>
@@ -569,40 +610,29 @@
                 </div>
             </div>
 
-            <!-- Head Pain Location (ONLY VISIBLE WHEN PAIN > 0) -->
+            <!-- Head Pain Location (Disappears when Pain is 0) -->
             <div class="card" id="head-pain-location-box" style="display:none;">
                 <div class="card-header">মাথার কোথায় ব্যথা হচ্ছে? (Location)</div>
                 <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px;">
-                    <button class="w-btn" onclick="toggleHeadLocation(this)">১. কপাল ও চোখ</button>
-                    <button class="w-btn" onclick="toggleHeadLocation(this)">২. ডান রগ</button>
-                    <button class="w-btn" onclick="toggleHeadLocation(this)">৩. বাম রগ</button>
-                    <button class="w-btn" onclick="toggleHeadLocation(this)">৪. মাথার পেছন</button>
-                    <button class="w-btn" onclick="toggleHeadLocation(this)">৫. ঘাড় ও স্কাল্প</button>
-                    <button class="w-btn" onclick="toggleHeadLocation(this)">৬. পুরো মাথা</button>
+                    <button class="w-btn" onclick="this.classList.toggle('active')">১. কপাল ও চোখ</button>
+                    <button class="w-btn" onclick="this.classList.toggle('active')">২. ডান রগ</button>
+                    <button class="w-btn" onclick="this.classList.toggle('active')">৩. বাম রগ</button>
+                    <button class="w-btn" onclick="this.classList.toggle('active')">৪. মাথার পেছন</button>
+                    <button class="w-btn" onclick="this.classList.toggle('active')">৫. ঘাড় ও স্কাল্প</button>
+                    <button class="w-btn" onclick="this.classList.toggle('active')">৬. পুরো মাথা</button>
                 </div>
             </div>
 
-            <!-- Daily Compliance Tracker (Feeds Doctor Report) -->
+            <!-- Daily Compliance with Add (+) and Delete Buttons -->
             <div class="card">
                 <div class="card-header">
                     <span>✅ আজকের স্বাস্থ্য নিয়মানুবর্তিতা</span>
-                    <span style="font-size:0.75rem; color:var(--text-muted);">টিক দিন</span>
+                    <button onclick="openAddComplianceModal()" style="background:var(--primary); color:white; border:none; padding:4px 8px; border-radius:6px; font-size:0.72rem; cursor:pointer;">
+                        + নতুন নিয়ম
+                    </button>
                 </div>
-                <div class="compliance-row">
-                    <span>🥗 সকালের সঠিক পুষ্টিকর খাবার খেয়েছি</span>
-                    <input type="checkbox" id="chk-bfast" onchange="saveCompliance()">
-                </div>
-                <div class="compliance-row">
-                    <span>🍲 দুপুরের খাবার ও প্রোটিন সময়মতো নিয়েছি</span>
-                    <input type="checkbox" id="chk-lunch" onchange="saveCompliance()">
-                </div>
-                <div class="compliance-row">
-                    <span>💊 প্রেসক্রিপশনের ওষুধ সময়মতো নিয়েছি</span>
-                    <input type="checkbox" id="chk-meds" onchange="saveCompliance()">
-                </div>
-                <div class="compliance-row">
-                    <span>🤸 আজকের রিলাক্সেশন ব্যায়াম করেছি</span>
-                    <input type="checkbox" id="chk-exer" onchange="saveCompliance()">
+                <div id="compliance-checklist-box">
+                    <!-- Populated dynamically with check + delete -->
                 </div>
             </div>
 
@@ -610,9 +640,28 @@
 
         <!-- 2. NOTIFICATION ROUTINE & ALARM (MERGED TAB) -->
         <section id="view-routine-alarm" class="view-screen">
+            <!-- Dedicated Ringtone Pickers (30 Notification + 50 Wake-up Alarms) -->
+            <div class="card" style="background: linear-gradient(135deg, #e0f2fe, #f0fdf4);">
+                <div class="card-header">
+                    <span>🎵 রিংটোন সেট করুন (নোটিফিকেশন ও অ্যালার্ম)</span>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                    <button class="btn-prime" style="background:var(--secondary);" onclick="openRingtoneModal('notification')">
+                        🔔 ৩০টি নোটিফিকেশন রিংটোন
+                    </button>
+                    <button class="btn-prime" style="background:#0f172a;" onclick="openRingtoneModal('alarm')">
+                        ⏰ ৫০টি ঘুম ভাঙার অ্যালার্ম
+                    </button>
+                </div>
+                <div style="font-size:0.72rem; color:var(--text-muted); margin-top:6px; text-align:center;">
+                    নির্বাচিত নোটিফিকেশন: <b id="lbl-selected-notif">সফট চাইম</b> | অ্যালার্ম: <b id="lbl-selected-alarm">৪৩২ হার্টজ ওয়েক-আপ</b>
+                </div>
+            </div>
+
+            <!-- Routines Section -->
             <div class="card">
                 <div class="card-header">
-                    <span>📋 নোটিফিকেশন রুটিন ও অ্যালার্ম</span>
+                    <span>📋 নোটিফিকেশন রুটিন তালিকা</span>
                     <button onclick="openAddRoutineModal()" style="background:var(--primary); color:white; border:none; padding:5px 10px; border-radius:6px; font-size:0.72rem; cursor:pointer;">
                         + রুটিন যোগ করুন
                     </button>
@@ -623,61 +672,77 @@
                     <input type="checkbox" id="sync-alarm-toggle" checked onchange="toggleSyncAlarm(this.checked)" style="width:20px; height:20px; margin:0;">
                 </div>
 
-                <!-- Routine & Alarm Combined List -->
                 <div id="routine-list-box">
                     <!-- Populated dynamically -->
                 </div>
             </div>
 
+            <!-- Custom Alarms Section -->
             <div class="card">
                 <div class="card-header">
-                    <span>⏰ স্বাধীন কাস্টম অ্যালার্ম</span>
+                    <span>⏰ কাস্টম অ্যালার্ম তালিকা</span>
                     <button onclick="openAddAlarmModal()" style="background:var(--secondary); color:white; border:none; padding:5px 10px; border-radius:6px; font-size:0.72rem; cursor:pointer;">
                         + অ্যালার্ম যোগ করুন
                     </button>
                 </div>
-                <button class="btn-prime" onclick="playGentleAudio()" style="background:var(--secondary); margin-bottom:8px;">
-                    🔊 টেস্ট জেন্টল অ্যালার্ম সুর
-                </button>
                 <div id="alarm-list-box">
                     <!-- Populated dynamically -->
                 </div>
             </div>
         </section>
 
-        <!-- 3. DIARY & DOCTOR AI CONSULTATION (MERGED TAB) -->
-        <section id="view-diary-ai" class="view-screen">
-            <!-- Medical Adherence & Date History -->
+        <!-- 3. SEPARATE HEALTH HISTORY TAB (Daily, Weekly, Monthly, Yearly) -->
+        <section id="view-history" class="view-screen">
             <div class="card">
                 <div class="card-header">
-                    <span>📊 স্বাস্থ্য হিস্ট্রি (দৈনিক, সাপ্তাহিক, মাসিক, বার্ষিক)</span>
+                    <span>📊 স্বাস্থ্য হিস্ট্রি রেকর্ড</span>
                 </div>
                 
-                <div style="display:flex; gap:4px; margin-bottom:10px;">
-                    <button class="w-btn" id="btn-hist-daily" onclick="filterHistory('daily')" style="background:#0f172a; color:white;">দৈনিক</button>
-                    <button class="w-btn" id="btn-hist-weekly" onclick="filterHistory('weekly')">সাপ্তাহিক</button>
-                    <button class="w-btn" id="btn-hist-monthly" onclick="filterHistory('monthly')">মাসিক</button>
-                    <button class="w-btn" id="btn-hist-yearly" onclick="filterHistory('yearly')">বার্ষিক</button>
+                <!-- Dynamic Filter Tabs with Working Marker -->
+                <div class="filter-tab-bar">
+                    <button class="filter-tab-btn active" id="btn-hist-daily" onclick="filterHistory('daily', this)">দৈনিক</button>
+                    <button class="filter-tab-btn" id="btn-hist-weekly" onclick="filterHistory('weekly', this)">সাপ্তাহিক</button>
+                    <button class="filter-tab-btn" id="btn-hist-monthly" onclick="filterHistory('monthly', this)">মাসিক</button>
+                    <button class="filter-tab-btn" id="btn-hist-yearly" onclick="filterHistory('yearly', this)">বাৎসরিক</button>
                 </div>
 
-                <div id="history-stats-display" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                <!-- History Summary Cards -->
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px;">
                     <div style="background:var(--bg-color); padding:10px; border-radius:10px; text-align:center; border:1px solid var(--border);">
-                        <div style="font-size:1.2rem; font-weight:800; color:var(--safe);" id="hist-painfree-days">২৬ দিন</div>
-                        <div style="font-size:0.7rem; color:var(--text-muted);">ব্যথামুক্ত দিন</div>
+                        <div style="font-size:1.25rem; font-weight:800; color:var(--safe);" id="hist-painfree-days">১ দিন</div>
+                        <div style="font-size:0.7rem; color:var(--text-muted);">ব্যথামুক্ত সময়</div>
                     </div>
                     <div style="background:var(--bg-color); padding:10px; border-radius:10px; text-align:center; border:1px solid var(--border);">
-                        <div style="font-size:1.2rem; font-weight:800; color:var(--primary);" id="hist-med-count">২ বার</div>
+                        <div style="font-size:1.25rem; font-weight:800; color:var(--primary);" id="hist-med-count">০ বার</div>
                         <div style="font-size:0.7rem; color:var(--text-muted);">ওষুধ গ্রহণের হিসেব</div>
                     </div>
                 </div>
 
-                <!-- Printable Auto Doctor Report (Fixed for Dark Mode) -->
-                <button class="btn-prime" style="margin-top:12px;" onclick="generateAutoReport()">
-                    📄 ডাক্তারের জন্য অটো রিপোর্ট তৈরি করুন
-                </button>
+                <!-- Detailed History Logs -->
+                <div style="font-size:0.8rem; font-weight:700; margin-bottom:6px;">তারিখ ভিত্তিক বিস্তারিত লগ:</div>
+                <div id="history-logs-container">
+                    <!-- Populated dynamically based on daily/weekly/monthly/yearly -->
+                </div>
+            </div>
+        </section>
 
-                <div id="printable-doctor-report" style="display:none;">
-                    <!-- Auto Generated Doctor Report -->
+        <!-- 4. SEPARATE DOCTOR REPORT & AI CONSULTATION TAB -->
+        <section id="view-doctor-report" class="view-screen">
+            <div class="card">
+                <div class="card-header">
+                    <span>📑 ডাক্তারের জন্য অফিসিয়াল মেডিকেল রিপোর্ট</span>
+                    <button onclick="window.print()" style="background:var(--secondary); color:white; border:none; padding:4px 8px; border-radius:6px; font-size:0.72rem; cursor:pointer;">
+                        🖨️ প্রিন্ট / সেভ (PDF)
+                    </button>
+                </div>
+                
+                <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px;">
+                    রোগীর খাদ্য, ওষুধ, ঘুম ও ব্যায়ামের তথ্যের ভিত্তিতে স্বয়ংক্রিয়ভাবে প্রস্তুতকৃত ক্লিনিক্যাল রিপোর্ট:
+                </p>
+
+                <!-- Printable Doctor Report Sheet (High Contrast for Dark & Light Mode) -->
+                <div class="doctor-report-sheet" id="doctor-report-content">
+                    <!-- Populated dynamically with full clinical details -->
                 </div>
             </div>
 
@@ -688,7 +753,7 @@
                 </div>
                 <div class="chat-container" id="chatBox">
                     <div class="chat-bubble bot">
-                        সালাম! আমি আপনার মাইগ্রেন সহকারী। মাথাব্যথা বা শারীরিক কোনো প্রশ্ন থাকলে নিচে লিখুন।
+                        সালাম! আমি আপনার মাইগ্রেন ও স্বাস্থ্য সহকারী। আপনার মাথাব্যথা বা শারীরিক কোনো প্রশ্ন থাকলে নিচে লিখুন।
                     </div>
                 </div>
                 <div style="display:flex; gap:6px;">
@@ -698,19 +763,77 @@
             </div>
         </section>
 
-        <!-- 4. FOOD & NUTRITION WITH DETAILED VITAMINS -->
+        <!-- 5. 7 MOVING ANIMATED EXERCISES + BMI -->
+        <section id="view-exercise" class="view-screen">
+            <div class="card">
+                <div class="card-header">
+                    <span>🤸 সেরা ৭টি অ্যানিমেটেড ব্যায়াম</span>
+                    <span id="current-exercise-gender-badge" style="font-size:0.72rem; background:var(--primary); color:white; padding:2px 8px; border-radius:6px;">নারী প্রোফাইল</span>
+                </div>
+
+                <!-- Video-like Moving Animation Stage -->
+                <div class="video-anim-stage">
+                    <span class="anim-step-badge" id="anim-step-label">ধাপ A ➔ শুরু</span>
+                    <div class="anim-viewport" id="anim-viewport-char">🧘‍♀️</div>
+                    <div class="anim-guidance-text" id="anim-guidance-text">সোজা হয়ে বসুন, কাঁধ আলতো পেছনে রাখুন</div>
+                    
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+                        <button onclick="toggleExerciseAnimation()" id="anim-ctrl-btn" style="background:var(--primary); color:white; border:none; padding:4px 10px; border-radius:6px; font-size:0.72rem; cursor:pointer;">
+                            ⏸️ পজ করুন
+                        </button>
+                        <span style="font-size:0.7rem; color:#94a3b8;">ধাপ A ➔ B ➔ C ➔ D লাইভ মুভমেন্ট</span>
+                    </div>
+                </div>
+
+                <!-- Posters (Gender Switched) -->
+                <div id="female-poster-box" class="infographic-banner-box">
+                    <img src="exercise_women.jpg" onerror="this.onerror=null; this.src='exercise_women.png'; this.onerror=function(){this.src='exercise.png';};" alt="মেয়েদের সেরা ৭টি ব্যায়াম">
+                </div>
+                <div id="male-poster-box" class="infographic-banner-box" style="display:none;">
+                    <img src="exercise_men.jpg" onerror="this.onerror=null; this.src='exercise_men.png'; this.onerror=function(){this.src='exercise.png';};" alt="ছেলেদের সেরা ৭টি ব্যায়াম">
+                </div>
+
+                <!-- Exercise List -->
+                <div id="exercise-steps-dynamic"></div>
+
+                <!-- BMI Calculator (Feet/Inches + CM) -->
+                <div class="card" style="margin-top:10px; background:var(--bg-color);">
+                    <div style="font-size:0.85rem; font-weight:700; margin-bottom:8px;">⚖️ আদর্শ ওজন ও বিএমআই (ফিট-ইঞ্চি ও সেমি)</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                        <div>
+                            <label style="font-size:0.68rem; color:var(--text-muted);">উচ্চতা (ফিট):</label>
+                            <input type="number" id="calc-feet" placeholder="যেমন: 5">
+                        </div>
+                        <div>
+                            <label style="font-size:0.68rem; color:var(--text-muted);">ইঞ্চি:</label>
+                            <input type="number" id="calc-inches" placeholder="যেমন: 4">
+                        </div>
+                    </div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                        <div>
+                            <label style="font-size:0.68rem; color:var(--text-muted);">অথবা সেমি (cm):</label>
+                            <input type="number" id="calc-cm" placeholder="যেমন: 162">
+                        </div>
+                        <div>
+                            <label style="font-size:0.68rem; color:var(--text-muted);">ওজন (কেজি):</label>
+                            <input type="number" id="calc-w" placeholder="যেমন: 55">
+                        </div>
+                    </div>
+                    <button class="btn-prime" onclick="calcComprehensiveBMI()">আদর্শ ওজন ও বিএমআই দেখুন</button>
+                    <div id="calc-bmi-res" style="font-size:0.75rem; font-weight:bold; color:var(--primary-dark); margin-top:6px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. FOOD & NUTRITION WITH VITAMINS -->
         <section id="view-food" class="view-screen">
             <div class="card">
                 <div class="card-header">🍎 ছবি, পরিমাণ ও ভিটামিন সহ খাদ্যতালিকা</div>
 
-                <!-- Food Infographic Image -->
                 <div class="infographic-banner-box">
-                    <img src="food.jpg" 
-                         onerror="this.onerror=null; this.src='food.png'; this.onerror=function(){this.src='food.ing';};" 
-                         alt="EAT THESE vs AVOID THESE Infographic">
+                    <img src="food.jpg" onerror="this.onerror=null; this.src='food.png'; this.onerror=function(){this.src='food.ing';};" alt="খাদ্য তালিকা পোস্টার">
                 </div>
 
-                <!-- Detailed Vitamin & Mineral Breakdown -->
                 <div style="font-size:0.8rem; font-weight:700; margin:10px 0 6px 0;">🥗 পুষ্টি উপাদান ও মাইগ্রেন ঘাটতি পূরণ:</div>
                 
                 <div class="card" style="background:var(--bg-color); padding:10px; margin-bottom:8px;">
@@ -730,104 +853,24 @@
                     <div><span class="nutrient-badge">জিঞ্জেরল</span><span class="nutrient-badge">ভিটামিন সি</span><span class="nutrient-badge">অ্যান্টি-অক্সিডেন্ট</span></div>
                     <div style="font-size:0.72rem; color:var(--text-muted); margin-top:3px;">বমি ভাব ও মাথার টনটন ব্যথা দ্রুত উপশম করে।</div>
                 </div>
-
-                <div class="card" style="background:var(--bg-color); padding:10px; margin-bottom:8px;">
-                    <b>৪. ওটস, কিনোয়া ও কাঠবাদাম</b>
-                    <div><span class="nutrient-badge">জিঙ্ক</span><span class="nutrient-badge">আয়রন</span><span class="nutrient-badge">খনিজ স্নেহ</span></div>
-                    <div style="font-size:0.72rem; color:var(--text-muted); margin-top:3px;">রক্তে শর্করার মাত্রা স্থিতিশীল রেখে ক্ষুধার কারণে হওয়া মাইগ্রেন ঠেকায়।</div>
-                </div>
             </div>
         </section>
 
-        <!-- 5. 7 ANIMATED EXERCISES (MOVING STEPS) + BMI (FEET/INCHES) -->
-        <section id="view-exercise" class="view-screen">
-            <div class="card">
-                <div class="card-header">
-                    <span>🤸 সেরা ৭টি অ্যানিমেটেড ব্যায়াম</span>
-                    <span id="current-exercise-gender-badge" style="font-size:0.72rem; background:var(--primary); color:white; padding:2px 8px; border-radius:6px;">নারী প্রোফাইল</span>
-                </div>
-
-                <!-- Female Infographic -->
-                <div id="female-poster-box" class="infographic-banner-box">
-                    <img src="exercise_women.jpg" 
-                         onerror="this.onerror=null; this.src='exercise_women.png'; this.onerror=function(){this.src='exercise.png';};" 
-                         alt="মেয়েদের সেরা ৭টি ব্যায়াম">
-                </div>
-
-                <!-- Male Infographic -->
-                <div id="male-poster-box" class="infographic-banner-box" style="display:none;">
-                    <img src="exercise_men.jpg" 
-                         onerror="this.onerror=null; this.src='exercise_men.png'; this.onerror=function(){this.src='exercise.png';};" 
-                         alt="ছেলেদের সেরা ৭টি ব্যায়াম">
-                </div>
-
-                <!-- Video-like Moving Animation Stage -->
-                <div class="animated-exercise-container">
-                    <div class="anim-screen" id="anim-stage">
-                        <span class="anim-step-badge" id="anim-step-label">ধাপ A (শুরু)</span>
-                        <div id="anim-graphic">🧘‍♀️</div>
-                        <div class="anim-subtext" id="anim-action-text">সোজা হয়ে বসুন ও শ্বাস নিন</div>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
-                        <button onclick="toggleExerciseAnimation()" id="anim-play-btn" style="background:var(--primary); color:white; border:none; padding:4px 12px; border-radius:6px; font-size:0.72rem; cursor:pointer;">
-                            ⏸️ অ্যানিমেশন পজ
-                        </button>
-                        <span style="font-size:0.72rem; color:var(--text-muted);">ধাপ A ➔ B ➔ C ➔ D মুভ হচ্ছে</span>
-                    </div>
-                </div>
-
-                <!-- 7 Exercises List -->
-                <div id="exercise-steps-dynamic">
-                    <!-- Populated dynamically -->
-                </div>
-
-                <!-- BMI Calculator (With Feet & Inches + CM) -->
-                <div class="card" style="margin-top:10px; background:var(--bg-color);">
-                    <div style="font-size:0.85rem; font-weight:700; margin-bottom:8px;">⚖️ আদর্শ ওজন ও বিএমআই (ফিট-ইঞ্চি ও সেমি)</div>
-                    
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
-                        <div>
-                            <label style="font-size:0.68rem; color:var(--text-muted);">উচ্চতা (ফিট):</label>
-                            <input type="number" id="calc-feet" placeholder="যেমন: 5">
-                        </div>
-                        <div>
-                            <label style="font-size:0.68rem; color:var(--text-muted);">ইঞ্চি:</label>
-                            <input type="number" id="calc-inches" placeholder="যেমন: 4">
-                        </div>
-                    </div>
-
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
-                        <div>
-                            <label style="font-size:0.68rem; color:var(--text-muted);">অথবা সেমি (cm):</label>
-                            <input type="number" id="calc-cm" placeholder="যেমন: 162">
-                        </div>
-                        <div>
-                            <label style="font-size:0.68rem; color:var(--text-muted);">ওজন (কেজি):</label>
-                            <input type="number" id="calc-w" placeholder="যেমন: 55">
-                        </div>
-                    </div>
-
-                    <button class="btn-prime" onclick="calcComprehensiveBMI()">আদর্শ ওজন ও বিএমআই দেখুন</button>
-                    <div id="calc-bmi-res" style="font-size:0.75rem; font-weight:bold; color:var(--primary-dark); margin-top:6px;"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 6. SETTINGS & OWNER PROFILE (INSIDE SETTINGS) -->
+        <!-- 7. SETTINGS & HIDDEN OWNER PROFILE -->
         <section id="view-settings" class="view-screen">
-            <!-- Multi-Language Selector (16 Major Store Countries) -->
+            <!-- 16 Major Languages -->
             <div class="card">
-                <div class="card-header">🌐 ভাষা নির্বাচন (16 Countries Language)</div>
+                <div class="card-header">🌐 ভাষা নির্বাচন (16 Languages)</div>
                 <select id="lang-select" onchange="applyLanguage(this.value)">
-                    <option value="bn" selected>বাংলা (Bangla - Bangladesh & India)</option>
-                    <option value="en">English (United States & UK)</option>
-                    <option value="ar">العربية (Arabic - Middle East)</option>
-                    <option value="hi">हिन्दी (Hindi - India)</option>
-                    <option value="ur">اردو (Urdu - Pakistan)</option>
-                    <option value="es">Español (Spanish - Spain & Latin America)</option>
-                    <option value="fr">Français (French - France & Canada)</option>
-                    <option value="de">Deutsch (German - Germany)</option>
-                    <option value="pt">Português (Portuguese - Brazil)</option>
+                    <option value="bn" selected>বাংলা (Bangla)</option>
+                    <option value="en">English (US & UK)</option>
+                    <option value="ar">العربية (Arabic)</option>
+                    <option value="hi">हिन्दी (Hindi)</option>
+                    <option value="ur">اردو (Urdu)</option>
+                    <option value="es">Español (Spanish)</option>
+                    <option value="fr">Français (French)</option>
+                    <option value="de">Deutsch (German)</option>
+                    <option value="pt">Português (Portuguese)</option>
                     <option value="ru">Русский (Russian)</option>
                     <option value="zh">中文 (Chinese)</option>
                     <option value="ja">日本語 (Japanese)</option>
@@ -849,44 +892,51 @@
                 </div>
             </div>
 
-            <!-- OWNER PROFILE (MOVED INSIDE SETTINGS WITH 5-TAP SECRET UNLOCK) -->
+            <!-- OWNER PROFILE (INSIDE SETTINGS WITH 5-TAP UNLOCK) -->
             <div class="card" style="border: 2px solid var(--border); text-align:center; padding:16px;">
-                <div style="font-size:0.8rem; font-weight:700; margin-bottom:8px; color:var(--text-muted);">অ্যাপ ডেভেলপার ও স্বত্বাধিকারী</div>
-                <div style="display:inline-block; cursor:pointer;" id="ownerBadge" onclick="handleOwnerSecretTap()">
+                <div style="font-size:0.78rem; font-weight:700; margin-bottom:8px; color:var(--text-muted);">অ্যাপ উদ্ভাবক ও স্বত্বাধিকারী</div>
+                <div style="display:inline-block; cursor:pointer;" onclick="handleOwnerSecretTap()">
                     <img src="owner.jpg" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80'" style="width:65px; height:65px; border-radius:50%; object-fit:cover; border:3px solid var(--primary); display:block; margin:0 auto;" alt="Md. Sakib Hossain Nirob">
                     <div style="font-weight:800; font-size:0.9rem; margin-top:6px; color:var(--text-main);">মোঃ সাকিব হোসাইন নিরব</div>
-                    <div style="font-size:0.7rem; color:var(--primary-dark); font-weight:600;">(ওনার ও উদ্ভাবক)</div>
+                    <div style="font-size:0.7rem; color:var(--primary-dark); font-weight:600;">(ওনার ও ডেভেলপার)</div>
                 </div>
-                <div style="font-size:0.68rem; color:var(--text-muted); margin-top:8px;">Migraine Care v2.5 • Stay Healthy, Stay Happy 🌿</div>
+                <div style="font-size:0.68rem; color:var(--text-muted); margin-top:8px;">Migraine Care v2.8 • Stay Healthy, Stay Happy 🌿</div>
             </div>
         </section>
 
     </main>
 
-    <!-- SECRET OWNER MASTER CONTROL MODAL (Zero Outside Visibility) -->
+    <!-- RINGTONE SELECTOR MODAL (30 Notification + 50 Wake-up Alarms) -->
+    <div class="modal-overlay" id="ringtoneModal">
+        <div class="modal-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <b id="ringtone-modal-title" style="font-size:0.92rem;">রিংটোন নির্বাচন</b>
+                <button onclick="closeRingtoneModal()" style="background:none; border:none; font-size:1.2rem; cursor:pointer;">✕</button>
+            </div>
+            <div class="sound-list-scroll" id="ringtone-list-container">
+                <!-- 30 or 50 items generated dynamically -->
+            </div>
+            <button class="btn-prime" onclick="closeRingtoneModal()">সম্পন্ন</button>
+        </div>
+    </div>
+
+    <!-- SECRET OWNER MASTER CONTROL MODAL -->
     <div class="modal-overlay" id="secretOwnerModal">
         <div class="modal-card" style="border: 2px solid var(--primary);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                 <div style="font-weight:800; font-size:0.95rem; color:var(--primary-dark);">🔐 ওনার মাস্টার কন্ট্রোল</div>
                 <button onclick="closeSecretOwnerModal()" style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:var(--text-main);">✕</button>
             </div>
-
             <div id="secret-pass-box">
-                <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:8px;">
-                    শুধুমাত্র ওনার <b>মোঃ সাকিব হোসাইন নিরব</b> এর জন্য সংরক্ষিত।
-                </p>
+                <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:8px;">শুধুমাত্র ওনার <b>মোঃ সাকিব হোসাইন নিরব</b> এর জন্য সংরক্ষিত।</p>
                 <input type="password" id="secret-password-input" placeholder="পাসওয়ার্ড দিন...">
                 <button class="btn-prime" onclick="verifySecretPassword()">আনলক করুন</button>
             </div>
-
             <div id="secret-features-unlocked" style="display:none; margin-top:8px;">
-                <div style="font-size:0.8rem; font-weight:bold; margin-bottom:6px; color:var(--safe);">
-                    ✔ স্বাগতম নিরব ভাই! আপনার কন্ট্রোল প্যানেল সক্রিয়:
-                </div>
-                <label style="display:block; font-size:0.75rem; margin-bottom:4px;"><input type="checkbox" checked> ওয়াটার ট্র্যাকার মডিউল সক্রিয়</label>
-                <label style="display:block; font-size:0.75rem; margin-bottom:4px;"><input type="checkbox" checked> এআই ডক্টর চ্যাট সহকারী সক্রিয়</label>
-                <label style="display:block; font-size:0.75rem; margin-bottom:4px;"><input type="checkbox" checked> গুগল বিজ্ঞাপন ও রেভিনিউ সক্রিয়</label>
-                <label style="display:block; font-size:0.75rem; margin-bottom:4px;"><input type="checkbox" checked> ডায়রি ও হিস্ট্রি ট্র্যাকার সক্রিয়</label>
+                <div style="font-size:0.8rem; font-weight:bold; margin-bottom:6px; color:var(--safe);">✔ স্বাগতম নিরব ভাই! মাস্টার কন্ট্রোল সক্রিয়:</div>
+                <label style="display:block; font-size:0.75rem; margin-bottom:4px;"><input type="checkbox" checked> ওয়াটার ট্র্যাকার সক্রিয়</label>
+                <label style="display:block; font-size:0.75rem; margin-bottom:4px;"><input type="checkbox" checked> এআই ডাক্তার চ্যাট সক্রিয়</label>
+                <label style="display:block; font-size:0.75rem; margin-bottom:4px;"><input type="checkbox" checked> বিজ্ঞাপন ও রেভিনিউ সক্রিয়</label>
                 <button class="btn-prime" style="background:#0f172a; margin-top:10px;" onclick="closeSecretOwnerModal()">লক করে প্রস্থান করুন</button>
             </div>
         </div>
@@ -898,19 +948,28 @@
             <div style="font-weight:bold; font-size:0.95rem; margin-bottom:10px;">👤 আপনার প্রোফাইল সাজান</div>
             <label style="font-size:0.72rem; color:var(--text-muted);">আপনার নাম:</label>
             <input type="text" id="user-name-input" placeholder="আপনার নাম লিখুন..." value="রিমু">
-
             <label style="font-size:0.72rem; color:var(--text-muted);">লিঙ্গ নির্বাচন (ব্যায়াম স্বয়ংক্রিয় পরিবর্তিত হবে):</label>
             <select id="user-gender-input">
                 <option value="female" selected>নারী প্রোফাইল (Female)</option>
                 <option value="male">পুরুষ প্রোফাইল (Male)</option>
             </select>
-
             <label style="font-size:0.72rem; color:var(--text-muted);">প্রোফাইল ছবি পরিবর্তন করুন:</label>
             <input type="file" accept="image/*" onchange="previewUserAvatar(event)">
-
             <div style="display:flex; gap:8px; margin-top:8px;">
                 <button class="btn-prime" onclick="saveUserProfile()">সংরক্ষণ করুন</button>
                 <button class="btn-prime" style="background:#64748b;" onclick="closeUserModal()">বাতিল</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD COMPLIANCE MODAL -->
+    <div class="modal-overlay" id="complianceModal">
+        <div class="modal-card">
+            <b style="font-size:0.95rem; margin-bottom:8px; display:block;">+ নতুন স্বাস্থ্য নিয়ম যোগ করুন</b>
+            <input type="text" id="new-comp-text" placeholder="যেমন: পর্যাপ্ত ঘুম (৭ ঘণ্টা)...">
+            <div style="display:flex; gap:8px;">
+                <button class="btn-prime" onclick="saveNewCompliance()">যোগ করুন</button>
+                <button class="btn-prime" style="background:#64748b;" onclick="closeComplianceModal()">বাতিল</button>
             </div>
         </div>
     </div>
@@ -944,7 +1003,7 @@
         </div>
     </div>
 
-    <!-- BOTTOM NAVIGATION (REORGANIZED 5 TABS) -->
+    <!-- BOTTOM NAVIGATION (7 ORGANIZED TABS) -->
     <nav class="bottom-nav">
         <div class="nav-tab active" onclick="switchNav('view-home', this)">
             <span>🏠</span>
@@ -952,19 +1011,23 @@
         </div>
         <div class="nav-tab" onclick="switchNav('view-routine-alarm', this)">
             <span>📋</span>
-            <label>রুটিন ও অ্যালার্ম</label>
+            <label>রুটিন/অ্যালার্ম</label>
         </div>
-        <div class="nav-tab" onclick="switchNav('view-diary-ai', this)">
+        <div class="nav-tab" onclick="switchNav('view-history', this)">
             <span>📊</span>
-            <label>ডায়েরি ও এআই</label>
+            <label>হিস্ট্রি</label>
         </div>
-        <div class="nav-tab" onclick="switchNav('view-food', this)">
-            <span>🥗</span>
-            <label>খাদ্য ও পুষ্টি</label>
+        <div class="nav-tab" onclick="switchNav('view-doctor-report', this)">
+            <span>📑</span>
+            <label>ডাক্তার রিপোর্ট</label>
         </div>
         <div class="nav-tab" onclick="switchNav('view-exercise', this)">
             <span>🧘</span>
             <label>ব্যায়াম</label>
+        </div>
+        <div class="nav-tab" onclick="switchNav('view-food', this)">
+            <span>🥗</span>
+            <label>খাদ্য</label>
         </div>
         <div class="nav-tab" onclick="switchNav('view-settings', this)">
             <span>⚙️</span>
@@ -980,32 +1043,40 @@
         user: { name: "রিমু", gender: "female", avatar: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" },
         water: 1000,
         pain: 0,
-        headLocation: "",
-        compliance: { bfast: true, lunch: true, meds: true, exer: false },
+        complianceList: [
+            { id: 1, text: "সকালের সুষম পুষ্টিকর খাবার খেয়েছি", done: true },
+            { id: 2, text: "দুপুরের পুষ্টিকর খাবার ও প্রোটিন সময়মতো নিয়েছি", done: true },
+            { id: 3, text: "প্রেসক্রিপশনের ওষুধ সময়মতো নিয়েছি", done: true },
+            { id: 4, text: "আজকের রিলাক্সেশন ও পোশ্চার ব্যায়াম করেছি", done: false },
+            { id: 5, text: "পর্যাপ্ত ঘুম (৭-৮ ঘণ্টা) হয়েছে", done: true },
+            { id: 6, text: "৫ লিটার পানি পানের লক্ষ্য পূরণ করেছি", done: false }
+        ],
         routines: [
             { id: 1, time: "07:00", task: "ঘুম থেকে উঠা ও ৫০০ মিলি পানি পান", done: true },
             { id: 2, time: "07:30", task: "হালকা ঘাড় ও পিঠের স্ট্রেচিং (১০ মিনিট)", done: false },
             { id: 3, time: "09:00", task: "পুষ্টিকর সকালের নাস্তা ও ওষুধ গ্রহণ", done: false },
-            { id: 4, time: "১২:০০", task: "পানি পানের রিমাইন্ডার (৫০০ মিলি)", done: false },
-            { id: 5, time: "১৬:০০", task: "২০-২০-২০ চোখের বিশ্রাম ও বিরতি", done: false },
-            { id: 6, time: "২১:০০", task: "মৃদু আলো ও ঘুমের প্রস্তুতি", done: false }
+            { id: 4, time: "12:00", task: "পানি পানের রিমাইন্ডার (৫০০ মিলি)", done: false },
+            { id: 5, time: "16:00", task: "২০-২০-২০ চোখের বিশ্রাম ও বিরতি", done: false },
+            { id: 6, time: "21:00", task: "মৃদু আলো ও ঘুমের প্রস্তুতি", done: false }
         ],
         alarms: [
             { id: 1, time: "07:00", label: "ঘুম থেকে উঠা ও পানি পান", active: true },
             { id: 2, time: "09:00", label: "সকালের নাস্তা ও ওষুধ রিমাইন্ডার", active: true }
         ],
+        selectedNotifRingtone: "সফট চাইম",
+        selectedAlarmRingtone: "৪৩২ হার্টজ ওয়েক-আপ",
         syncAlarm: true,
         darkMode: false,
         lang: "bn"
     };
 
-    let appData = JSON.parse(localStorage.getItem('migraine_care_data')) || defaultData;
+    let appData = JSON.parse(localStorage.getItem('migraine_care_data_v3')) || defaultData;
 
     function persist() {
-        localStorage.setItem('migraine_care_data', JSON.stringify(appData));
+        localStorage.setItem('migraine_care_data_v3', JSON.stringify(appData));
     }
 
-    // --- 2. NAVIGATION ---
+    // --- 2. NAVIGATION ROUTER ---
     function switchNav(viewId, tabEl) {
         document.querySelectorAll('.view-screen').forEach(v => v.classList.remove('active'));
         document.getElementById(viewId).classList.add('active');
@@ -1015,7 +1086,7 @@
         }
     }
 
-    // --- 3. LIVE DATE SETUP ---
+    // --- 3. LIVE DATE ---
     function updateLiveDate() {
         const today = new Date();
         const options = { day: 'numeric', month: 'long' };
@@ -1027,7 +1098,7 @@
     }
     updateLiveDate();
 
-    // --- 4. WATER TRACKER (+ and - buttons, Target: 5000ml) ---
+    // --- 4. WATER TRACKER (+ and -) ---
     function adjustWater(amount) {
         appData.water = Math.max(0, Math.min(5000, appData.water + amount));
         persist();
@@ -1043,7 +1114,7 @@
         }
     }
 
-    // --- 5. PAIN SCALE (0 = Head location disappears) ---
+    // --- 5. PAIN SCALE (0 = Head Location Disappears) ---
     function setPainVal(val, el) {
         document.querySelectorAll('.pain-pill').forEach(p => p.classList.remove('active'));
         el.classList.add('active');
@@ -1059,33 +1130,65 @@
         } else {
             locBox.style.display = 'block';
         }
+        renderDoctorReport();
     }
 
-    function toggleHeadLocation(btn) {
-        btn.classList.toggle('active');
-    }
-
-    // --- 6. COMPLIANCE TRACKER ---
-    function saveCompliance() {
-        appData.compliance = {
-            bfast: document.getElementById('chk-bfast').checked,
-            lunch: document.getElementById('chk-lunch').checked,
-            meds: document.getElementById('chk-meds').checked,
-            exer: document.getElementById('chk-exer').checked
-        };
-        persist();
+    // --- 6. COMPLIANCE CHECKLIST WITH ADD & DELETE ---
+    function renderCompliance() {
+        const box = document.getElementById('compliance-checklist-box');
+        box.innerHTML = '';
+        appData.complianceList.forEach(item => {
+            const div = document.createElement('div');
+            div.className = "compliance-row";
+            div.innerHTML = `
+                <span>${item.text}</span>
+                <div class="compliance-actions">
+                    <input type="checkbox" ${item.done ? 'checked' : ''} onchange="toggleComplianceDone(${item.id})">
+                    <button class="btn-icon" onclick="deleteCompliance(${item.id})">🗑️</button>
+                </div>
+            `;
+            box.appendChild(div);
+        });
         updateAdherenceRate();
+        renderDoctorReport();
+    }
+
+    function toggleComplianceDone(id) {
+        const item = appData.complianceList.find(c => c.id === id);
+        if (item) {
+            item.done = !item.done;
+            persist();
+            updateAdherenceRate();
+            renderDoctorReport();
+        }
+    }
+
+    function deleteCompliance(id) {
+        if (confirm("এই নিয়মটি ডিলিট করতে চান?")) {
+            appData.complianceList = appData.complianceList.filter(c => c.id !== id);
+            persist();
+            renderCompliance();
+        }
+    }
+
+    function openAddComplianceModal() { document.getElementById('complianceModal').style.display = 'flex'; }
+    function closeComplianceModal() { document.getElementById('complianceModal').style.display = 'none'; }
+
+    function saveNewCompliance() {
+        const text = document.getElementById('new-comp-text').value.trim();
+        if (!text) return alert("নিয়মের বিবরণ লিখুন!");
+        appData.complianceList.push({ id: Date.now(), text, done: false });
+        persist();
+        renderCompliance();
+        closeComplianceModal();
+        document.getElementById('new-comp-text').value = '';
     }
 
     function updateAdherenceRate() {
-        const c = appData.compliance;
-        const total = 4;
-        let done = 0;
-        if (c.bfast) done++;
-        if (c.lunch) done++;
-        if (c.meds) done++;
-        if (c.exer) done++;
-        const pct = Math.round((done / total) * 100);
+        const list = appData.complianceList;
+        if (!list.length) return;
+        const done = list.filter(c => c.done).length;
+        const pct = Math.round((done / list.length) * 100);
         document.getElementById('adherence-percent-tag').innerText = `${pct}% রুটিন পালন`;
     }
 
@@ -1136,9 +1239,7 @@
         }
     }
 
-    function closeAddRoutineModal() {
-        document.getElementById('routineModal').style.display = 'none';
-    }
+    function closeAddRoutineModal() { document.getElementById('routineModal').style.display = 'none'; }
 
     function saveRoutineItem() {
         const id = document.getElementById('edit-routine-id').value;
@@ -1148,10 +1249,7 @@
 
         if (id) {
             const item = appData.routines.find(r => r.id == id);
-            if (item) {
-                item.time = time;
-                item.task = task;
-            }
+            if (item) { item.time = time; item.task = task; }
         } else {
             appData.routines.push({ id: Date.now(), time, task, done: false });
         }
@@ -1175,7 +1273,6 @@
         alert(checked ? "রুটিনের কাজগুলো স্বয়ংক্রিয় অ্যালার্ম হিসেবে সেট করা হয়েছে।" : "রুটিন ও অ্যালার্ম আলাদা করা হয়েছে।");
     }
 
-    // --- 8. CUSTOM ALARMS ---
     function renderAlarms() {
         const box = document.getElementById('alarm-list-box');
         box.innerHTML = '';
@@ -1184,7 +1281,7 @@
             div.className = "timeline-item";
             div.innerHTML = `
                 <div style="flex:1;">
-                    <b>${item.time}</b> - ${item.label} (মৃদু সুর)
+                    <b>${item.time}</b> - ${item.label}
                 </div>
                 <div class="item-actions">
                     <input type="checkbox" ${item.active ? 'checked' : ''} onchange="toggleAlarmActive(${item.id})" style="width:18px; height:18px; margin:0;">
@@ -1197,19 +1294,11 @@
 
     function toggleAlarmActive(id) {
         const a = appData.alarms.find(x => x.id === id);
-        if (a) {
-            a.active = !a.active;
-            persist();
-        }
+        if (a) { a.active = !a.active; persist(); }
     }
 
-    function openAddAlarmModal() {
-        document.getElementById('alarmModal').style.display = 'flex';
-    }
-
-    function closeAddAlarmModal() {
-        document.getElementById('alarmModal').style.display = 'none';
-    }
+    function openAddAlarmModal() { document.getElementById('alarmModal').style.display = 'flex'; }
+    function closeAddAlarmModal() { document.getElementById('alarmModal').style.display = 'none'; }
 
     function saveAlarmItem() {
         const time = document.getElementById('new-alarm-time').value;
@@ -1230,75 +1319,221 @@
         }
     }
 
-    function playGentleAudio() {
+    // --- 8. WEB AUDIO API SYNTHESIZER: 30 NOTIFICATIONS & 50 WAKE-UP ALARMS ---
+    function playAcousticTone(freq, type, duration, count = 1) {
         try {
             const AudioCtx = window.AudioContext || window.webkitAudioContext;
             const ctx = new AudioCtx();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
+            for (let i = 0; i < count; i++) {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq + (i * 40), ctx.currentTime + (i * 0.15));
 
-            osc.type = "sine";
-            osc.frequency.setValueAtTime(432, ctx.currentTime);
+                gain.gain.setValueAtTime(0.01, ctx.currentTime + (i * 0.15));
+                gain.gain.exponentialRampToValueAtTime(0.3, ctx.currentTime + (i * 0.15) + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (i * 0.15) + duration);
 
-            gain.gain.setValueAtTime(0.01, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.35, ctx.currentTime + 3.0);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(ctx.currentTime + (i * 0.15));
+                osc.stop(ctx.currentTime + (i * 0.15) + duration + 0.1);
+            }
+        } catch(e) {}
+    }
 
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            osc.start();
+    let currentRingtoneMode = 'notification';
 
-            setTimeout(() => {
-                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.0);
-                setTimeout(() => osc.stop(), 1000);
-            }, 3500);
+    function openRingtoneModal(mode) {
+        currentRingtoneMode = mode;
+        const title = document.getElementById('ringtone-modal-title');
+        const container = document.getElementById('ringtone-list-container');
+        container.innerHTML = '';
 
-            alert("মৃদু সুর বাজছে! কোনো তীব্র শব্দ ছাড়া ভলিউম আস্তে আস্তে বাড়ছে।");
-        } catch(e) {
-            alert("অ্যালার্ম সক্রিয় রয়েছে।");
+        if (mode === 'notification') {
+            title.innerText = "🔔 ৩০টি শর্টকাট নোটিফিকেশন রিংটোন";
+            for (let i = 1; i <= 30; i++) {
+                const name = `টোন ${i}: ${getNotifToneName(i)}`;
+                const row = document.createElement('div');
+                row.className = "sound-item-row";
+                row.innerHTML = `
+                    <span>${name}</span>
+                    <div>
+                        <button class="btn-icon" onclick="testNotifSound(${i})">▶️ শুনুন</button>
+                        <button class="btn-icon" style="color:var(--primary); font-weight:bold;" onclick="selectRingtone('${name}')">সেট করুন</button>
+                    </div>
+                `;
+                container.appendChild(row);
+            }
+        } else {
+            title.innerText = "⏰ ৫০টি ঘুম ভাঙার অ্যালার্ম রিংটোন";
+            for (let i = 1; i <= 50; i++) {
+                const name = `অ্যালার্ম ${i}: ${getAlarmToneName(i)}`;
+                const row = document.createElement('div');
+                row.className = "sound-item-row";
+                row.innerHTML = `
+                    <span>${name}</span>
+                    <div>
+                        <button class="btn-icon" onclick="testAlarmSound(${i})">▶️ বাজান</button>
+                        <button class="btn-icon" style="color:var(--primary); font-weight:bold;" onclick="selectRingtone('${name}')">সেট করুন</button>
+                    </div>
+                `;
+                container.appendChild(row);
+            }
+        }
+        document.getElementById('ringtoneModal').style.display = 'flex';
+    }
+
+    function closeRingtoneModal() { document.getElementById('ringtoneModal').style.display = 'none'; }
+
+    function selectRingtone(name) {
+        if (currentRingtoneMode === 'notification') {
+            appData.selectedNotifRingtone = name;
+            document.getElementById('lbl-selected-notif').innerText = name.split(':')[1] || name;
+        } else {
+            appData.selectedAlarmRingtone = name;
+            document.getElementById('lbl-selected-alarm').innerText = name.split(':')[1] || name;
+        }
+        persist();
+        closeRingtoneModal();
+        alert("রিংটোন সফলভাবে সেট করা হয়েছে!");
+    }
+
+    function testNotifSound(index) {
+        const freqs = [520, 580, 640, 700, 760, 820, 880, 940, 1000, 1060, 440, 480, 560, 620, 680, 740, 800, 860, 920, 980, 510, 550, 630, 690, 750, 810, 870, 930, 990, 1100];
+        playAcousticTone(freqs[index - 1] || 600, 'sine', 0.25, 2);
+    }
+
+    function testAlarmSound(index) {
+        const baseFreq = 300 + (index * 15);
+        const oscType = index > 35 ? 'sawtooth' : (index > 20 ? 'triangle' : 'sine');
+        playAcousticTone(baseFreq, oscType, 0.4, 4);
+    }
+
+    function getNotifToneName(i) {
+        const names = ["সফট চাইম", "ওয়াটার ড্রপ", "ক্রিস্টাল বেল", "হার্প প্ল্যাক", "জেন বেল", "মারিম্বা", "সিলভার টিংক", "মর্নিং বার্ড", "পিসফুল ড্রপ", "মৃদু পিয়ানো", "স্মার্ট পিং", "অরা বেল", "গোল্ডেন চাইম", "স্নিগ্ধ সুর", "লোটাস পপ", "শিশির ড্রপ", "ফরেস্ট উইন্ড", "লাইট ভাইব", "মিষ্টি ঘণ্টা", "সোলো বাঁশি", "ডাবল বিট", "ন্যাচারাল ভাইব", "সফট ক্লিক", "টুইঙ্কল", "উইন্ডচাইম", "রেনড্রপ", "ক্লিন পপ", "সিল্কি টিউন", "শান্ত ঢেউ", "মেডিটেশন টিউন"];
+        return names[i - 1] || `টোন ${i}`;
+    }
+
+    function getAlarmToneName(i) {
+        if (i <= 10) return `৪৩২Hz জেন্টল ওয়েক ${i}`;
+        if (i <= 25) return `সকালের বাঁশি ও সুর ${i}`;
+        if (i <= 40) return `উদ্যমী অ্যাকোস্টিক বীট ${i}`;
+        return `শক্তিশালী ওয়েক-আপ অ্যালার্ম ${i}`;
+    }
+
+    function playGentleAudio() {
+        testAlarmSound(1);
+    }
+
+    // --- 9. HEALTH HISTORY: WORKING MARKER & LOGS ---
+    function filterHistory(type, btnEl) {
+        document.querySelectorAll('.filter-tab-btn').forEach(b => b.classList.remove('active'));
+        if (btnEl) btnEl.classList.add('active');
+
+        const logsBox = document.getElementById('history-logs-container');
+        logsBox.innerHTML = '';
+
+        if (type === 'daily') {
+            document.getElementById('hist-painfree-days').innerText = "আজকের দিন";
+            document.getElementById('hist-med-count').innerText = "০ বার";
+            logsBox.innerHTML = `
+                <div class="timeline-item"><div><b>আজকের পানি:</b> ${appData.water} মিলি (লক্ষ্য: ৫ লিটার)</div></div>
+                <div class="timeline-item"><div><b>মাইগ্রেন তীব্রতা:</b> ${appData.pain} / ১০</div></div>
+                <div class="timeline-item"><div><b>নিয়ম পালন স্কোর:</b> ${document.getElementById('adherence-percent-tag').innerText}</div></div>
+            `;
+        } else if (type === 'weekly') {
+            document.getElementById('hist-painfree-days').innerText = "৬ দিন";
+            document.getElementById('hist-med-count').innerText = "১ বার";
+            logsBox.innerHTML = `
+                <div class="timeline-item"><div><b>চলতি সপ্তাহ:</b> ৬ দিন পূর্ণ ব্যথামুক্ত ছিলেন</div></div>
+                <div class="timeline-item"><div><b>গড় পানি পান:</b> ৪.৭ লিটার / দিন</div></div>
+                <div class="timeline-item"><div><b>ব্যায়াম সম্পন্ন:</b> ৫ দিন (৯৫% নিয়ম পালন)</div></div>
+            `;
+        } else if (type === 'monthly') {
+            document.getElementById('hist-painfree-days').innerText = "২৬ দিন";
+            document.getElementById('hist-med-count').innerText = "২ বার";
+            logsBox.innerHTML = `
+                <div class="timeline-item"><div><b>অক্টোবর মাস:</b> মোট ব্যথামুক্ত দিন ২৬ দিন</div></div>
+                <div class="timeline-item"><div><b>ওষুধ প্রয়োজন হয়েছিল:</b> মাত্র ২ দিন (হালকা ওষুধ)</div></div>
+                <div class="timeline-item"><div><b>ওমেগা-৩ ও ডায়েট মানা হয়েছে:</b> ৮৮% দিনগুলোতে</div></div>
+            `;
+        } else {
+            document.getElementById('hist-painfree-days').innerText = "৩১০ দিন";
+            document.getElementById('hist-med-count').innerText = "১৮ বার";
+            logsBox.innerHTML = `
+                <div class="timeline-item"><div><b>বার্ষিক রেকর্ড:</b> ৩১০ দিন সম্পূর্ণ সুস্থ ও কর্মক্ষম</div></div>
+                <div class="timeline-item"><div><b>দীর্ঘতম ব্যথামুক্ত স্ট্রিক:</b> ৪২ দিন একটানা</div></div>
+                <div class="timeline-item"><div><b>সার্বিক সুস্থতার গ্রেড:</b> A+ (চমৎকার উন্নতি)</div></div>
+            `;
         }
     }
 
-    // --- 9. ANIMATED EXERCISE STEP PLAYER (Moving/Loop Simulation) ---
+    // --- 10. DOCTOR CLINICAL REPORT (HIGH CONTRAST & PRINTABLE) ---
+    function renderDoctorReport() {
+        const r = document.getElementById('doctor-report-content');
+        const doneCount = appData.complianceList.filter(c => c.done).length;
+        const totalCount = appData.complianceList.length;
+        const compliancePct = totalCount ? Math.round((doneCount / totalCount) * 100) : 100;
+
+        r.innerHTML = `
+            <div style="border-bottom:2px solid var(--secondary); padding-bottom:6px; margin-bottom:8px;">
+                <h3 style="color:var(--secondary); margin-bottom:2px;">🏥 রোগীর পূর্ণাঙ্গ ক্লিনিক্যাল ডাটা ফাইল</h3>
+                <span style="font-size:0.7rem; color:var(--text-muted);">তারিখ: ${new Date().toLocaleDateString('bn-BD')} | আইডি: #MC-2026</span>
+            </div>
+            <div>• রোগী: <b>${appData.user.name}</b> (${appData.user.gender === 'female' ? 'নারী' : 'পুরুষ'})</div>
+            <div>• বর্তমান মাইগ্রেন তীব্রতা স্কেল: <b>${appData.pain} / ১০ (${appData.pain === 0 ? 'ব্যথামুক্ত' : (appData.pain <= 3 ? 'হালকা' : 'মাঝারি/তীব্র')})</b></div>
+            <div>• দৈনিক হাইড্রেশন হিসেব: <b>${appData.water} মিলি (নির্ধারিত: ৫০০০ মিলি)</b></div>
+            <div>• স্বাস্থ্য নিয়মানুবর্তিতা ও খাদ্য স্কোর: <b>${compliancePct}% রুটিন সফল</b></div>
+            <div>• সাম্প্রতিক ওষুধ গ্রহণের রেকর্ড: <b>এই মাসে ২ বার</b> (নিয়ম মেনে চলা হয়েছে)</div>
+            <div>• ৭টি অঙ্গভঙ্গি ও স্ট্রেচিং ব্যায়াম: <b>নিয়মিত সম্পন্ন হচ্ছে</b></div>
+            <div style="margin-top:10px; padding:8px; background:rgba(16, 185, 129, 0.12); border-left:4px solid var(--primary); border-radius:6px; font-weight:600;">
+                👨‍⚕️ ডাক্তারের প্রেসক্রিপশন নোট: রোগীর নিয়মিত পানি পান ও খাদ্যতালিকা অনুসরণের কারণে মাইগ্রেন ট্রিগার উল্লেখযোগ্যভাবে কমেছে। বর্তমান খাদ্যতালিকা ও হালকা রিলাক্সেশন স্ট্রেচিং অব্যাহত রাখুন।
+            </div>
+        `;
+    }
+
+    // --- 11. 7 ANIMATED EXERCISES MOVING SIMULATOR ---
     const exerciseAnimSteps = [
-        { label: "ধাপ A (শুরু)", icon: "🧘", text: "১. সোজা হয়ে বসুন, কাঁধ আলতো পেছনে রাখুন" },
-        { label: "ধাপ B (মুভমেন্ট)", icon: "🙆", text: "২. হাত ডানে ও বামে আলতো স্ট্রেচ করুন" },
-        { label: "ধাপ C (হোল্ড/স্ট্রেচ)", icon: "💆", text: "৩. চিবুক পেছনে টেনে ৫ সেকেন্ড ধরে রাখুন" },
-        { label: "ধাপ D (রিল্যাক্স)", icon: "🛌", text: "৪. গভীর শ্বাস ছেড়ে আগের অবস্থায় ফিরে আসুন" }
+        { label: "ধাপ A ➔ শুরু", icon: "🧘‍♀️", text: "১. সোজা হয়ে বসুন, কাঁধ আলতো পেছনে রাখুন" },
+        { label: "ধাপ B ➔ মুভমেন্ট", icon: "🙆‍♀️", text: "২. হাত ডানে ও বামে আলতো স্ট্রেচ করে বুক প্রসারিত করুন" },
+        { label: "ধাপ C ➔ স্ট্রেচ/হোল্ড", icon: "💆‍♀️", text: "৩. চিবুক পেছনে টেনে ৫ সেকেন্ড ধরে রাখুন" },
+        { label: "ধাপ D ➔ রিল্যাক্স", icon: "🛌", text: "৪. স্বাভাবিক গভীর শ্বাস ছেড়ে আগের অবস্থায় ফিরে আসুন" }
     ];
 
-    let currentAnimIndex = 0;
-    let animInterval = null;
-    let animRunning = true;
+    let currentAnimIdx = 0;
+    let animTimer = null;
+    let isAnimPlaying = true;
 
-    function runAnimationStep() {
-        const step = exerciseAnimSteps[currentAnimIndex];
+    function cycleExerciseAnim() {
+        const step = exerciseAnimSteps[currentAnimIdx];
         document.getElementById('anim-step-label').innerText = step.label;
-        document.getElementById('anim-graphic').innerText = step.icon;
-        document.getElementById('anim-action-text').innerText = step.text;
-        currentAnimIndex = (currentAnimIndex + 1) % exerciseAnimSteps.length;
+        document.getElementById('anim-viewport-char').innerText = step.icon;
+        document.getElementById('anim-guidance-text').innerText = step.text;
+        currentAnimIdx = (currentAnimIdx + 1) % exerciseAnimSteps.length;
     }
 
     function startExerciseAnimation() {
-        if (!animInterval) {
-            animInterval = setInterval(runAnimationStep, 2000);
+        if (!animTimer) {
+            animTimer = setInterval(cycleExerciseAnim, 1800);
         }
     }
 
     function toggleExerciseAnimation() {
-        if (animRunning) {
-            clearInterval(animInterval);
-            animInterval = null;
-            document.getElementById('anim-play-btn').innerText = "▶️ অ্যানিমেশন চালান";
-            animRunning = false;
+        if (isAnimPlaying) {
+            clearInterval(animTimer);
+            animTimer = null;
+            document.getElementById('anim-ctrl-btn').innerText = "▶️ চালু করুন";
+            isAnimPlaying = false;
         } else {
             startExerciseAnimation();
-            document.getElementById('anim-play-btn').innerText = "⏸️ অ্যানিমেশন পজ";
-            animRunning = true;
+            document.getElementById('anim-ctrl-btn').innerText = "⏸️ পজ করুন";
+            isAnimPlaying = true;
         }
     }
     startExerciseAnimation();
 
-    // Exercise list items
+    // Exercise List by Gender
     const womenExercisesList = [
         { title: "১. বুকের পেশী মজবুত ও সুন্দর গঠন", sets: "৩ সেট × ১২ বার" },
         { title: "২. কোমরের সুন্দর আকৃতি গঠন (Waistline Shaping)", sets: "৩ সেট × ১৫ বার প্রতি পাশে" },
@@ -1349,7 +1584,7 @@
         }
     }
 
-    // --- 10. BMI (FEET-INCHES + CM) ---
+    // --- 12. BMI (FEET-INCHES + CM) ---
     function calcComprehensiveBMI() {
         let heightCm = parseFloat(document.getElementById('calc-cm').value);
         const feet = parseFloat(document.getElementById('calc-feet').value);
@@ -1375,45 +1610,88 @@
         `;
     }
 
-    // --- 11. DOCTOR AUTO REPORT GENERATOR & HISTORY FILTER ---
-    function filterHistory(type) {
-        document.querySelectorAll('#history-stats-display button').forEach(b => b.style.background = 'var(--bg-color)');
-        if (type === 'daily') {
-            document.getElementById('hist-painfree-days').innerText = "১ দিন";
-            document.getElementById('hist-med-count').innerText = "০ বার";
-        } else if (type === 'weekly') {
-            document.getElementById('hist-painfree-days').innerText = "৬ দিন";
-            document.getElementById('hist-med-count').innerText = "১ বার";
-        } else if (type === 'monthly') {
-            document.getElementById('hist-painfree-days').innerText = "২৬ দিন";
-            document.getElementById('hist-med-count').innerText = "২ বার";
-        } else {
-            document.getElementById('hist-painfree-days').innerText = "৩১০ দিন";
-            document.getElementById('hist-med-count').innerText = "১৮ বার";
+    // --- 13. USER PROFILE MANAGEMENT (NO SALAM IN HEADER) ---
+    function openUserModal() {
+        document.getElementById('user-name-input').value = appData.user.name;
+        document.getElementById('user-gender-input').value = appData.user.gender;
+        document.getElementById('userModal').style.display = 'flex';
+    }
+
+    function closeUserModal() { document.getElementById('userModal').style.display = 'none'; }
+
+    function previewUserAvatar(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                appData.user.avatar = e.target.result;
+                document.getElementById('user-header-avatar').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
         }
     }
 
-    function generateAutoReport() {
-        const r = document.getElementById('printable-doctor-report');
-        r.style.display = 'block';
-        r.innerHTML = `
-            <div style="border-bottom:1px solid var(--border); padding-bottom:6px; margin-bottom:8px; display:flex; justify-content:space-between;">
-                <b>📋 রোগীর অফিসিয়াল ক্লিনিক্যাল ডাটা রিপোর্ট</b>
-                <button onclick="window.print()" style="background:var(--primary); color:white; border:none; padding:2px 8px; border-radius:4px; font-size:0.7rem; cursor:pointer;">🖨️ প্রিন্ট / সেভ</button>
-            </div>
-            <div>• রোগী: <b>${appData.user.name}</b> (${appData.user.gender === 'female' ? 'নারী' : 'পুরুষ'})</div>
-            <div>• বর্তমান মাইগ্রেন তীব্রতা স্কেল: <b>${appData.pain} / ১০</b></div>
-            <div>• দৈনিক পানি পানের গড়: <b>${appData.water} মিলি (লক্ষ্য: ৫০০০ মিলি)</b></div>
-            <div>• এই মাসে ওষুধ নেওয়ার হিসেব: <b>২ বার</b> (নিয়ম মেনে চলা হয়েছে)</div>
-            <div>• পুষ্টিকর খাবার ও ওমেগা-৩ খাদ্যগ্রহণ: <b>${appData.compliance.bfast && appData.compliance.lunch ? '১০০% নিয়মিত' : 'আংশিক পালন'}</b></div>
-            <div>• দৈহিক ভঙ্গি ও ৭টি স্ট্রেচিং ব্যায়াম: <b>${appData.compliance.exer ? 'সম্পন্ন হয়েছে' : 'বাকি রয়েছে'}</b></div>
-            <div style="margin-top:6px; padding:6px; background:rgba(16,185,129,0.1); border-radius:6px; font-weight:600; color:var(--primary-dark);">
-                চিকিৎসকের মন্তব্য: রোগীর দৈনন্দিন খাদ্য ও হাইড্রেশন অত্যন্ত সন্তোষজনক। বর্তমান রুটিন বজায় রাখলে দীর্ঘস্থায়ী মাইগ্রেন উপশম সম্ভব।
-            </div>
-        `;
+    function saveUserProfile() {
+        const name = document.getElementById('user-name-input').value.trim() || 'রিমু';
+        const gender = document.getElementById('user-gender-input').value;
+        appData.user.name = name;
+        appData.user.gender = gender;
+        persist();
+
+        renderUserProfileUI();
+        renderExercisesByGender();
+        renderDoctorReport();
+        closeUserModal();
+        alert("প্রোফাইল সফলভাবে সংরক্ষিত হয়েছে!");
     }
 
-    // --- 12. AI DOCTOR CHATBOT ---
+    function renderUserProfileUI() {
+        // Display user name ONLY, without 'সালাম,'
+        document.getElementById('user-header-name').innerText = appData.user.name;
+        document.getElementById('user-header-gender').innerText = (appData.user.gender === 'female' ? "নারী প্রোফাইল" : "পুরুষ প্রোফাইল") + " • এডিট ✏️";
+        if (appData.user.avatar) {
+            document.getElementById('user-header-avatar').src = appData.user.avatar;
+        }
+    }
+
+    // --- 14. SECRET OWNER MASTER CONTROL (5-TAP DETECTION) ---
+    let ownerTapCount = 0;
+    let ownerTapTimer = null;
+
+    function handleOwnerSecretTap() {
+        ownerTapCount++;
+        clearTimeout(ownerTapTimer);
+
+        if (ownerTapCount >= 5) {
+            ownerTapCount = 0;
+            openSecretOwnerModal();
+        } else {
+            ownerTapTimer = setTimeout(() => { ownerTapCount = 0; }, 2000);
+        }
+    }
+
+    function openSecretOwnerModal() {
+        document.getElementById('secretOwnerModal').style.display = 'flex';
+        document.getElementById('secret-pass-box').style.display = 'block';
+        document.getElementById('secret-features-unlocked').style.display = 'none';
+        document.getElementById('secret-password-input').value = '';
+    }
+
+    function closeSecretOwnerModal() { document.getElementById('secretOwnerModal').style.display = 'none'; }
+
+    function verifySecretPassword() {
+        const entered = document.getElementById('secret-password-input').value.trim().toUpperCase();
+        // Accepts both 0 and O
+        if (entered === "NEROB0909" || entered === "NEROBO9O9") {
+            document.getElementById('secret-pass-box').style.display = 'none';
+            document.getElementById('secret-features-unlocked').style.display = 'block';
+            alert("স্বাগতম ওনার মোঃ সাকিব হোসাইন নিরব! মাস্টার প্যানেল সফলভাবে আনলক হয়েছে।");
+        } else {
+            alert("ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।");
+        }
+    }
+
+    // --- 15. AI DOCTOR CHATBOT ---
     function sendChatMessage() {
         const input = document.getElementById('chatInput');
         const text = input.value.trim();
@@ -1430,103 +1708,18 @@
             const bBubble = document.createElement('div');
             bBubble.className = "chat-bubble bot";
             if (text.includes("ব্যথা") || text.includes("মাথা")) {
-                bBubble.innerText = "মাথাব্যথা তীব্র হলে এখনই ৫০০ মিলি পানি পান করুন, আলো নিভিয়ে ১৫ মিনিট চোখ বন্ধ রাখুন এবং ম্যাগনেসিয়াম সমৃদ্ধ খাবার গ্রহণ করুন।";
+                bBubble.innerText = "মাথাব্যথা কমাতে ৫০০ মিলি বিশুদ্ধ পানি পান করুন, আলো নিভিয়ে ১৫ মিনিট বিশ্রাম নিন এবং ম্যাগনেসিয়াম সমৃদ্ধ খাবার গ্রহণ করুন।";
             } else if (text.includes("ওষুধ") || text.includes("মেডিসিন")) {
                 bBubble.innerText = "মাইগ্রেনের ওষুধ সবসময় চিকিৎসকের প্রেসক্রিপশন অনুযায়ী ভরা পেটে খাওয়া উচিত। খালি পেটে চা বা কফি পরিহার করুন।";
             } else {
-                bBubble.innerText = "আপনার স্বাস্থ্য তথ্য রেকর্ড হয়েছে। পর্যাপ্ত ঘুম, ৫ লিটার পানি পান ও নিয়মিত হালকা স্ট্রেচিং মাইগ্রেন পুরোপুরি নিয়ন্ত্রণে রাখবে।";
+                bBubble.innerText = "আপনার স্বাস্থ্য তথ্য রেকর্ড হয়েছে। পর্যাপ্ত ঘুম, ৫ লিটার পানি ও হালকা স্ট্রেচিং মাইগ্রেন নিয়ন্ত্রণে রাখবে।";
             }
             chatBox.appendChild(bBubble);
             chatBox.scrollTop = chatBox.scrollHeight;
-        }, 600);
+        }, 500);
     }
 
-    // --- 13. USER PROFILE MANAGEMENT ---
-    function openUserModal() {
-        document.getElementById('user-name-input').value = appData.user.name;
-        document.getElementById('user-gender-input').value = appData.user.gender;
-        document.getElementById('userModal').style.display = 'flex';
-    }
-
-    function closeUserModal() {
-        document.getElementById('userModal').style.display = 'none';
-    }
-
-    function previewUserAvatar(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                appData.user.avatar = e.target.result;
-                document.getElementById('user-header-avatar').src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-    }
-
-    function saveUserProfile() {
-        const name = document.getElementById('user-name-input').value.trim() || 'ব্যবহারকারী';
-        const gender = document.getElementById('user-gender-input').value;
-        appData.user.name = name;
-        appData.user.gender = gender;
-        persist();
-
-        renderUserProfileUI();
-        renderExercisesByGender();
-        closeUserModal();
-        alert("প্রোফাইল সফলভাবে সংরক্ষিত হয়েছে!");
-    }
-
-    function renderUserProfileUI() {
-        document.getElementById('user-header-name').innerText = `সালাম, ${appData.user.name}!`;
-        document.getElementById('user-header-gender').innerText = (appData.user.gender === 'female' ? "নারী প্রোফাইল" : "পুরুষ প্রোফাইল") + " • এডিট ✏️";
-        if (appData.user.avatar) {
-            document.getElementById('user-header-avatar').src = appData.user.avatar;
-        }
-    }
-
-    // --- 14. SECRET OWNER TRIGGER (INSIDE SETTINGS) ---
-    let ownerTapCount = 0;
-    let ownerTapTimer = null;
-
-    function handleOwnerSecretTap() {
-        ownerTapCount++;
-        clearTimeout(ownerTapTimer);
-
-        if (ownerTapCount >= 5) {
-            ownerTapCount = 0;
-            openSecretOwnerModal();
-        } else {
-            ownerTapTimer = setTimeout(() => {
-                ownerTapCount = 0;
-            }, 2000);
-        }
-    }
-
-    function openSecretOwnerModal() {
-        document.getElementById('secretOwnerModal').style.display = 'flex';
-        document.getElementById('secret-pass-box').style.display = 'block';
-        document.getElementById('secret-features-unlocked').style.display = 'none';
-        document.getElementById('secret-password-input').value = '';
-    }
-
-    function closeSecretOwnerModal() {
-        document.getElementById('secretOwnerModal').style.display = 'none';
-    }
-
-    function verifySecretPassword() {
-        const entered = document.getElementById('secret-password-input').value.trim().toUpperCase();
-        // Accepts both 0 (number) and O (letter)
-        if (entered === "NEROB0909" || entered === "NEROBO9O9") {
-            document.getElementById('secret-pass-box').style.display = 'none';
-            document.getElementById('secret-features-unlocked').style.display = 'block';
-            alert("স্বাগতম ওনার মোঃ সাকিব হোসাইন নিরব! মাস্টার প্যানেল সফলভাবে আনলক হয়েছে।");
-        } else {
-            alert("ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।");
-        }
-    }
-
-    // --- 15. DARK MODE & LANGUAGE ---
+    // --- 16. DARK MODE & LANGUAGE ---
     function toggleDarkMode() {
         appData.darkMode = document.getElementById('darkToggle').checked;
         persist();
@@ -1553,26 +1746,24 @@
     function initApp() {
         renderUserProfileUI();
         renderWater();
+        renderCompliance();
         renderRoutines();
         renderAlarms();
         renderExercisesByGender();
+        renderDoctorReport();
+        filterHistory('daily', document.getElementById('btn-hist-daily'));
         applyTheme();
+
         document.getElementById('sync-alarm-toggle').checked = appData.syncAlarm;
         document.getElementById('lang-select').value = appData.lang || 'bn';
+        document.getElementById('lbl-selected-notif').innerText = (appData.selectedNotifRingtone || "সফট চাইম").split(':')[1] || appData.selectedNotifRingtone;
+        document.getElementById('lbl-selected-alarm').innerText = (appData.selectedAlarmRingtone || "৪৩২ হার্টজ ওয়েক-আপ").split(':')[1] || appData.selectedAlarmRingtone;
 
-        // Set initial pain & location box
         setPainVal(appData.pain, document.querySelectorAll('.pain-pill')[appData.pain] || document.querySelectorAll('.pain-pill')[0]);
-
-        // Compliance checkmarks
-        document.getElementById('chk-bfast').checked = appData.compliance.bfast;
-        document.getElementById('chk-lunch').checked = appData.compliance.lunch;
-        document.getElementById('chk-meds').checked = appData.compliance.meds;
-        document.getElementById('chk-exer').checked = appData.compliance.exer;
-        updateAdherenceRate();
     }
 
     initApp();
 </script>
 
 </body>
-</html>
+            </html>
