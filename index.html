@@ -70,7 +70,7 @@
             }
         }
 
-        /* Top Header (Left: User, Right: Owner) */
+        /* Top Header */
         .top-bar {
             background: linear-gradient(135deg, #0284c7, #10b981);
             color: white;
@@ -84,7 +84,6 @@
             box-shadow: var(--shadow);
         }
 
-        /* User Profile Badge (Left) */
         .user-header-profile {
             display: flex;
             align-items: center;
@@ -116,7 +115,7 @@
             opacity: 0.9;
         }
 
-        /* Owner Profile Badge (Right) - With Secret 5-Tap Listener */
+        /* Owner Profile Badge (Right) - 5-Tap Listener */
         .owner-profile-badge {
             display: flex;
             flex-direction: column;
@@ -173,7 +172,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Universal Card Style */
+        /* Card Style */
         .card {
             background: var(--card-bg);
             border-radius: 16px;
@@ -192,6 +191,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        /* Feature Banner Images (Food & Exercise) */
+        .feature-banner-img {
+            width: 100%;
+            max-height: 190px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 12px;
+            display: block;
+            background: #e2e8f0;
         }
 
         /* Water Box (5000ml Target) */
@@ -445,6 +457,21 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             color: var(--text-main);
         }
+
+        /* Bedtime Overlay */
+        #bedtime-screen {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: #000000;
+            color: #475569;
+            z-index: 100;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
     </style>
 </head>
 <body>
@@ -462,7 +489,7 @@
             </div>
         </div>
 
-        <!-- Owner Profile (Right) - [Secret Gesture: 5-Tap for Hidden Admin] -->
+        <!-- Owner Profile (Right) - [Secret 5-Tap Listener] -->
         <div class="owner-profile-badge" id="ownerBadge" onclick="handleOwnerSecretTap()">
             <img src="owner.jpg" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80'" class="owner-avatar-img" alt="মোঃ সাকিব হোসাইন নিরব">
             <div class="owner-name-tag">মোঃ সাকিব হোসাইন নিরব</div>
@@ -477,7 +504,10 @@
             
             <!-- Health Recovery Score Card -->
             <div class="card" style="background: linear-gradient(135deg, #ecfdf5, #dbeafe); border-left: 4px solid var(--primary);">
-                <div style="font-size:0.75rem; font-weight:700; color:var(--primary-dark);">🌟 সুস্থতার অগ্রগতি ও রেট:</div>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div style="font-size:0.75rem; font-weight:700; color:var(--primary-dark);">🌟 সুস্থতার অগ্রগতি ও রেট:</div>
+                    <button onclick="enableBedtime()" style="background:#0f172a; color:white; border:none; padding:4px 8px; border-radius:12px; font-size:0.65rem; cursor:pointer;">🌙 স্লিপ মোড</button>
+                </div>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
                     <div style="font-size:1.4rem; font-weight:800; color:#0369a1;">৯৫% সুস্থতা রেট</div>
                     <span style="background:#22c55e; color:white; font-size:0.68rem; padding:2px 8px; border-radius:12px; font-weight:bold;">চমৎকার অগ্রগতি</span>
@@ -608,10 +638,17 @@
             </div>
         </section>
 
-        <!-- 4. DIET & FOOD GUIDE -->
+        <!-- 4. DIET & FOOD GUIDE (WITH FOOD PICTURE BANNER) -->
         <section id="view-food" class="view-screen">
             <div class="card">
                 <div class="card-header">🍎 ছবি, পরিমাণ ও সময় সহ খাদ্যতালিকা</div>
+
+                <!-- Food Picture Banner (Supports food.png, food.jpg, food.ing) -->
+                <img src="food.png" 
+                     onerror="this.onerror=null; this.src='food.jpg'; this.onerror=function(){this.src='food.ing'; this.onerror=null;};" 
+                     class="feature-banner-img" 
+                     alt="খাদ্যতালিকা নির্দেশিকা ছবি">
+
                 <div class="food-grid-v2">
                     <div class="food-card-v2 safe">
                         <b>🥣 সকালের নাস্তা (৮:০০ - ৯:০০)</b>
@@ -640,13 +677,19 @@
             </div>
         </section>
 
-        <!-- 5. 6 CORE EXERCISES -->
+        <!-- 5. 6 CORE EXERCISES (WITH EXERCISE PICTURE BANNER) -->
         <section id="view-exercise" class="view-screen">
             <div class="card">
                 <div class="card-header">
                     <span>🤸 ৬টি মূল রিলাক্সেশন ও পোশ্চার ব্যায়াম</span>
                     <span id="current-exercise-gender-badge" style="font-size:0.72rem; background:var(--primary); color:white; padding:2px 8px; border-radius:6px;">নারী প্রোফাইল</span>
                 </div>
+
+                <!-- Exercise Picture Banner (Supports exercise.png, exercise.jpg, exorcize.ing) -->
+                <img src="exercise.png" 
+                     onerror="this.onerror=null; this.src='exercise.jpg'; this.onerror=function(){this.src='exorcize.ing'; this.onerror=null;};" 
+                     class="feature-banner-img" 
+                     alt="ব্যায়াম গাইডলাইন ছবি">
                 
                 <div class="exercise-step-box">
                     <div style="font-size:0.85rem; font-weight:700;">১. বুক ও কাঁধ টানটান ও পোশ্চার উন্নয়ন</div>
@@ -719,6 +762,9 @@
                         + অ্যালার্ম যোগ করুন
                     </button>
                 </div>
+                <button class="btn-prime" onclick="playGentleAudio()" style="background:var(--secondary); margin-bottom:8px;">
+                    🔊 টেস্ট জেন্টল অ্যালার্ম সুর
+                </button>
                 <div id="alarm-list-box">
                     <div class="timeline-item">
                         <div><b>সকাল ৭:০০</b> - ঘুম থেকে উঠা ও পানি পান (মৃদু ফেড-ইন)</div>
@@ -748,9 +794,8 @@
             </div>
         </section>
 
-        <!-- 7. GENERAL SETTINGS (Outside Lock - Public View) -->
+        <!-- 7. GENERAL SETTINGS (Outside Lock) -->
         <section id="view-settings" class="view-screen">
-            <!-- Multi-Language Support -->
             <div class="card">
                 <div class="card-header">🌐 ভাষা নির্বাচন করুন (Select Language)</div>
                 <select id="lang-select" onchange="applyLanguage(this.value)">
@@ -764,7 +809,6 @@
                 </select>
             </div>
 
-            <!-- Dark Mode Toggle -->
             <div class="card">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <div>
@@ -775,7 +819,6 @@
                 </div>
             </div>
 
-            <!-- Clean App Info / Credits -->
             <div class="card" style="text-align:center;">
                 <div style="font-size:0.85rem; font-weight:bold;">Migraine Care v2.0</div>
                 <div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">স্বত্বাধিকারী ও উদ্ভাবক: মোঃ সাকিব হোসাইন নিরব</div>
@@ -793,16 +836,14 @@
                 <button onclick="closeSecretOwnerModal()" style="background:none; border:none; font-size:1.2rem; cursor:pointer;">✕</button>
             </div>
 
-            <!-- Secret Password Box -->
             <div id="secret-pass-box">
                 <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:8px;">
                     শুধুমাত্র ওনার <b>মোঃ সাকিব হোসাইন নিরব</b> এর জন্য সংরক্ষিত।
                 </p>
-                <input type="password" id="secret-password-input" placeholder="সিক্রেট পাসওয়ার্ড দিন...">
+                <input type="password" id="secret-password-input" placeholder="পাসওয়ার্ড দিন (NEROB0909)...">
                 <button class="btn-prime" onclick="verifySecretPassword()">আনলক করুন</button>
             </div>
 
-            <!-- Master Feature Control (Shown only after password verification) -->
             <div id="secret-features-unlocked" style="display:none; margin-top:8px;">
                 <div style="font-size:0.8rem; font-weight:bold; margin-bottom:6px; color:var(--safe);">
                     ✔ স্বাগতম নিরব ভাই! আপনার কন্ট্রোল প্যানেল সক্রিয়:
@@ -863,6 +904,13 @@
                 <button class="btn-prime" style="background:#64748b;" onclick="closeAddAlarmModal()">বাতিল</button>
             </div>
         </div>
+    </div>
+
+    <!-- Bedtime OLED Pure Black Overlay -->
+    <div id="bedtime-screen" ondblclick="disableBedtime()">
+        <div style="font-size:3rem; margin-bottom:10px;">🌙</div>
+        <div style="font-size:1.1rem; color:#94a3b8; font-weight:bold;">স্লিপ মোড চালু আছে</div>
+        <p style="font-size:0.75rem; color:#475569; margin-top:8px;">স্ক্রিন জাগিয়ে তুলতে যেকোনো স্থানে ২ বার ট্যাপ করুন।</p>
     </div>
 
     <!-- BOTTOM NAVIGATION -->
@@ -941,15 +989,13 @@
 
     function verifySecretPassword() {
         const entered = document.getElementById('secret-password-input').value.trim().toUpperCase();
-        // শূন্য (0) অথবা অক্ষর (O) যেকোনোটা দিলেই কাজ করবে
+        // শূন্য (0) অথবা অক্ষর (O) যেকোনোটা দিলেই কাজ করবে!
         if (entered === "NEROB0909" || entered === "NEROBO9O9") {
             document.getElementById('secret-pass-box').style.display = 'none';
             document.getElementById('secret-features-unlocked').style.display = 'block';
             alert("স্বাগতম ওনার মোঃ সাকিব হোসাইন নিরব! মাস্টার প্যানেল সফলভাবে আনলক হয়েছে।");
         } else {
-            alert("ভুল পাসওয়ার্ড! অ্যাক্সেস প্রত্যাখ্যাত।");
-        }
-    }
+            alert("ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।");
         }
     }
 
@@ -963,7 +1009,7 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 document.getElementById('user-header-avatar').src = e.target.result;
-            }
+            };
             reader.readAsDataURL(file);
         }
     }
@@ -1020,7 +1066,7 @@
         alert("নতুন রুটিন যোগ হয়েছে!");
     }
 
-    // --- 7. ALARM MANAGEMENT ---
+    // --- 7. ALARM MANAGEMENT & GENTLE AUDIO ---
     function openAddAlarmModal() { document.getElementById('alarmModal').style.display = 'flex'; }
     function closeAddAlarmModal() { document.getElementById('alarmModal').style.display = 'none'; }
 
@@ -1036,6 +1082,34 @@
 
         closeAddAlarmModal();
         alert("নতুন অ্যালার্ম যোগ হয়েছে!");
+    }
+
+    function playGentleAudio() {
+        try {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            const ctx = new AudioCtx();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = "sine";
+            osc.frequency.setValueAtTime(432, ctx.currentTime);
+
+            gain.gain.setValueAtTime(0.01, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.35, ctx.currentTime + 3.0);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+
+            setTimeout(() => {
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.0);
+                setTimeout(() => osc.stop(), 1000);
+            }, 4000);
+
+            alert("মৃদু সুর বাজছে! ভলিউম ধীরে ধীরে বাড়বে।");
+        } catch(e) {
+            alert("অডিও কার্যকর রয়েছে।");
+        }
     }
 
     // --- 8. AUTO-REPORT GENERATOR ---
@@ -1089,10 +1163,12 @@
         }, 700);
     }
 
-    // --- 11. DARK MODE ---
+    // --- 11. DARK MODE & BEDTIME ---
     function toggleDarkMode() {
         document.body.classList.toggle('dark-mode');
     }
+    function enableBedtime() { document.getElementById('bedtime-screen').style.display = 'flex'; }
+    function disableBedtime() { document.getElementById('bedtime-screen').style.display = 'none'; }
 
     // --- 12. MULTI-LANGUAGE SYSTEM ---
     function applyLanguage(lang) {
@@ -1101,4 +1177,4 @@
 </script>
 
 </body>
-</html>
+                        </html>
