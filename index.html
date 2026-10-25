@@ -115,7 +115,7 @@
             opacity: 0.9;
         }
 
-        /* Owner Profile Badge (Right) - 5-Tap Listener */
+        /* Owner Profile Badge (5-Tap Hidden Gesture) */
         .owner-profile-badge {
             display: flex;
             flex-direction: column;
@@ -193,17 +193,22 @@
             align-items: center;
         }
 
-        /* Feature Banner Images (Food & Exercise) */
-        .feature-banner-img {
+        /* Infographic Banner Images (Dynamic Auto-Fit) */
+        .infographic-banner-box {
             width: 100%;
-            max-height: 190px;
-            object-fit: cover;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-radius: 14px;
+            overflow: hidden;
             margin-bottom: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            background: #000;
+        }
+
+        .infographic-banner-box img {
+            width: 100%;
+            height: auto;
             display: block;
-            background: #e2e8f0;
+            cursor: pointer;
         }
 
         /* Water Box (5000ml Target) */
@@ -292,6 +297,15 @@
             border-color: #0f172a;
         }
 
+        /* Step-by-Step Exercise Box */
+        .exercise-step-card {
+            background: var(--bg-color);
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border);
+        }
+
         /* Food List Grid */
         .food-grid-v2 {
             display: grid;
@@ -314,37 +328,9 @@
         body.dark-mode .food-card-v2.safe { background: #064e3b; color: #a7f3d0; border-color: #047857; }
         body.dark-mode .food-card-v2.avoid { background: #7f1d1d; color: #fecaca; border-color: #991b1b; }
 
-        /* Step-by-Step Exercise Cards */
-        .exercise-step-box {
-            background: var(--bg-color);
-            border-radius: 12px;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid var(--border);
-        }
-
-        .exercise-steps-flow {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
-            margin-top: 8px;
-            text-align: center;
-        }
-
-        .step-pill {
-            background: var(--card-bg);
-            padding: 6px;
-            border-radius: 8px;
-            font-size: 0.68rem;
-            border: 1px solid var(--border);
-            color: var(--text-muted);
-        }
-
-        .step-pill b { display: block; color: var(--primary-dark); font-size: 0.75rem; }
-
         /* Doctor AI Chat Interface */
         .chat-container {
-            height: 200px;
+            height: 190px;
             overflow-y: auto;
             border: 1px solid var(--border);
             border-radius: 10px;
@@ -368,14 +354,12 @@
             background: #e0f2fe;
             color: #0369a1;
             align-self: flex-start;
-            border-bottom-left-radius: 2px;
         }
 
         .chat-bubble.user {
             background: var(--primary);
             color: white;
             align-self: flex-end;
-            border-bottom-right-radius: 2px;
         }
 
         /* Bottom Nav */
@@ -489,7 +473,7 @@
             </div>
         </div>
 
-        <!-- Owner Profile (Right) - [Secret 5-Tap Listener] -->
+        <!-- Owner Profile (Right) - [Secret 5-Tap Listener for Hidden Admin] -->
         <div class="owner-profile-badge" id="ownerBadge" onclick="handleOwnerSecretTap()">
             <img src="owner.jpg" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80'" class="owner-avatar-img" alt="মোঃ সাকিব হোসাইন নিরব">
             <div class="owner-name-tag">মোঃ সাকিব হোসাইন নিরব</div>
@@ -501,7 +485,6 @@
 
         <!-- 1. HOME SCREEN -->
         <section id="view-home" class="view-screen active">
-            
             <!-- Health Recovery Score Card -->
             <div class="card" style="background: linear-gradient(135deg, #ecfdf5, #dbeafe); border-left: 4px solid var(--primary);">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -638,116 +621,80 @@
             </div>
         </section>
 
-        <!-- 4. DIET & FOOD GUIDE (WITH FOOD PICTURE BANNER) -->
+        <!-- 4. DIET & FOOD GUIDE (WITH YOUR EAT/AVOID INFOGRAPHIC) -->
         <section id="view-food" class="view-screen">
             <div class="card">
                 <div class="card-header">🍎 ছবি, পরিমাণ ও সময় সহ খাদ্যতালিকা</div>
 
-                <!-- Food Picture Banner (Supports food.png, food.jpg, food.ing) -->
-                <img src="food.png" 
-                     onerror="this.onerror=null; this.src='food.jpg'; this.onerror=function(){this.src='food.ing'; this.onerror=null;};" 
-                     class="feature-banner-img" 
-                     alt="খাদ্যতালিকা নির্দেশিকা ছবি">
+                <!-- Your Uploaded Infographic Image (Supports food.jpg, food.png, food.ing) -->
+                <div class="infographic-banner-box">
+                    <img src="food.jpg" 
+                         onerror="this.onerror=null; this.src='food.png'; this.onerror=function(){this.src='food.ing';};" 
+                         alt="EAT THESE vs AVOID THESE Infographic">
+                </div>
 
                 <div class="food-grid-v2">
                     <div class="food-card-v2 safe">
                         <b>🥣 সকালের নাস্তা (৮:০০ - ৯:০০)</b>
-                        <span>• ওটস ও মিষ্টি আপেল (১ বাটি)</span>
-                        <span>• ১টি সিদ্ধ ডিম (প্রোটিন)</span>
-                        <span>• হালকা আদা চা (ক্যাফেইনহীন)</span>
+                        <span>• ওটস ও মিষ্টি সবুজ আপেল (১ বাটি)</span>
+                        <span>• ১টি সিদ্ধ ডিম ও চিয়া সিডস</span>
+                        <span>• হালকা আদা চা ও প্রচুর বিশুদ্ধ পানি</span>
                     </div>
                     <div class="food-card-v2 safe">
                         <b>🍲 দুপুরের খাবার (১:০০ - ২:০০)</b>
-                        <span>• ব্রাউন রাইস বা লাল চালের ভাত (১ কাপ)</span>
-                        <span>• তাজা দেশি মাছ বা মুরগি (১ টুকরো)</span>
-                        <span>• গাজর ও মিষ্টি আলুর স্যুপ</span>
+                        <span>• ব্রাউন রাইস বা কিনোয়া (১ কাপ)</span>
+                        <span>• গ্রিল্ড স্যামন / তাজা মাছ (১ টুকরো)</span>
+                        <span>• পালং শাক, ব্রকলি ও শসা সালাদ</span>
                     </div>
                     <div class="food-card-v2 safe">
                         <b>🍵 বিকেলের স্ন্যাকস (৫:০০)</b>
-                        <span>• শসা ও তরমুজ (১ বাটি)</span>
-                        <span>• ক্যামোমাইল বা তুলসী চা</span>
+                        <span>• ব্লুবেরি, স্ট্রবেরি ও কাঠবাদাম</span>
+                        <span>• গাজর ও অ্যাসপারাগাস</span>
                     </div>
                     <div class="food-card-v2 avoid">
-                        <b>❌ ক্ষতিকর ট্রিগার খাবার</b>
-                        <span>• অতিরিক্ত চা ও তীব্র ব্ল্যাক কফি</span>
-                        <span>• পুরনো পনির ও প্রিজারভেটিভ সসেজ</span>
-                        <span>• চকলেট ও অতিরিক্ত লবণ</span>
+                        <b>❌ ক্ষতিকর মাইগ্রেন ট্রিগার</b>
+                        <span>• ওল্ড চেডার চিজ, ডার্ক চকোলেট</span>
+                        <span>• বেকন, সালামি, সসেজ, হট ডগ</span>
+                        <span>• কফি, কোলা, রেড ওয়াইন, সয়া সস</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 5. 6 CORE EXERCISES (WITH EXERCISE PICTURE BANNER) -->
+        <!-- 5. 7 BEST EXERCISES (WITH YOUR POSTER INFOGRAPHICS) -->
         <section id="view-exercise" class="view-screen">
             <div class="card">
                 <div class="card-header">
-                    <span>🤸 ৬টি মূল রিলাক্সেশন ও পোশ্চার ব্যায়াম</span>
+                    <span>🤸 সেরা ৭টি ব্যায়াম গাইডলাইন</span>
                     <span id="current-exercise-gender-badge" style="font-size:0.72rem; background:var(--primary); color:white; padding:2px 8px; border-radius:6px;">নারী প্রোফাইল</span>
                 </div>
 
-                <!-- Exercise Picture Banner (Supports exercise.png, exercise.jpg, exorcize.ing) -->
-                <img src="exercise.png" 
-                     onerror="this.onerror=null; this.src='exercise.jpg'; this.onerror=function(){this.src='exorcize.ing'; this.onerror=null;};" 
-                     class="feature-banner-img" 
-                     alt="ব্যায়াম গাইডলাইন ছবি">
-                
-                <div class="exercise-step-box">
-                    <div style="font-size:0.85rem; font-weight:700;">১. বুক ও কাঁধ টানটান ও পোশ্চার উন্নয়ন</div>
-                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">কাঁধের কুঁজো ভাব দূর করে সঠিক অঙ্গভঙ্গি দেয়।</p>
-                    <div class="exercise-steps-flow">
-                        <div class="step-pill"><b>ধাপ ১</b>সোজা হয়ে দাঁড়ান</div>
-                        <div class="step-pill"><b>ধাপ ২</b>হাত 'W' আকারে টানুন</div>
-                        <div class="step-pill"><b>ধাপ ৩</b>বুক প্রসারিত রাখুন</div>
-                    </div>
+                <!-- Female Infographic (Supports exercise_women.jpg, exercise_women.png) -->
+                <div id="female-poster-box" class="infographic-banner-box">
+                    <img src="exercise_women.jpg" 
+                         onerror="this.onerror=null; this.src='exercise_women.png'; this.onerror=function(){this.src='exercise.png';};" 
+                         alt="মেয়েদের সেরা ৭টি ব্যায়াম">
                 </div>
 
-                <div class="exercise-step-box">
-                    <div style="font-size:0.85rem; font-weight:700;">২. কোমর ও মেরুদণ্ডের নমনীয়তা ব্যায়াম</div>
-                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">কোমরের জড়তা দূর করে মেদহীন ফিটনেস দেয়।</p>
-                    <div class="exercise-steps-flow">
-                        <div class="step-pill"><b>ধাপ ১</b>চেয়ারে সোজা বসুন</div>
-                        <div class="step-pill"><b>ধাপ ২</b>ধীরে ডানে মোচড় দিন</div>
-                        <div class="step-pill"><b>ধাপ ৩</b>ধীরে বাঁয়ে মোচড় দিন</div>
-                    </div>
+                <!-- Male Infographic (Supports exercise_men.jpg, exercise_men.png) -->
+                <div id="male-poster-box" class="infographic-banner-box" style="display:none;">
+                    <img src="exercise_men.jpg" 
+                         onerror="this.onerror=null; this.src='exercise_men.png'; this.onerror=function(){this.src='exercise.png';};" 
+                         alt="ছেলেদের সেরা ৭টি ব্যায়াম">
                 </div>
 
-                <div class="exercise-step-box">
-                    <div style="font-size:0.85rem; font-weight:700;">৩. পেট ও কোর পেশির রিলাক্সেশন</div>
-                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">পেটের অতিরিক্ত ভারী হওয়া নিয়ন্ত্রণ করে।</p>
-                    <div class="exercise-steps-flow">
-                        <div class="step-pill"><b>ধাপ ১</b>মেঝেতে শুয়ে পড়ুন</div>
-                        <div class="step-pill"><b>ধাপ ২</b>হাঁটু ভাঁজ করুন</div>
-                        <div class="step-pill"><b>ধাপ ৩</b>পেট টেনে শ্বাস নিন</div>
-                    </div>
+                <!-- Dynamic Steps List -->
+                <div id="exercise-steps-dynamic">
+                    <!-- Populated via JavaScript based on Gender -->
                 </div>
 
-                <div class="exercise-step-box">
-                    <div style="font-size:0.85rem; font-weight:700;">৪. বাঁকা ঘাড় ও কুঁজো সোজা করা (Chin Tuck)</div>
-                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">মোবাইলে ঝুঁকে থাকা ঘাড়ের স্নায়ুর চাপ দূর করে।</p>
-                    <div class="exercise-steps-flow">
-                        <div class="step-pill"><b>ধাপ ১</b>দৃষ্টি সোজা রাখুন</div>
-                        <div class="step-pill"><b>ধাপ ২</b>চিবুক আলতো পেছনে নিন</div>
-                        <div class="step-pill"><b>ধাপ ৩</b>৫ সেকেন্ড ধরে রাখুন</div>
-                    </div>
-                </div>
-
-                <div class="exercise-step-box">
-                    <div style="font-size:0.85rem; font-weight:700;">৫. শরীর প্রসারণ ও মেরুদণ্ড লম্বা করার স্ট্রেচ</div>
-                    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">মেরুদণ্ডের স্পাইনাল ডিস্ক মুক্ত করে দীর্ঘ সুস্থতা আনে।</p>
-                    <div class="exercise-steps-flow">
-                        <div class="step-pill"><b>ধাপ ১</b>হাত উপরে তুলুন</div>
-                        <div class="step-pill"><b>ধাপ ২</b>আঙুলে ভর দিন</div>
-                        <div class="step-pill"><b>ধাপ ৩</b>শরীর টানটান করুন</div>
-                    </div>
-                </div>
-
-                <div class="exercise-step-box">
-                    <div style="font-size:0.85rem; font-weight:700;">৬. ওজন নিয়ন্ত্রণ ও বিএমআই (BMI)</div>
+                <div class="card" style="margin-top:10px; background:var(--bg-color);">
+                    <div style="font-size:0.85rem; font-weight:700;">⚖️ উচ্চতা ও ওজন অনুযায়ী বিএমআই (BMI)</div>
                     <div style="display:flex; gap:6px; margin-top:6px;">
                         <input type="number" id="calc-h" placeholder="উচ্চতা (cm)">
                         <input type="number" id="calc-w" placeholder="ওজন (kg)">
                     </div>
-                    <button class="btn-prime" onclick="calcQuickBMI()">আদর্শ ওজন চেক করুন</button>
+                    <button class="btn-prime" onclick="calcQuickBMI()">আদর্শ ওজন পরীক্ষা করুন</button>
                     <div id="calc-bmi-res" style="font-size:0.75rem; font-weight:bold; color:var(--primary-dark); margin-top:6px;"></div>
                 </div>
             </div>
@@ -794,7 +741,7 @@
             </div>
         </section>
 
-        <!-- 7. GENERAL SETTINGS (Outside Lock) -->
+        <!-- 7. GENERAL SETTINGS (Zero Admin Clutter - Outside is Completely Clean) -->
         <section id="view-settings" class="view-screen">
             <div class="card">
                 <div class="card-header">🌐 ভাষা নির্বাচন করুন (Select Language)</div>
@@ -828,7 +775,7 @@
 
     </main>
 
-    <!-- SECRET OWNER MASTER CONTROL MODAL (Hidden from normal view) -->
+    <!-- SECRET OWNER MASTER CONTROL MODAL (100% Hidden from Outside View) -->
     <div class="modal-overlay" id="secretOwnerModal">
         <div class="modal-card" style="border: 2px solid var(--primary);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
@@ -840,7 +787,7 @@
                 <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:8px;">
                     শুধুমাত্র ওনার <b>মোঃ সাকিব হোসাইন নিরব</b> এর জন্য সংরক্ষিত।
                 </p>
-                <input type="password" id="secret-password-input" placeholder="পাসওয়ার্ড দিন (NEROB0909)...">
+                <input type="password" id="secret-password-input" placeholder="পাসওয়ার্ড দিন...">
                 <button class="btn-prime" onclick="verifySecretPassword()">আনলক করুন</button>
             </div>
 
@@ -989,7 +936,7 @@
 
     function verifySecretPassword() {
         const entered = document.getElementById('secret-password-input').value.trim().toUpperCase();
-        // শূন্য (0) অথবা অক্ষর (O) যেকোনোটা দিলেই কাজ করবে!
+        // Accepts both 0 (number) and O (letter)
         if (entered === "NEROB0909" || entered === "NEROBO9O9") {
             document.getElementById('secret-pass-box').style.display = 'none';
             document.getElementById('secret-features-unlocked').style.display = 'block';
@@ -999,7 +946,64 @@
         }
     }
 
-    // --- 3. USER PROFILE HANDLING ---
+    // --- 3. GENDER-SPECIFIC 7 EXERCISES (FROM YOUR POSTERS) ---
+    const womenExercisesList = [
+        { title: "১. বুকের পেশী মজবুত ও সুন্দর গঠন", sets: "৩ সেট × ১২ বার" },
+        { title: "২. কোমরের সুন্দর আকৃতি গঠন (Waistline Shaping)", sets: "৩ সেট × ১৫ বার প্রতি পাশে" },
+        { title: "৩. পেটের পেশী মজবুত ও সমতল রাখা (Core Strength)", sets: "৩০-৪৫ সেকেন্ড × ৩ বার" },
+        { title: "৪. ঘাড় সোজা ও ব্যথামুক্ত রাখা (Neck Alignment)", sets: "৩০ সেকেন্ড প্রতি পাশে × ৩" },
+        { title: "৫. শরীরের লম্বা ও সোজা অবয়ব (Full Body Lengthening)", sets: "৩ সেট × ১০ বার" },
+        { title: "৬. শরীরের অতিরিক্ত চর্বি কমানো (Fat Burning)", sets: "৩ সেট × ৩০ সেকেন্ড" },
+        { title: "৭. মাইগ্রেন উপশম ও মানসিক প্রশান্তি (Relief Pose)", sets: "১-২ মিনিট ধরে রাখুন" }
+    ];
+
+    const menExercisesList = [
+        { title: "১. ঘাড় ও মাইগ্রেন রিলিফ স্ট্রেচ (Neck Relief)", sets: "৩০ সেকেন্ড প্রতি পাশে × ৩" },
+        { title: "২. মেরুদণ্ড নমনীয়তা (Cat-Cow Spine Mobility)", sets: "১০ ধীর রেপ × ৩" },
+        { title: "৩. কোর শক্তি প্ল্যাঙ্ক (Core Strength Plank)", sets: "৪০-৬০ সেকেন্ড × ৩" },
+        { title: "৪. পুরো শরীরের পুশ-আপ (Full Body Push-ups)", sets: "৩ সেট × ১২-১৫" },
+        { title: "৫. পায়ের শক্তি স্কোয়াট (Leg Strength Squats)", sets: "৩ সেট × ১৫" },
+        { title: "৬. চর্বি কমানোর জাম্পিং জ্যাক (Jumping Jacks)", sets: "৩ সেট × ৪০ সেকেন্ড" },
+        { title: "৭. মাইগ্রেন শান্ত করার চাইল্ডস পোজ (Child's Pose)", sets: "১-২ মিনিট" }
+    ];
+
+    function renderExerciseSteps(gender) {
+        const holder = document.getElementById('exercise-steps-dynamic');
+        const badge = document.getElementById('current-exercise-gender-badge');
+        const fPoster = document.getElementById('female-poster-box');
+        const mPoster = document.getElementById('male-poster-box');
+
+        holder.innerHTML = "";
+
+        if (gender === 'female') {
+            badge.innerText = "নারী প্রোফাইল অনুযায়ী";
+            fPoster.style.display = "block";
+            mPoster.style.display = "none";
+            womenExercisesList.forEach(item => {
+                const box = document.createElement('div');
+                box.className = "exercise-step-card";
+                box.innerHTML = `<div style="font-weight:700; font-size:0.82rem;">${item.title}</div>
+                                 <div style="font-size:0.72rem; color:var(--primary-dark); font-weight:600; margin-top:2px;">⏱️ লক্ষ্যমাত্রা: ${item.sets}</div>`;
+                holder.appendChild(box);
+            });
+        } else {
+            badge.innerText = "পুরুষ প্রোফাইল অনুযায়ী";
+            fPoster.style.display = "none";
+            mPoster.style.display = "block";
+            menExercisesList.forEach(item => {
+                const box = document.createElement('div');
+                box.className = "exercise-step-card";
+                box.innerHTML = `<div style="font-weight:700; font-size:0.82rem;">${item.title}</div>
+                                 <div style="font-size:0.72rem; color:var(--primary-dark); font-weight:600; margin-top:2px;">⏱️ লক্ষ্যমাত্রা: ${item.sets}</div>`;
+                holder.appendChild(box);
+            });
+        }
+    }
+
+    // Default female
+    renderExerciseSteps('female');
+
+    // --- 4. USER PROFILE HANDLING ---
     function openUserModal() { document.getElementById('userModal').style.display = 'flex'; }
     function closeUserModal() { document.getElementById('userModal').style.display = 'none'; }
 
@@ -1020,13 +1024,13 @@
         
         document.getElementById('user-header-greeting').innerText = `সালাম, ${name}!`;
         document.getElementById('user-header-gender').innerText = (gender === 'female' ? "নারী প্রোফাইল" : "পুরুষ প্রোফাইল") + " • এডিট ✏️";
-        document.getElementById('current-exercise-gender-badge').innerText = (gender === 'female' ? "নারী প্রোফাইল অনুযায়ী" : "পুরুষ প্রোফাইল অনুযায়ী");
         
+        renderExerciseSteps(gender);
         closeUserModal();
-        alert("প্রোফাইল সফলভাবে আপডেট হয়েছে!");
+        alert("প্রোফাইল ও ব্যায়াম তালিকা সফলভাবে আপডেট হয়েছে!");
     }
 
-    // --- 4. WATER TRACKER (5000ml) ---
+    // --- 5. WATER TRACKER (5000ml) ---
     let currentWater = 1000;
     const maxWater = 5000;
     function addWaterMl(ml) {
@@ -1039,7 +1043,7 @@
         }
     }
 
-    // --- 5. PAIN SCALE ---
+    // --- 6. PAIN SCALE ---
     function setPainVal(val, el) {
         document.querySelectorAll('.pain-pill').forEach(p => p.classList.remove('active'));
         el.classList.add('active');
@@ -1047,7 +1051,7 @@
         document.getElementById('pain-indicator').innerText = `${val}/১০ (${cat})`;
     }
 
-    // --- 6. ROUTINE MANAGEMENT ---
+    // --- 7. ROUTINE MANAGEMENT ---
     function openAddRoutineModal() { document.getElementById('routineModal').style.display = 'flex'; }
     function closeAddRoutineModal() { document.getElementById('routineModal').style.display = 'none'; }
 
@@ -1066,7 +1070,7 @@
         alert("নতুন রুটিন যোগ হয়েছে!");
     }
 
-    // --- 7. ALARM MANAGEMENT & GENTLE AUDIO ---
+    // --- 8. ALARM MANAGEMENT & GENTLE AUDIO ---
     function openAddAlarmModal() { document.getElementById('alarmModal').style.display = 'flex'; }
     function closeAddAlarmModal() { document.getElementById('alarmModal').style.display = 'none'; }
 
@@ -1112,7 +1116,7 @@
         }
     }
 
-    // --- 8. AUTO-REPORT GENERATOR ---
+    // --- 9. AUTO-REPORT GENERATOR ---
     function generateAutoReport() {
         const rep = document.getElementById('auto-report-box');
         rep.style.display = 'block';
@@ -1121,11 +1125,11 @@
             • সুস্থতার স্কোর: <b>৯৫%</b><br>
             • ব্যথাহীন স্বাভাবিক দিন: <b>২৬ দিন (এই মাসে)</b><br>
             • পানি পানের গড় মাত্রা: <b>৪.৫ লিটার / দিন</b><br>
-            • সুপারিশ: রোগীর ঘুমের অভ্যাস চমৎকার এবং মাইগ্রেন পুরোপুরি নিয়ন্ত্রণে রয়েছে। বর্তমান খাদ্যতালিকা ও রুটিন অব্যাহত রাখুন।
+            • সুপারিশ: রোগীর খাদ্যতালিকা ও রুটিন চমৎকার রয়েছে। বর্তমান ইনফোগ্রাফিক খাদ্য ও ব্যায়াম চালিয়ে যান।
         `;
     }
 
-    // --- 9. QUICK BMI CALCULATOR ---
+    // --- 10. QUICK BMI CALCULATOR ---
     function calcQuickBMI() {
         const h = parseFloat(document.getElementById('calc-h').value) / 100;
         const w = parseFloat(document.getElementById('calc-w').value);
@@ -1134,7 +1138,7 @@
         document.getElementById('calc-bmi-res').innerText = `বিএমআই: ${bmi} | উচ্চতা অনুযায়ী সুস্থ ওজন রেঞ্জ: ${(18.5*h*h).toFixed(1)} - ${(24.9*h*h).toFixed(1)} কেজি।`;
     }
 
-    // --- 10. AI DOCTOR CHATBOT ---
+    // --- 11. AI DOCTOR CHATBOT ---
     function sendChatMessage() {
         const input = document.getElementById('chatInput');
         const text = input.value.trim();
@@ -1163,18 +1167,18 @@
         }, 700);
     }
 
-    // --- 11. DARK MODE & BEDTIME ---
+    // --- 12. DARK MODE & BEDTIME ---
     function toggleDarkMode() {
         document.body.classList.toggle('dark-mode');
     }
     function enableBedtime() { document.getElementById('bedtime-screen').style.display = 'flex'; }
     function disableBedtime() { document.getElementById('bedtime-screen').style.display = 'none'; }
 
-    // --- 12. MULTI-LANGUAGE SYSTEM ---
+    // --- 13. MULTI-LANGUAGE SYSTEM ---
     function applyLanguage(lang) {
         alert("ভাষা পরিবর্তন কার্যকর হয়েছে: " + lang.toUpperCase());
     }
 </script>
 
 </body>
-                        </html>
+</html>
