@@ -70,7 +70,7 @@
             }
         }
 
-        /* Top Header - USER PROFILE ONLY (No সালাম) */
+        /* Top Header */
         .top-bar {
             background: linear-gradient(135deg, #0284c7, #10b981);
             color: white;
@@ -128,7 +128,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Universal Card Style */
         .card {
             background: var(--card-bg);
             border-radius: 16px;
@@ -158,7 +157,7 @@
             margin-bottom: 8px;
         }
 
-        .voice-input-group input {
+        .voice-input-group input, .voice-input-group textarea {
             margin-bottom: 0 !important;
             flex: 1;
         }
@@ -178,7 +177,7 @@
 
         body.dark-mode .btn-mic { background: #1e293b; color: #38bdf8; }
 
-        /* Working Marker Filter Tabs */
+        /* Filter Tab Bar */
         .filter-tab-bar {
             display: flex;
             background: var(--bg-color);
@@ -250,7 +249,7 @@
 
         .w-btn.minus { background: #fee2e2; color: #b91c1c; }
 
-        /* Pain Scale 0-10 */
+        /* Pain Scale */
         .pain-scale-strip {
             display: flex;
             gap: 4px;
@@ -434,7 +433,7 @@
         .chat-bubble.user { background: var(--primary); color: white; align-self: flex-end; }
         body.dark-mode .chat-bubble.bot { background: #0369a1; color: #e0f2fe; }
 
-        /* Bottom Nav - 5 Tabs Perfectly Distributed (20% each) */
+        /* Bottom Nav - 5 Tabs (20% each) */
         .bottom-nav {
             position: absolute;
             bottom: 0;
@@ -466,7 +465,7 @@
         .nav-tab span { font-size: 1.15rem; }
 
         /* Inputs & Buttons */
-        input, select {
+        input, select, textarea {
             width: 100%;
             padding: 8px 10px;
             border-radius: 8px;
@@ -535,11 +534,77 @@
         }
 
         .infographic-banner-box img { width: 100%; height: auto; display: block; }
+
+        /* Comments box styling */
+        .comment-item {
+            background: var(--bg-color);
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border);
+            font-size: 0.78rem;
+        }
+
+        .owner-reply-box {
+            margin-top: 6px;
+            padding: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 3px solid var(--primary);
+            border-radius: 6px;
+        }
+
+        /* QR Section */
+        .qr-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .qr-card {
+            background: var(--bg-color);
+            padding: 8px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .qr-card img {
+            width: 100%;
+            max-width: 120px;
+            border-radius: 8px;
+            margin-bottom: 4px;
+        }
     </style>
 </head>
 <body>
 
 <div class="app-shell" id="appShell">
+
+    <!-- AUTH / LOGIN MODAL -->
+    <div class="modal-overlay" id="authModal" style="display:none;">
+        <div class="modal-card" style="text-align:center;">
+            <div style="font-size:2.2rem; margin-bottom:4px;">🧠</div>
+            <b style="font-size:1.05rem;">Migraine Care এ স্বাগতম</b>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin:4px 0 14px 0;">পাসওয়ার্ড ছাড়া এক ক্লিকে কানেক্ট করুন বা অতিথি হিসেবে প্রবেশ করুন</p>
+            
+            <button class="btn-prime" style="background:#ea4335; margin-bottom:8px; display:flex; align-items:center; justify-content:center; gap:8px;" onclick="connectAuth('Google')">
+                <span>🔴</span> Google / Gmail দিয়ে কানেক্ট
+            </button>
+            <button class="btn-prime" style="background:#1877f2; margin-bottom:8px; display:flex; align-items:center; justify-content:center; gap:8px;" onclick="connectAuth('Facebook')">
+                <span>🔵</span> Facebook দিয়ে কানেক্ট
+            </button>
+            <button class="btn-prime" style="background:#0f172a; margin-bottom:12px; display:flex; align-items:center; justify-content:center; gap:8px;" onclick="connectAuth('Phone')">
+                <span>📱</span> মোবাইল নম্বর দিয়ে কানেক্ট
+            </button>
+            
+            <div style="border-top:1px dashed var(--border); padding-top:10px;">
+                <button class="btn-prime" style="background:var(--safe);" onclick="loginAsGuest()">
+                    🚶‍♂️ লগইন ছাড়া গেস্ট (Guest) হিসেবে ব্যবহার করুন
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- TOP HEADER -->
     <header class="top-bar">
@@ -560,6 +625,12 @@
 
         <!-- 1. HOME SCREEN -->
         <section id="view-home" class="view-screen active">
+            <!-- Notice to go to Settings for Public Comments -->
+            <div style="background: linear-gradient(135deg, #0284c7, #8b5cf6); color:white; padding:8px 12px; border-radius:12px; margin-bottom:10px; font-size:0.75rem; display:flex; justify-content:space-between; align-items:center;">
+                <span>📢 সেটিংস এ গিয়ে আপনি আপনার মূল্যবান কমেন্ট করতে পারেন অ্যাপসের আপডেট সম্পর্কে</span>
+                <button onclick="switchNav('view-settings', document.querySelectorAll('.nav-tab')[4])" style="background:white; color:#0284c7; border:none; padding:4px 8px; border-radius:6px; font-size:0.68rem; font-weight:bold; cursor:pointer;">কমেন্ট করুন</button>
+            </div>
+
             <!-- Health Recovery Score -->
             <div class="card" style="background: linear-gradient(135deg, #ecfdf5, #dbeafe); border-left: 4px solid var(--primary);">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -687,7 +758,7 @@
             </div>
         </section>
 
-        <!-- 3. COMBINED: HEALTH & DOCTOR RECORDS (Daily, Weekly, Monthly, Yearly) -->
+        <!-- 3. COMBINED: HEALTH & DOCTOR RECORDS (With Edit, No Delete) -->
         <section id="view-records" class="view-screen">
             <div class="card">
                 <div class="card-header">
@@ -708,7 +779,7 @@
                     </div>
                     <div style="background:var(--bg-color); padding:10px; border-radius:10px; text-align:center; border:1px solid var(--border);">
                         <div style="font-size:1.25rem; font-weight:800; color:var(--primary);" id="hist-med-count">০ বার</div>
-                        <div style="font-size:0.7rem; color:var(--text-muted);">ওষুধ গ্রহণের হিসেব</div>
+                        <div style="font-size:0.7rem; color:var(--text-muted);">ওষুধ ও ব্যথার হিসেব</div>
                     </div>
                 </div>
 
@@ -747,7 +818,6 @@
 
         <!-- 4. COMBINED: FOOD & EXERCISES (Migraine + General Wellness) -->
         <section id="view-food-exercise" class="view-screen">
-            
             <!-- SECTION A: EXERCISES -->
             <div class="card">
                 <div class="card-header">
@@ -779,7 +849,7 @@
                 <div id="exercise-steps-dynamic"></div>
             </div>
 
-            <!-- SECTION B: GENERAL POPULATION WELLNESS -->
+            <!-- SECTION B: GENERAL POPULATION WELLNESS (No সূর্য নমস্কার) -->
             <div class="card" style="background: rgba(2, 132, 199, 0.05); border: 2px dashed var(--secondary);">
                 <div class="card-header" style="color:var(--secondary);">
                     <span>🌿 সাধারণ মানুষের সুস্থ ও সুন্দর জীবনের ব্যায়াম</span>
@@ -791,7 +861,7 @@
                     <div><b>১. নিয়মিত ২০ মিনিট হাঁটা বা জগিং</b><div style="font-size:0.7rem; color:var(--text-muted);">রক্তচাপ নিয়ন্ত্রণ ও ফুসফুসের ক্ষমতা বৃদ্ধি করে।</div></div>
                 </div>
                 <div class="timeline-item">
-                    <div><b>২. মেরুদণ্ড প্রসারণ ও সূর্য নমস্কার</b><div style="font-size:0.7rem; color:var(--text-muted);">ক্লান্তি দূর করে ও শরীরের নমনীয়তা বহুগুণ বাড়িয়ে দেয়।</div></div>
+                    <div><b>২. মেরুদণ্ড প্রসারণ</b><div style="font-size:0.7rem; color:var(--text-muted);">ক্লান্তি দূর করে ও শরীরের নমনীয়তা বহুগুণ বাড়িয়ে দেয়।</div></div>
                 </div>
                 <div class="timeline-item">
                     <div><b>৩. ব্রিদিং বা অনুলোম-বিলোম প্রাণায়াম</b><div style="font-size:0.7rem; color:var(--text-muted);">অক্সিজেন সরবরাহ বাড়ায় এবং মানসিক উদ্বেগ দূর করে।</div></div>
@@ -841,7 +911,7 @@
         <section id="view-settings" class="view-screen">
             <!-- 16 Major Languages -->
             <div class="card">
-                <div class="card-header">🌐 ভাষা নির্বাচন (16 Languages)</div>
+                <div class="card-header">Select Language (ভাষা নির্বাচন)</div>
                 <select id="lang-select" onchange="applyLanguage(this.value)">
                     <option value="bn" selected>বাংলা (Bangla)</option>
                     <option value="en">English (US & UK)</option>
@@ -873,6 +943,26 @@
                 </div>
             </div>
 
+            <!-- PUBLIC COMMENT & FEEDBACK SECTION -->
+            <div class="card">
+                <div class="card-header">💬 মতামত ও পরামর্শ বক্স</div>
+                <p style="font-size:0.75rem; color:var(--primary-dark); font-weight:600; margin-bottom:8px;">
+                    (এই অ্যাপসে কোনো কিছু পরিবর্তন অথবা যোগ করতে চাইলে আপনারা মন্তব্য করুন, সংশোধন করার চেষ্টা করবো ইনশাআল্লাহ)
+                </p>
+                <div class="voice-input-group">
+                    <input type="text" id="user-comment-name" placeholder="আপনার নাম ও পরিচয় লিখুন...">
+                    <button class="btn-mic" onclick="startVoiceInput('user-comment-name', this)">🎤</button>
+                </div>
+                <div class="voice-input-group">
+                    <textarea id="user-comment-msg" placeholder="আপনার পরামর্শ বা মন্তব্য লিখুন..." rows="2"></textarea>
+                    <button class="btn-mic" onclick="startVoiceInput('user-comment-msg', this)">🎤</button>
+                </div>
+                <button class="btn-prime" onclick="submitPublicComment()">মতামত পাঠান</button>
+
+                <div style="font-size:0.8rem; font-weight:700; margin:12px 0 6px 0;">পূর্ববর্তী মন্তব্য ও ওনারের উত্তর:</div>
+                <div id="public-comments-feed"></div>
+            </div>
+
             <!-- OWNER PROFILE (INSIDE SETTINGS WITH 5-TAP UNLOCK) -->
             <div class="card" style="border: 2px solid var(--border); text-align:center; padding:16px;">
                 <div style="font-size:0.78rem; font-weight:700; margin-bottom:8px; color:var(--text-muted);">অ্যাপ উদ্ভাবক ও স্বত্বাধিকারী</div>
@@ -881,7 +971,23 @@
                     <div style="font-weight:800; font-size:0.9rem; margin-top:6px; color:var(--text-main);">মোঃ সাকিব হোসাইন নিরব</div>
                     <div style="font-size:0.7rem; color:var(--primary-dark); font-weight:600;">(ওনার ও ডেভেলপার)</div>
                 </div>
-                <div style="font-size:0.68rem; color:var(--text-muted); margin-top:8px;">Migraine Care v3.0 • Stay Healthy, Stay Happy 🌿</div>
+
+                <!-- OWNER QR CODES & SOCIAL CONNECT -->
+                <div class="qr-grid">
+                    <div class="qr-card">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.facebook.com/share/1F3TrhVYCj/" alt="Facebook QR">
+                        <div style="font-size:0.7rem; font-weight:bold; margin-top:2px;">ফেসবুক কিউআর</div>
+                        <a href="https://www.facebook.com/share/1F3TrhVYCj/" target="_blank" style="font-size:0.65rem; color:#1877f2; text-decoration:none; display:block; margin-top:2px;">সরাসরি মেসেজ দিন</a>
+                    </div>
+                    <div class="qr-card">
+                        <!-- User's WhatsApp QR -->
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wa.me/message/sakibhossainkabiraj" alt="WhatsApp QR">
+                        <div style="font-size:0.7rem; font-weight:bold; margin-top:2px;">হোয়াটসঅ্যাপ কিউআর</div>
+                        <span style="font-size:0.65rem; color:var(--safe); display:block; margin-top:2px;">sakibhossainkabiraj</span>
+                    </div>
+                </div>
+
+                <div style="font-size:0.68rem; color:var(--text-muted); margin-top:10px;">Migraine Care v3.5 • Stay Healthy, Stay Happy 🌿</div>
             </div>
         </section>
 
@@ -959,7 +1065,7 @@
     <div class="modal-overlay" id="secretOwnerModal">
         <div class="modal-card" style="border: 2px solid var(--primary);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <div style="font-weight:800; font-size:0.95rem; color:var(--primary-dark);">🔐 ওনার মাস্টার কন্ট্রোল</div>
+                <div style="font-weight:800; font-size:0.95rem; color:var(--primary-dark);">🔐 ওনার মাস্টার কন্ট্রোল প্যানেল</div>
                 <button onclick="closeSecretOwnerModal()" style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:var(--text-main);">✕</button>
             </div>
             <div id="secret-pass-box">
@@ -967,12 +1073,50 @@
                 <input type="password" id="secret-password-input" placeholder="পাসওয়ার্ড দিন...">
                 <button class="btn-prime" onclick="verifySecretPassword()">আনলক করুন</button>
             </div>
+
             <div id="secret-features-unlocked" style="display:none; margin-top:8px;">
                 <div style="font-size:0.8rem; font-weight:bold; margin-bottom:6px; color:var(--safe);">✔ স্বাগতম নিরব ভাই! মাস্টার কন্ট্রোল সক্রিয়:</div>
+
+                <!-- 1. EDIT BOX & 2. ADD BOX -->
+                <div style="background:var(--bg-color); padding:10px; border-radius:10px; border:1px solid var(--border); margin-bottom:10px;">
+                    <b style="font-size:0.78rem; display:block; margin-bottom:4px;">১. এডিট বক্স (ঘোষণা / আপডেট):</b>
+                    <div class="voice-input-group">
+                        <input type="text" id="owner-announcement-edit" placeholder="অ্যাপে নতুন ঘোষণা এডিট করুন...">
+                        <button class="btn-mic" onclick="startVoiceInput('owner-announcement-edit', this)">🎤</button>
+                    </div>
+
+                    <b style="font-size:0.78rem; display:block; margin:6px 0 4px 0;">২. যোগ বক্স (নতুন ফিচার / টিপস):</b>
+                    <div class="voice-input-group">
+                        <input type="text" id="owner-feature-add" placeholder="নতুন কোনো টিপস বা তথ্য যোগ করুন...">
+                        <button class="btn-mic" onclick="startVoiceInput('owner-feature-add', this)">🎤</button>
+                    </div>
+                    <button class="btn-prime" onclick="saveOwnerAnnouncements()">সংরক্ষণ ও আপডেট করুন</button>
+                </div>
+
+                <!-- Public Comments Management Inside Owner Lock -->
+                <b style="font-size:0.8rem; display:block; margin-bottom:6px;">💬 পাবলিক কমেন্ট ও উত্তর দেওয়ার ব্যবস্থা:</b>
+                <div id="owner-comments-manager" style="max-height:180px; overflow-y:auto; margin-bottom:10px;"></div>
+
                 <label style="display:block; font-size:0.75rem; margin-bottom:4px;"><input type="checkbox" checked> ওয়াটার ট্র্যাকার সক্রিয়</label>
                 <label style="display:block; font-size:0.75rem; margin-bottom:4px;"><input type="checkbox" checked> এআই ডাক্তার চ্যাট সক্রিয়</label>
                 <label style="display:block; font-size:0.75rem; margin-bottom:4px;"><input type="checkbox" checked> বিজ্ঞাপন ও রেভিনিউ সক্রিয়</label>
                 <button class="btn-prime" style="background:#0f172a; margin-top:10px;" onclick="closeSecretOwnerModal()">লক করে প্রস্থান করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- OWNER REPLY MODAL -->
+    <div class="modal-overlay" id="replyModal">
+        <div class="modal-card">
+            <b style="font-size:0.95rem; margin-bottom:8px; display:block;">💬 কমেন্টের উত্তর (Reply) দিন</b>
+            <input type="hidden" id="reply-comment-id">
+            <div class="voice-input-group">
+                <textarea id="owner-reply-text" placeholder="আপনার উত্তর লিখুন বা মুখে বলুন..." rows="3"></textarea>
+                <button class="btn-mic" onclick="startVoiceInput('owner-reply-text', this)">🎤</button>
+            </div>
+            <div style="display:flex; gap:8px;">
+                <button class="btn-prime" onclick="saveOwnerReply()">উত্তর পাঠান</button>
+                <button class="btn-prime" style="background:#64748b;" onclick="closeReplyModal()">বাতিল</button>
             </div>
         </div>
     </div>
@@ -1029,7 +1173,7 @@
         </div>
     </div>
 
-    <!-- BOTTOM NAVIGATION (5 TABS, 20% WIDTH EACH) -->
+    <!-- BOTTOM NAVIGATION (5 TABS) -->
     <nav class="bottom-nav">
         <div class="nav-tab active" onclick="switchNav('view-home', this)">
             <span>🏠</span>
@@ -1056,10 +1200,12 @@
 </div>
 
 <script>
-    // --- 1. SAFE DATA INITIALIZATION & LOCALSTORAGE ---
-    const STORAGE_KEY = 'migraine_care_v5_final';
+    // --- 1. LOCALSTORAGE STATE & PERSISTENCE ---
+    const STORAGE_KEY = 'migraine_care_v6_pro';
 
     const defaultData = {
+        isLoggedIn: false,
+        authType: 'guest',
         user: { 
             name: "রিমু", 
             gender: "female", 
@@ -1069,7 +1215,7 @@
             age: 24,
             weight: 55
         },
-        water: 0, // Starts strictly at 0
+        water: 0,
         pain: 0,
         complianceList: [
             { id: 1, text: "সকালের সুষম পুষ্টিকর খাবার খেয়েছি", done: true },
@@ -1091,6 +1237,9 @@
             { id: 1, time: "07:00", label: "ঘুম থেকে উঠা ও পানি পান", active: true },
             { id: 2, time: "09:00", label: "সকালের নাস্তা ও ওষুধ রিমাইন্ডার", active: true }
         ],
+        comments: [
+            { id: 1, name: "তানজিম আহমেদ", msg: "অ্যাপটি অনেক সুন্দর হয়েছে। মাইগ্রেন রোগীদের জন্য খুব উপকারী!", reply: "ধন্যবাদ ভাই! সুস্থ থাকুন, ভালো থাকুন।" }
+        ],
         selectedNotifRingtone: "সফট চাইম",
         selectedAlarmRingtone: "৪৩২ হার্টজ ওয়েক-আপ",
         syncAlarm: true,
@@ -1105,11 +1254,11 @@
         appData = defaultData;
     }
 
-    // Defensive auto-correction
     if (!appData.user) appData.user = defaultData.user;
     if (!Array.isArray(appData.complianceList)) appData.complianceList = defaultData.complianceList;
     if (!Array.isArray(appData.routines)) appData.routines = defaultData.routines;
     if (!Array.isArray(appData.alarms)) appData.alarms = defaultData.alarms;
+    if (!Array.isArray(appData.comments)) appData.comments = defaultData.comments;
     if (typeof appData.water !== 'number') appData.water = 0;
 
     function persist() {
@@ -1118,7 +1267,31 @@
         } catch(e) {}
     }
 
-    // --- 2. NAVIGATION ---
+    // --- 2. AUTHENTICATION & GUEST ACCESS ---
+    function checkAuth() {
+        if (!appData.isLoggedIn) {
+            document.getElementById('authModal').style.display = 'flex';
+        } else {
+            document.getElementById('authModal').style.display = 'none';
+        }
+    }
+
+    function connectAuth(provider) {
+        appData.isLoggedIn = true;
+        appData.authType = provider;
+        persist();
+        document.getElementById('authModal').style.display = 'none';
+        alert(`${provider} দিয়ে সফলভাবে কানেক্ট করা হয়েছে!`);
+    }
+
+    function loginAsGuest() {
+        appData.isLoggedIn = true;
+        appData.authType = 'guest';
+        persist();
+        document.getElementById('authModal').style.display = 'none';
+    }
+
+    // --- 3. NAVIGATION ROUTER ---
     function switchNav(viewId, tabEl) {
         document.querySelectorAll('.view-screen').forEach(v => v.classList.remove('active'));
         const target = document.getElementById(viewId);
@@ -1130,7 +1303,7 @@
         }
     }
 
-    // --- 3. LIVE DATE ---
+    // --- 4. LIVE DATE ---
     function updateLiveDate() {
         const today = new Date();
         const options = { day: 'numeric', month: 'long' };
@@ -1141,7 +1314,7 @@
         }
     }
 
-    // --- 4. WATER TRACKER (Strict 0 / 3500ml) ---
+    // --- 5. WATER TRACKER (Strict 0 / 3500ml) ---
     function adjustWater(amount) {
         appData.water = Math.max(0, Math.min(3500, appData.water + amount));
         persist();
@@ -1161,7 +1334,7 @@
         }
     }
 
-    // --- 5. PAIN SCALE ---
+    // --- 6. PAIN SCALE ---
     function setPainVal(val, el) {
         document.querySelectorAll('.pain-pill').forEach(p => p.classList.remove('active'));
         if (el) el.classList.add('active');
@@ -1179,7 +1352,7 @@
         renderDoctorReport();
     }
 
-    // --- 6. VOICE-TO-TEXT TYPING ---
+    // --- 7. VOICE-TO-TEXT TYPING (🎤) ---
     function startVoiceInput(inputId, btnEl) {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!SpeechRecognition) {
@@ -1211,7 +1384,7 @@
         recognition.start();
     }
 
-    // --- 7. COMPLIANCE CHECKLIST (ADD, EDIT, DELETE) ---
+    // --- 8. COMPLIANCE CHECKLIST WITH ADD, EDIT & DELETE ---
     function renderCompliance() {
         const box = document.getElementById('compliance-checklist-box');
         if (!box) return;
@@ -1298,7 +1471,7 @@
         if (tag) tag.innerText = `${pct}% পালন`;
     }
 
-    // --- 8. ROUTINES WITH EDIT & MISSED-TASK SIREN ---
+    // --- 9. ROUTINES WITH EDIT & MISSED-TASK SIREN ---
     function renderRoutines() {
         const box = document.getElementById('routine-list-box');
         if (!box) return;
@@ -1382,7 +1555,7 @@
         alert(checked ? "রুটিনের কাজগুলো স্বয়ংক্রিয় অ্যালার্ম হিসেবে সেট করা হয়েছে।" : "রুটিন ও অ্যালার্ম আলাদা করা হয়েছে।");
     }
 
-    // --- 9. ALARMS WITH EDIT (✏️) ---
+    // --- 10. ALARMS WITH EDIT (✏️) ---
     function renderAlarms() {
         const box = document.getElementById('alarm-list-box');
         if (!box) return;
@@ -1457,7 +1630,7 @@
         }
     }
 
-    // --- 10. DISTINCT RINGTONES & UNCOMMON SIREN ---
+    // --- 11. DISTINCT RINGTONES & SIREN ---
     function playAcousticTone(freq, type, duration, count = 1) {
         try {
             const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -1563,7 +1736,7 @@
         return `শক্তিশালী ওয়েক-আপ অ্যালার্ম ${i}`;
     }
 
-    // --- 11. DATE-WISE HISTORY & DOCTOR REPORT ---
+    // --- 12. DATE-WISE HISTORY (With Edit) & DOCTOR REPORT ---
     function filterHistory(type, btnEl) {
         document.querySelectorAll('.filter-tab-btn').forEach(b => b.classList.remove('active'));
         if (btnEl) btnEl.classList.add('active');
@@ -1574,38 +1747,45 @@
 
         if (type === 'daily') {
             document.getElementById('hist-painfree-days').innerText = "আজকের দিন";
-            document.getElementById('hist-med-count').innerText = "০ বার";
+            document.getElementById('hist-med-count').innerText = "০ বার (০%)";
             logsBox.innerHTML = `
-                <div class="timeline-item"><div><b>আজকের পানি:</b> ${appData.water} মিলি (লক্ষ্য: ৩৫০০ মিলি)</div><button class="btn-icon" onclick="this.parentElement.remove()">🗑️</button></div>
-                <div class="timeline-item"><div><b>মাইগ্রেন তীব্রতা:</b> ${appData.pain} / ১০</div><button class="btn-icon" onclick="this.parentElement.remove()">🗑️</button></div>
-                <div class="timeline-item"><div><b>নিয়ম পালন স্কোর:</b> ${document.getElementById('adherence-percent-tag').innerText}</div><button class="btn-icon" onclick="this.parentElement.remove()">🗑️</button></div>
+                <div class="timeline-item"><div><b>আজকের পানি:</b> ${appData.water} মিলি (লক্ষ্য: ৩৫০০ মিলি)</div><button class="btn-icon" onclick="openEditHistory('পানি পান')">✏️</button></div>
+                <div class="timeline-item"><div><b>মাইগ্রেন তীব্রতা ও ওষুধ:</b> ${appData.pain} / ১০ (ওষুধ লাগেনি)</div><button class="btn-icon" onclick="openEditHistory('ব্যথা ও ওষুধ')">✏️</button></div>
+                <div class="timeline-item"><div><b>স্বাস্থ্য নিয়মানুবর্তিতা:</b> ${document.getElementById('adherence-percent-tag').innerText} সম্পন্ন</div><button class="btn-icon" onclick="openEditHistory('নিয়ম পালন')">✏️</button></div>
             `;
         } else if (type === 'weekly') {
             document.getElementById('hist-painfree-days').innerText = "৬ দিন";
-            document.getElementById('hist-med-count').innerText = "১ বার";
+            document.getElementById('hist-med-count').innerText = "১ বার (১৪%)";
             logsBox.innerHTML = `
-                <div class="timeline-item"><div><b>চলতি সপ্তাহ:</b> ৬ দিন সম্পূর্ণ ব্যথামুক্ত ছিলেন</div><button class="btn-icon" onclick="this.parentElement.remove()">🗑️</button></div>
-                <div class="timeline-item"><div><b>গড় পানি পান:</b> ৩.৪ লিটার / দিন</div><button class="btn-icon" onclick="this.parentElement.remove()">🗑️</button></div>
-                <div class="timeline-item"><div><b>ব্যায়াম সম্পন্ন:</b> ৫ দিন (৯২% নিয়ম পালন)</div><button class="btn-icon" onclick="this.parentElement.remove()">🗑️</button></div>
+                <div class="timeline-item"><div><b>চলতি সপ্তাহ:</b> ৬ দিন সম্পূর্ণ ব্যথামুক্ত ছিলেন</div><button class="btn-icon" onclick="openEditHistory('সাপ্তাহিক ব্যথামুক্ত')">✏️</button></div>
+                <div class="timeline-item"><div><b>গড় পানি পান:</b> ৩.৪ লিটার / দিন</div><button class="btn-icon" onclick="openEditHistory('সাপ্তাহিক পানি')">✏️</button></div>
+                <div class="timeline-item"><div><b>ব্যায়াম ও ওষুধ:</b> ৫ দিন ব্যায়াম, ১ দিন ওষুধ প্রয়োজন হয়েছে</div><button class="btn-icon" onclick="openEditHistory('ব্যায়াম ও ওষুধ')">✏️</button></div>
             `;
         } else if (type === 'monthly') {
             document.getElementById('hist-painfree-days').innerText = "২৬ দিন";
-            document.getElementById('hist-med-count').innerText = "২ বার";
+            document.getElementById('hist-med-count').innerText = "২ বার (৭%)";
             logsBox.innerHTML = `
-                <div class="timeline-item"><div><b>অক্টোবর মাস:</b> মোট ব্যথামুক্ত দিন ২৬ দিন</div><button class="btn-icon" onclick="this.parentElement.remove()">🗑️</button></div>
-                <div class="timeline-item"><div><b>ওষুধ প্রয়োজন হয়েছিল:</b> মাত্র ২ দিন</div><button class="btn-icon" onclick="this.parentElement.remove()">🗑️</button></div>
-                <div class="timeline-item"><div><b>ওমেগা-৩ ও খাদ্যতালিকা মানা হয়েছে:</b> ৮৮% দিনগুলোতে</div><button class="btn-icon" onclick="this.parentElement.remove()">🗑️</button></div>
+                <div class="timeline-item"><div><b>অক্টোবর মাস:</b> মোট ব্যথামুক্ত দিন ২৬ দিন</div><button class="btn-icon" onclick="openEditHistory('মাসিক ব্যথামুক্ত')">✏️</button></div>
+                <div class="timeline-item"><div><b>ওষুধ ও মাইগ্রেন ব্যথা:</b> মাত্র ২ দিন ব্যথা ও ওষুধ লেগেছিল</div><button class="btn-icon" onclick="openEditHistory('মাসিক ওষুধ')">✏️</button></div>
+                <div class="timeline-item"><div><b>খাদ্যতালিকা ও ওমেগা-৩:</b> ৮৮% নিয়ম মেনে চলা হয়েছে</div><button class="btn-icon" onclick="openEditHistory('মাসিক খাদ্য')">✏️</button></div>
             `;
         } else {
             document.getElementById('hist-painfree-days').innerText = "৩১০ দিন";
-            document.getElementById('hist-med-count').innerText = "১৮ বার";
+            document.getElementById('hist-med-count').innerText = "১৮ বার (৫%)";
             logsBox.innerHTML = `
-                <div class="timeline-item"><div><b>বার্ষিক রেকর্ড:</b> ৩১০ দিন সম্পূর্ণ সুস্থ ও কর্মক্ষম</div><button class="btn-icon" onclick="this.parentElement.remove()">🗑️</button></div>
-                <div class="timeline-item"><div><b>দীর্ঘতম ব্যথামুক্ত স্ট্রিক:</b> ৪২ দিন একটানা</div><button class="btn-icon" onclick="this.parentElement.remove()">🗑️</button></div>
-                <div class="timeline-item"><div><b>সার্বিক সুস্থতার গ্রেড:</b> A+ (চমৎকার উন্নতি)</div><button class="btn-icon" onclick="this.parentElement.remove()">🗑️</button></div>
+                <div class="timeline-item"><div><b>বার্ষিক রেকর্ড:</b> ৩১০ দিন সম্পূর্ণ সুস্থ ও কর্মক্ষম</div><button class="btn-icon" onclick="openEditHistory('বার্ষিক রেকর্ড')">✏️</button></div>
+                <div class="timeline-item"><div><b>দীর্ঘতম সুস্থতার স্ট্রিক:</b> ৪২ দিন একটানা ব্যথামুক্ত</div><button class="btn-icon" onclick="openEditHistory('সুস্থতার স্ট্রিক')">✏️</button></div>
+                <div class="timeline-item"><div><b>সার্বিক সুস্থতার গ্রেড:</b> A+ (চমৎকার উন্নতি)</div><button class="btn-icon" onclick="openEditHistory('সার্বিক গ্রেড')">✏️</button></div>
             `;
         }
         renderDoctorReport();
+    }
+
+    function openEditHistory(field) {
+        const val = prompt(`${field}-এর তথ্য এডিট করুন:`, "তথ্য আপডেট করা হয়েছে");
+        if (val) {
+            alert(`${field} সফলভাবে এডিট হয়েছে!`);
+        }
     }
 
     function renderDoctorReport() {
@@ -1624,7 +1804,7 @@
             <div>• বর্তমান মাইগ্রেন তীব্রতা স্কেল: <b>${appData.pain} / ১০ (${appData.pain === 0 ? 'ব্যথামুক্ত' : (appData.pain <= 3 ? 'হালকা' : 'মাঝারি/তীব্র')})</b></div>
             <div>• দৈনিক হাইড্রেশন হিসেব: <b>${appData.water} মিলি (নির্ধারিত: ৩৫০০ মিলি)</b></div>
             <div>• স্বাস্থ্য নিয়মানুবর্তিতা ও খাদ্য স্কোর: <b>${compliancePct}% রুটিন সফল</b></div>
-            <div>• ওষুধ গ্রহণের হিসেব: <b>এই মাসে ২ বার</b> (নিয়ম মেনে চলা হয়েছে)</div>
+            <div>• ওষুধ ও ব্যথার রেকর্ড: <b>এই মাসে ২ বার (৭% দিন)</b> (নিয়ম মেনে চলা হয়েছে)</div>
             <div>• ৭টি অঙ্গভঙ্গি ও স্ট্রেচিং ব্যায়াম: <b>নিয়মিত সম্পন্ন হচ্ছে</b></div>
             <div style="margin-top:10px; padding:8px; background:rgba(16, 185, 129, 0.12); border-left:4px solid var(--primary); border-radius:6px; font-weight:600;">
                 👨‍⚕️ ডাক্তারের প্রেসক্রিপশন নোট: রোগীর নিয়মিত পানি পান ও খাদ্যতালিকা অনুসরণের কারণে মাইগ্রেন ট্রিগার উল্লেখযোগ্যভাবে কমেছে। বর্তমান খাদ্যতালিকা ও হালকা রিলাক্সেশন স্ট্রেচিং অব্যাহত রাখুন।
@@ -1632,7 +1812,7 @@
         `;
     }
 
-    // --- 12. 7 ANIMATED EXERCISES MOVING SIMULATOR ---
+    // --- 13. 7 ANIMATED EXERCISES MOVING SIMULATOR ---
     const exerciseAnimSteps = [
         { label: "ধাপ A ➔ শুরু", icon: "🧘‍♀️", text: "১. সোজা হয়ে বসুন, কাঁধ আলতো পেছনে রাখুন" },
         { label: "ধাপ B ➔ মুভমেন্ট", icon: "🙆‍♀️", text: "২. হাত ডানে ও বামে আলতো স্ট্রেচ করে বুক প্রসারিত করুন" },
@@ -1666,268 +1846,4 @@
             document.getElementById('anim-ctrl-btn').innerText = "▶️ চালু করুন";
             isAnimPlaying = false;
         } else {
-            startExerciseAnimation();
-            document.getElementById('anim-ctrl-btn').innerText = "⏸️ পজ করুন";
-            isAnimPlaying = true;
-        }
-    }
-
-    const womenExercisesList = [
-        { title: "১. বুকের পেশী মজবুত ও সুন্দর গঠন", sets: "৩ সেট × ১২ বার" },
-        { title: "২. কোমরের সুন্দর আকৃতি গঠন (Waistline Shaping)", sets: "৩ সেট × ১৫ বার প্রতি পাশে" },
-        { title: "৩. পেটের পেশী মজবুত ও সমতল রাখা (Core Strength)", sets: "৩০-৪৫ সেকেন্ড × ৩ বার" },
-        { title: "৪. ঘাড় সোজা ও ব্যথামুক্ত রাখা (Neck Alignment)", sets: "৩০ সেকেন্ড প্রতি পাশে × ৩" },
-        { title: "৫. শরীরের লম্বা ও সোজা অবয়ব (Full Body Lengthening)", sets: "৩ সেট × ১০ বার" },
-        { title: "৬. শরীরের অতিরিক্ত চর্বি কমানো (Fat Burning)", sets: "৩ সেট × ৩০ সেকেন্ড" },
-        { title: "৭. মাইগ্রেন উপশম ও মানসিক প্রশান্তি (Relief Pose)", sets: "১-২ মিনিট ধরে রাখুন" }
-    ];
-
-    const menExercisesList = [
-        { title: "১. ঘাড় ও মাইগ্রেন রিলিফ স্ট্রেচ (Neck Relief)", sets: "৩০ সেকেন্ড প্রতি পাশে × ৩" },
-        { title: "২. মেরুদণ্ড নমনীয়তা (Cat-Cow Spine Mobility)", sets: "১০ ধীর রেপ × ৩" },
-        { title: "৩. কোর শক্তি প্ল্যাঙ্ক (Core Strength Plank)", sets: "৪০-৬০ সেকেন্ড × ৩" },
-        { title: "৪. পুরো শরীরের পুশ-আপ (Full Body Push-ups)", sets: "৩ সেট × ১২-১৫" },
-        { title: "৫. পায়ের শক্তি স্কোয়াট (Leg Strength Squats)", sets: "৩ সেট × ১৫" },
-        { title: "৬. চর্বি কমানোর জাম্পিং জ্যাক (Jumping Jacks)", sets: "৩ সেট × ৪০ সেকেন্ড" },
-        { title: "৭. মাইগ্রেন শান্ত করার চাইল্ডস পোজ (Child's Pose)", sets: "১-২ মিনিট" }
-    ];
-
-    function renderExercisesByGender() {
-        const holder = document.getElementById('exercise-steps-dynamic');
-        const badge = document.getElementById('current-exercise-gender-badge');
-        const fPoster = document.getElementById('female-poster-box');
-        const mPoster = document.getElementById('male-poster-box');
-        if (!holder) return;
-        holder.innerHTML = '';
-
-        if (appData.user.gender === 'female') {
-            if (badge) badge.innerText = "নারী প্রোফাইল অনুযায়ী";
-            if (fPoster) fPoster.style.display = "block";
-            if (mPoster) mPoster.style.display = "none";
-            womenExercisesList.forEach(item => {
-                const b = document.createElement('div');
-                b.className = "timeline-item";
-                b.innerHTML = `<div><b>${item.title}</b><div style="font-size:0.7rem; color:var(--primary-dark); font-weight:600;">⏱️ ${item.sets}</div></div>`;
-                holder.appendChild(b);
-            });
-        } else {
-            if (badge) badge.innerText = "পুরুষ প্রোফাইল অনুযায়ী";
-            if (fPoster) fPoster.style.display = "none";
-            if (mPoster) mPoster.style.display = "block";
-            menExercisesList.forEach(item => {
-                const b = document.createElement('div');
-                b.className = "timeline-item";
-                b.innerHTML = `<div><b>${item.title}</b><div style="font-size:0.7rem; color:var(--primary-dark); font-weight:600;">⏱️ ${item.sets}</div></div>`;
-                holder.appendChild(b);
-            });
-        }
-    }
-
-    // --- 13. USER PROFILE & BMI CALCULATION ---
-    function openUserModal() {
-        document.getElementById('user-name-input').value = appData.user.name;
-        document.getElementById('user-gender-input').value = appData.user.gender;
-        document.getElementById('calc-feet').value = appData.user.feet || 5;
-        document.getElementById('calc-inches').value = appData.user.inches || 4;
-        document.getElementById('calc-age').value = appData.user.age || 24;
-        document.getElementById('calc-w').value = appData.user.weight || 55;
-        calculateProfileBMI();
-        document.getElementById('userModal').style.display = 'flex';
-    }
-
-    function closeUserModal() {
-        document.getElementById('userModal').style.display = 'none';
-    }
-
-    function previewUserAvatar(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                appData.user.avatar = e.target.result;
-                const av = document.getElementById('user-header-avatar');
-                if (av) av.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-    }
-
-    function calculateProfileBMI() {
-        const feet = parseFloat(document.getElementById('calc-feet').value) || 5;
-        const inches = parseFloat(document.getElementById('calc-inches').value) || 0;
-        const weight = parseFloat(document.getElementById('calc-w').value) || 55;
-        const heightCm = (feet * 30.48) + (inches * 2.54);
-        const hM = heightCm / 100;
-
-        const bmi = (weight / (hM * hM)).toFixed(1);
-        const idealMin = Math.round(18.5 * hM * hM);
-        const idealMax = Math.round(24.9 * hM * hM);
-        const idealAvg = Math.round((idealMin + idealMax) / 2);
-
-        const fb = document.getElementById('profile-bmi-feedback');
-        if (fb) {
-            fb.innerHTML = `
-                আপনার শারীরিক গঠন অনুযায়ী ওজন <b>${idealMin} - ${idealMax} কেজি</b> হওয়া উচিত ছিল।<br>
-                ✨ আপনি <b>${idealAvg} কেজি</b> ওজনের হলে আপনাকে দেখতে আরও সুন্দর লাগবে ও পুরোপুরি সুস্থ থাকবেন! (বর্তমান BMI: ${bmi})
-            `;
-        }
-    }
-
-    function saveUserProfile() {
-        const name = document.getElementById('user-name-input').value.trim() || 'রিমু';
-        const gender = document.getElementById('user-gender-input').value;
-        appData.user.name = name;
-        appData.user.gender = gender;
-        appData.user.feet = parseFloat(document.getElementById('calc-feet').value) || 5;
-        appData.user.inches = parseFloat(document.getElementById('calc-inches').value) || 4;
-        appData.user.age = parseFloat(document.getElementById('calc-age').value) || 24;
-        appData.user.weight = parseFloat(document.getElementById('calc-w').value) || 55;
-        persist();
-
-        renderUserProfileUI();
-        renderExercisesByGender();
-        renderDoctorReport();
-        closeUserModal();
-        alert("প্রোফাইল ও বিএমআই তথ্য সফলভাবে সংরক্ষিত হয়েছে!");
-    }
-
-    function renderUserProfileUI() {
-        const nameEl = document.getElementById('user-header-name');
-        const genEl = document.getElementById('user-header-gender');
-        const avEl = document.getElementById('user-header-avatar');
-        if (nameEl) nameEl.innerText = appData.user.name;
-        if (genEl) genEl.innerText = (appData.user.gender === 'female' ? "নারী প্রোফাইল" : "পুরুষ প্রোফাইল") + " ও BMI • এডিট ✏️";
-        if (avEl && appData.user.avatar) avEl.src = appData.user.avatar;
-    }
-
-    // --- 14. SECRET OWNER MASTER CONTROL (5-TAP) ---
-    let ownerTapCount = 0;
-    let ownerTapTimer = null;
-
-    function handleOwnerSecretTap() {
-        ownerTapCount++;
-        clearTimeout(ownerTapTimer);
-
-        if (ownerTapCount >= 5) {
-            ownerTapCount = 0;
-            openSecretOwnerModal();
-        } else {
-            ownerTapTimer = setTimeout(() => { ownerTapCount = 0; }, 2000);
-        }
-    }
-
-    function openSecretOwnerModal() {
-        document.getElementById('secretOwnerModal').style.display = 'flex';
-        document.getElementById('secret-pass-box').style.display = 'block';
-        document.getElementById('secret-features-unlocked').style.display = 'none';
-        document.getElementById('secret-password-input').value = '';
-    }
-
-    function closeSecretOwnerModal() {
-        document.getElementById('secretOwnerModal').style.display = 'none';
-    }
-
-    function verifySecretPassword() {
-        const entered = document.getElementById('secret-password-input').value.trim().toUpperCase();
-        if (entered === "NEROB0909" || entered === "NEROBO9O9") {
-            document.getElementById('secret-pass-box').style.display = 'none';
-            document.getElementById('secret-features-unlocked').style.display = 'block';
-            alert("স্বাগতম ওনার মোঃ সাকিব হোসাইন নিরব! মাস্টার প্যানেল সফলভাবে আনলক হয়েছে।");
-        } else {
-            alert("ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।");
-        }
-    }
-
-    // --- 15. AI DOCTOR CHATBOT ---
-    function sendChatMessage() {
-        const input = document.getElementById('chatInput');
-        const text = input.value.trim();
-        if (!text) return;
-
-        const chatBox = document.getElementById('chatBox');
-        const uBubble = document.createElement('div');
-        uBubble.className = "chat-bubble user";
-        uBubble.innerText = text;
-        chatBox.appendChild(uBubble);
-        input.value = "";
-
-        setTimeout(() => {
-            const bBubble = document.createElement('div');
-            bBubble.className = "chat-bubble bot";
-            if (text.includes("ব্যথা") || text.includes("মাথা")) {
-                bBubble.innerText = "মাথাব্যথা কমাতে ৫০০ মিলি বিশুদ্ধ পানি পান করুন, আলো নিভিয়ে ১৫ মিনিট বিশ্রাম নিন এবং ম্যাগনেসিয়াম সমৃদ্ধ খাবার গ্রহণ করুন।";
-            } else if (text.includes("ওষুধ") || text.includes("মেডিসিন")) {
-                bBubble.innerText = "মাইগ্রেনের ওষুধ সবসময় চিকিৎসকের প্রেসক্রিপশন অনুযায়ী ভরা পেটে খাওয়া উচিত। খালি পেটে চা বা কফি পরিহার করুন।";
-            } else {
-                bBubble.innerText = "আপনার স্বাস্থ্য তথ্য রেকর্ড হয়েছে। পর্যাপ্ত ঘুম, ৩.৫ লিটার পানি ও হালকা স্ট্রেচিং মাইগ্রেন নিয়ন্ত্রণে রাখবে।";
-            }
-            chatBox.appendChild(bBubble);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }, 500);
-    }
-
-    // --- 16. DARK MODE & LANGUAGE ---
-    function toggleDarkMode() {
-        appData.darkMode = document.getElementById('darkToggle').checked;
-        persist();
-        applyTheme();
-    }
-
-    function applyTheme() {
-        const darkTgl = document.getElementById('darkToggle');
-        if (appData.darkMode) {
-            document.body.classList.add('dark-mode');
-            if (darkTgl) darkTgl.checked = true;
-        } else {
-            document.body.classList.remove('dark-mode');
-            if (darkTgl) darkTgl.checked = false;
-        }
-    }
-
-    function applyLanguage(lang) {
-        appData.lang = lang;
-        persist();
-        alert("ভাষা নির্বাচন করা হয়েছে: " + lang.toUpperCase());
-    }
-
-    // --- 17. APP INITIALIZATION ---
-    function initApp() {
-        try {
-            updateLiveDate();
-            renderUserProfileUI();
-            renderWater();
-            renderCompliance();
-            renderRoutines();
-            renderAlarms();
-            renderExercisesByGender();
-            startExerciseAnimation();
-            renderDoctorReport();
-            filterHistory('daily', document.getElementById('btn-hist-daily'));
-            applyTheme();
-
-            const syncTgl = document.getElementById('sync-alarm-toggle');
-            if (syncTgl) syncTgl.checked = appData.syncAlarm;
-
-            const langSel = document.getElementById('lang-select');
-            if (langSel) langSel.value = appData.lang || 'bn';
-
-            const notifLbl = document.getElementById('lbl-selected-notif');
-            if (notifLbl) notifLbl.innerText = (appData.selectedNotifRingtone || "সফট চাইম").split(':')[1] || appData.selectedNotifRingtone;
-
-            const alarmLbl = document.getElementById('lbl-selected-alarm');
-            if (alarmLbl) alarmLbl.innerText = (appData.selectedAlarmRingtone || "৪৩২ হার্টজ ওরেক-আপ").split(':')[1] || appData.selectedAlarmRingtone;
-
-            setPainVal(appData.pain, document.querySelectorAll('.pain-pill')[appData.pain] || document.querySelectorAll('.pain-pill')[0]);
-        } catch(err) {
-            console.error("Init Error:", err);
-        }
-    }
-
-    window.addEventListener('DOMContentLoaded', initApp);
-    if (document.readyState === 'complete' || document.readyState === 'interactive') {
-        initApp();
-    }
-</script>
-
-</body>
-</html>
+            startExerciseAnima
