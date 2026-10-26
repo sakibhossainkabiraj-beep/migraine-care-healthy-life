@@ -18,7 +18,7 @@
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, 'Hind Siliguri', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: #050b14; display: flex; justify-content: center; align-items: center; min-height: 100vh; color: var(--text-main); }
-        .app-shell { width: 100%; max-width: 440px; height: 100vh; max-height: 940px; background: var(--bg-color); display: flex; flex-direction: column; position: relative; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6); transition: background 0.3s ease; }
+        .app-shell { width: 100%; max-width: 440px; height: 100vh; max-height: 940px; background: var(--bg-color); display: flex; flex-direction: column; position: relative; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6); transition: background 0.3s; }
         @media (min-width: 450px) { .app-shell { height: 94vh; border-radius: 36px; border: 8px solid #1e293b; } }
         .top-bar { background: linear-gradient(135deg, #0284c7, #10b981); color: white; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; border-bottom-left-radius: 18px; border-bottom-right-radius: 18px; z-index: 20; box-shadow: var(--shadow); }
         .user-header-profile { display: flex; align-items: center; gap: 10px; cursor: pointer; background: rgba(255,255,255,0.18); padding: 6px 12px; border-radius: 30px; backdrop-filter: blur(4px); }
@@ -35,11 +35,11 @@
         .btn-mic { background: #e0f2fe; color: #0284c7; border: 1px solid var(--secondary); border-radius: 8px; padding: 8px 10px; cursor: pointer; font-size: 0.95rem; }
         body.dark-mode .btn-mic { background: #1e293b; color: #38bdf8; }
         .filter-tab-bar { display: flex; background: var(--bg-color); border: 1px solid var(--border); border-radius: 12px; padding: 4px; margin-bottom: 12px; gap: 4px; }
-        .filter-tab-btn { flex: 1; padding: 8px 4px; border-radius: 8px; border: none; background: transparent; color: var(--text-muted); font-size: 0.72rem; font-weight: 700; cursor: pointer; text-align: center; }
+        .filter-tab-btn { flex: 1; padding: 8px 4px; border-radius: 8px; border: none; background: transparent; color: var(--text-muted); font-size: 0.72rem; font-weight: 700; cursor: pointer; transition: all 0.25s; text-align: center; }
         .filter-tab-btn.active { background: var(--primary) !important; color: white !important; box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3); }
         .water-progress-bar { width: 100%; height: 12px; background: #e2e8f0; border-radius: 10px; overflow: hidden; margin: 8px 0; }
         body.dark-mode .water-progress-bar { background: #334155; }
-        .water-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #38bdf8, #0284c7); border-radius: 10px; transition: width 0.3s ease; }
+        .water-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #38bdf8, #0284c7); border-radius: 10px; transition: width 0.3s; }
         .water-btn-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; }
         .w-btn { background: #e0f2fe; color: #0369a1; border: none; padding: 8px 2px; border-radius: 8px; font-size: 0.72rem; font-weight: 700; cursor: pointer; text-align: center; }
         .w-btn.minus { background: #fee2e2; color: #b91c1c; }
@@ -52,8 +52,11 @@
         .timeline-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-radius: 10px; background: var(--bg-color); border-left: 4px solid var(--secondary); margin-bottom: 6px; border: 1px solid var(--border); border-left-width: 4px; }
         .timeline-item.done { border-left-color: var(--safe); opacity: 0.65; text-decoration: line-through; }
         .btn-icon { background: none; border: none; font-size: 0.9rem; cursor: pointer; padding: 2px 4px; }
+        .days-pill-group { display: flex; gap: 4px; flex-wrap: wrap; margin: 6px 0 10px 0; }
+        .day-pill { padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border); font-size: 0.68rem; cursor: pointer; background: var(--bg-color); color: var(--text-muted); font-weight: 600; }
+        .day-pill.selected { background: var(--primary); color: white; border-color: var(--primary); }
         .video-anim-stage { border: 2px solid var(--primary); border-radius: 14px; padding: 12px; background: #020617; color: #38bdf8; margin-bottom: 12px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-        .anim-viewport { height: 140px; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 2.8rem; transition: all 0.3s ease; }
+        .anim-viewport { height: 140px; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 2.8rem; transition: all 0.3s; }
         .anim-step-badge { display: inline-block; background: var(--primary); color: white; font-size: 0.68rem; padding: 2px 8px; border-radius: 6px; font-weight: bold; margin-bottom: 4px; }
         .anim-guidance-text { font-size: 0.82rem; color: #f8fafc; font-weight: 700; margin-top: 6px; }
         .sound-list-scroll { max-height: 240px; overflow-y: auto; border: 1px solid var(--border); border-radius: 10px; padding: 6px; margin-bottom: 10px; background: var(--bg-color); }
@@ -70,7 +73,7 @@
         .nav-tab span { font-size: 1.15rem; }
         input, select, textarea { width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 8px; font-size: 0.85rem; background: var(--card-bg); color: var(--text-main); }
         .btn-prime { width: 100%; background: var(--primary); color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.82rem; }
-        .modal-overlay { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(5px); z-index: 50; justify-content: center; align-items: center; padding: 16px; }
+        .modal-overlay { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 50; justify-content: center; align-items: center; padding: 16px; }
         .modal-card { background: var(--card-bg); border-radius: 20px; padding: 16px; width: 100%; max-width: 380px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); color: var(--text-main); max-height: 90vh; overflow-y: auto; }
         .nutrient-badge { display: inline-block; font-size: 0.68rem; padding: 2px 6px; border-radius: 4px; margin: 2px; background: rgba(16, 185, 129, 0.15); color: var(--primary-dark); font-weight: 600; }
         .infographic-banner-box { width: 100%; border-radius: 14px; overflow: hidden; margin-bottom: 12px; border: 1px solid var(--border); background: #000; }
@@ -80,24 +83,37 @@
         .qr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; text-align: center; }
         .qr-card { background: var(--bg-color); padding: 8px; border-radius: 10px; border: 1px solid var(--border); }
         .qr-card img { width: 100%; max-width: 120px; border-radius: 8px; margin-bottom: 4px; }
+        .alarm-ring-popup { border: 3px solid var(--danger); text-align: center; animation: pulseAlarm 1s infinite alternate; }
+        @keyframes pulseAlarm { from { transform: scale(0.98); } to { transform: scale(1.02); } }
     </style>
 </head>
 <body>
 
 <div class="app-shell" id="appShell">
 
-    <!-- AUTH MODAL -->
+    <!-- AUTH MODAL (Passwordless & Instant Profile Update) -->
     <div class="modal-overlay" id="authModal" style="display:none;">
         <div class="modal-card" style="text-align:center;">
             <div style="font-size:2.2rem; margin-bottom:4px;">🧠</div>
             <b style="font-size:1.05rem;">Migraine Care এ স্বাগতম</b>
-            <p style="font-size:0.75rem; color:var(--text-muted); margin:4px 0 14px 0;">পাসওয়ার্ড ছাড়া এক ক্লিকে কানেক্ট করুন বা অতিথি হিসেবে প্রবেশ করুন</p>
-            <button class="btn-prime" style="background:#ea4335; margin-bottom:8px;" onclick="connectAuth('Google')">🔴 Google / Gmail দিয়ে কানেক্ট</button>
-            <button class="btn-prime" style="background:#1877f2; margin-bottom:8px;" onclick="connectAuth('Facebook')">🔵 Facebook দিয়ে কানেক্ট</button>
-            <button class="btn-prime" style="background:#0f172a; margin-bottom:12px;" onclick="connectAuth('Phone')">📱 মোবাইল নম্বর দিয়ে কানেক্ট</button>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin:4px 0 14px 0;">পাসওয়ার্ড ছাড়া এক ক্লিকে আইডি কানেক্ট করুন</p>
+            <button class="btn-prime" style="background:#ea4335; margin-bottom:8px;" onclick="quickLoginPrompt('Google')">🔴 Google / Gmail দিয়ে কানেক্ট</button>
+            <button class="btn-prime" style="background:#1877f2; margin-bottom:8px;" onclick="quickLoginPrompt('Facebook')">🔵 Facebook দিয়ে কানেক্ট</button>
+            <button class="btn-prime" style="background:#0f172a; margin-bottom:12px;" onclick="quickLoginPrompt('Phone')">📱 মোবাইল নম্বর দিয়ে কানেক্ট</button>
             <div style="border-top:1px dashed var(--border); padding-top:10px;">
-                <button class="btn-prime" style="background:var(--safe);" onclick="loginAsGuest()">🚶‍♂️ লগইন ছাড়া গেস্ট হিসেবে ব্যবহার করুন</button>
+                <button class="btn-prime" style="background:var(--safe);" onclick="loginAsGuest()">🚶‍♂️ অতিথি (Guest) হিসেবে প্রবেশ</button>
             </div>
+        </div>
+    </div>
+
+    <!-- LIVE ALARM RINGING POPUP -->
+    <div class="modal-overlay" id="alarmTriggerModal" style="display:none; z-index:9999;">
+        <div class="modal-card alarm-ring-popup">
+            <div style="font-size:3rem; margin-bottom:8px;">⏰</div>
+            <h3 style="color:var(--danger); margin-bottom:4px;">অ্যালার্ম বাজছে!</h3>
+            <p id="alarm-trigger-title" style="font-size:0.95rem; font-weight:700; margin-bottom:12px;">সময় হয়েছে!</p>
+            <button class="btn-prime" style="background:var(--danger); margin-bottom:8px; font-size:1rem;" onclick="dismissLiveAlarm()">🔕 অ্যালার্ম বন্ধ করুন</button>
+            <button class="btn-prime" style="background:#64748b;" onclick="snoozeLiveAlarm()">⏱️ ১০ মিনিট স্নুজ</button>
         </div>
     </div>
 
@@ -191,13 +207,13 @@
         <!-- 2. NOTIFICATION ROUTINE & ALARM -->
         <section id="view-routine-alarm" class="view-screen">
             <div class="card" style="background: linear-gradient(135deg, #e0f2fe, #f0fdf4);">
-                <div class="card-header"><span>🎵 রিংটোন সেট করুন (নোটিফিকেশন ও অ্যালার্ম)</span></div>
+                <div class="card-header"><span>🎵 রিংটোন নির্বাচন (নোটিফিকেশন ও অ্যালার্ম)</span></div>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
                     <button class="btn-prime" style="background:var(--secondary);" onclick="openRingtoneModal('notification')">🔔 ৩০টি নোটিফিকেশন</button>
                     <button class="btn-prime" style="background:#0f172a;" onclick="openRingtoneModal('alarm')">⏰ ৫০টি অ্যালার্ম</button>
                 </div>
                 <div style="font-size:0.72rem; color:var(--text-muted); margin-top:6px; text-align:center;">
-                    নির্বাচিত নোটিফিকেশন: <b id="lbl-selected-notif">সফট চাইম</b> | অ্যালার্ম: <b id="lbl-selected-alarm">৪৩২ হার্টজ ওয়েক-আপ</b>
+                    নোটিফিকেশন: <b id="lbl-selected-notif">সফট চাইম</b> | অ্যালার্ম: <b id="lbl-selected-alarm">৪৩২ হার্টজ ওয়েক-আপ</b>
                 </div>
             </div>
 
@@ -355,26 +371,7 @@
                 </div>
             </div>
 
-            <!-- PUBLIC COMMENT & FEEDBACK SECTION -->
-            <div class="card">
-                <div class="card-header">💬 মতামত ও পরামর্শ বক্স</div>
-                <p style="font-size:0.75rem; color:var(--primary-dark); font-weight:600; margin-bottom:8px;">
-                    (এই অ্যাপসে কোনো কিছু পরিবর্তন অথবা যোগ করতে চাইলে আপনারা মন্তব্য করুন, সংশোধন করার চেষ্টা করবো ইনশাআল্লাহ)
-                </p>
-                <div class="voice-input-group">
-                    <input type="text" id="user-comment-name" placeholder="আপনার নাম ও পরিচয় লিখুন...">
-                    <button class="btn-mic" onclick="startVoiceInput('user-comment-name', this)">🎤</button>
-                </div>
-                <div class="voice-input-group">
-                    <textarea id="user-comment-msg" placeholder="আপনার পরামর্শ বা মন্তব্য লিখুন..." rows="2"></textarea>
-                    <button class="btn-mic" onclick="startVoiceInput('user-comment-msg', this)">🎤</button>
-                </div>
-                <button class="btn-prime" onclick="submitPublicComment()">মতামত পাঠান</button>
-                <div style="font-size:0.8rem; font-weight:700; margin:12px 0 6px 0;">পূর্ববর্তী মন্তব্য ও ওনারের উত্তর:</div>
-                <div id="public-comments-feed"></div>
-            </div>
-
-            <!-- OWNER PROFILE (5-TAP TO UNLOCK) -->
+            <!-- OWNER PROFILE (PLACED DIRECTLY ABOVE PUBLIC COMMENT BOX) -->
             <div class="card" style="border: 2px solid var(--border); text-align:center; padding:16px;">
                 <div style="font-size:0.78rem; font-weight:700; margin-bottom:8px; color:var(--text-muted);">অ্যাপ উদ্ভাবক ও স্বত্বাধিকারী</div>
                 <div style="display:inline-block; cursor:pointer;" onclick="handleOwnerSecretTap()">
@@ -395,7 +392,26 @@
                         <span style="font-size:0.65rem; color:var(--safe); display:block;">sakibhossainkabiraj</span>
                     </div>
                 </div>
-                <div style="font-size:0.68rem; color:var(--text-muted); margin-top:10px;">Migraine Care v4.0 • Stay Healthy, Stay Happy 🌿</div>
+                <div style="font-size:0.68rem; color:var(--text-muted); margin-top:10px;">Migraine Care v5.0 • Stay Healthy, Stay Happy 🌿</div>
+            </div>
+
+            <!-- PUBLIC COMMENT & FEEDBACK SECTION (BELOW OWNER PROFILE) -->
+            <div class="card">
+                <div class="card-header">💬 মতামত ও পরামর্শ বক্স</div>
+                <p style="font-size:0.75rem; color:var(--primary-dark); font-weight:600; margin-bottom:8px;">
+                    (এই অ্যাপসে কোনো কিছু পরিবর্তন অথবা যোগ করতে চাইলে আপনারা মন্তব্য করুন, সংশোধন করার চেষ্টা করবো ইনশাআল্লাহ)
+                </p>
+                <div class="voice-input-group">
+                    <input type="text" id="user-comment-name" placeholder="আপনার নাম ও পরিচয় লিখুন...">
+                    <button class="btn-mic" onclick="startVoiceInput('user-comment-name', this)">🎤</button>
+                </div>
+                <div class="voice-input-group">
+                    <textarea id="user-comment-msg" placeholder="আপনার পরামর্শ বা মন্তব্য লিখুন..." rows="2"></textarea>
+                    <button class="btn-mic" onclick="startVoiceInput('user-comment-msg', this)">🎤</button>
+                </div>
+                <button class="btn-prime" onclick="submitPublicComment()">মতামত পাঠান</button>
+                <div style="font-size:0.8rem; font-weight:700; margin:12px 0 6px 0;">আপনার পূর্ববর্তী মন্তব্য ও ওনারের উত্তর:</div>
+                <div id="public-comments-feed"></div>
             </div>
         </section>
 
@@ -514,7 +530,7 @@
         </div>
     </div>
 
-    <!-- ADD/EDIT ROUTINE MODAL -->
+    <!-- ADD/EDIT ROUTINE MODAL (WITH SAT-FRI DAY SELECTION) -->
     <div class="modal-overlay" id="routineModal">
         <div class="modal-card">
             <b style="font-size:0.95rem; margin-bottom:8px; display:block;" id="routine-modal-title">📋 নোটিফিকেশন রুটিন</b>
@@ -526,6 +542,16 @@
                 <input type="text" id="new-routine-task" placeholder="যেমন: ওষুধ খাওয়া / পানি পান">
                 <button class="btn-mic" onclick="startVoiceInput('new-routine-task', this)">🎤</button>
             </div>
+            <label style="font-size:0.72rem; color:var(--text-muted);">কি কি বারে নোটিফিকেশন চান (শনি-শুক্র):</label>
+            <div class="days-pill-group" id="routine-days-selector">
+                <div class="day-pill selected" onclick="toggleDayPill(this)" data-day="6">শনি</div>
+                <div class="day-pill selected" onclick="toggleDayPill(this)" data-day="0">রবি</div>
+                <div class="day-pill selected" onclick="toggleDayPill(this)" data-day="1">সোম</div>
+                <div class="day-pill selected" onclick="toggleDayPill(this)" data-day="2">মঙ্গল</div>
+                <div class="day-pill selected" onclick="toggleDayPill(this)" data-day="3">বুধ</div>
+                <div class="day-pill selected" onclick="toggleDayPill(this)" data-day="4">বৃহ</div>
+                <div class="day-pill selected" onclick="toggleDayPill(this)" data-day="5">শুক্র</div>
+            </div>
             <div style="display:flex; gap:8px;">
                 <button class="btn-prime" onclick="saveRoutineItem()">সংরক্ষণ করুন</button>
                 <button class="btn-prime" style="background:#64748b;" onclick="closeAddRoutineModal()">বাতিল</button>
@@ -533,7 +559,7 @@
         </div>
     </div>
 
-    <!-- ADD/EDIT ALARM MODAL -->
+    <!-- ADD/EDIT ALARM MODAL (WITH SAT-FRI DAY SELECTION) -->
     <div class="modal-overlay" id="alarmModal">
         <div class="modal-card">
             <b style="font-size:0.95rem; margin-bottom:8px; display:block;" id="alarm-modal-title">⏰ কাস্টম অ্যালার্ম</b>
@@ -542,6 +568,16 @@
             <div class="voice-input-group">
                 <input type="text" id="new-alarm-label" placeholder="অ্যালার্মের কাজের বিবরণ...">
                 <button class="btn-mic" onclick="startVoiceInput('new-alarm-label', this)">🎤</button>
+            </div>
+            <label style="font-size:0.72rem; color:var(--text-muted);">কি কি বারে অ্যালার্ম বাজবে (শনি-শুক্র):</label>
+            <div class="days-pill-group" id="alarm-days-selector">
+                <div class="day-pill selected" onclick="toggleDayPill(this)" data-day="6">শনি</div>
+                <div class="day-pill selected" onclick="toggleDayPill(this)" data-day="0">রবি</div>
+                <div class="day-pill selected" onclick="toggleDayPill(this)" data-day="1">সোম</div>
+                <div class="day-pill selected" onclick="toggleDayPill(this)" data-day="2">মঙ্গল</div>
+                <div class="day-pill selected" onclick="toggleDayPill(this)" data-day="3">বুধ</div>
+                <div class="day-pill selected" onclick="toggleDayPill(this)" data-day="4">বৃহ</div>
+                <div class="day-pill selected" onclick="toggleDayPill(this)" data-day="5">শুক্র</div>
             </div>
             <div style="display:flex; gap:8px;">
                 <button class="btn-prime" onclick="saveAlarmItem()">সংরক্ষণ করুন</button>
@@ -562,8 +598,8 @@
 </div>
 
 <script>
-    // --- 1. LOCALSTORAGE STATE & PERSISTENCE ---
-    const STORAGE_KEY = 'migraine_care_v7_ultra';
+    // --- 1. LOCALSTORAGE & PERSISTENCE ---
+    const STORAGE_KEY = 'migraine_care_v8_master';
 
     const defaultData = {
         isLoggedIn: false, authType: 'guest',
@@ -578,19 +614,19 @@
             { id: 6, text: "৩৫০০ মিলি পানি পানের লক্ষ্য পূরণ করেছি", done: false }
         ],
         routines: [
-            { id: 1, time: "07:00", task: "ঘুম থেকে উঠা ও ৫০০ মিলি পানি পান", done: false },
-            { id: 2, time: "07:30", task: "হালকা ঘাড় ও পিঠের স্ট্রেচিং (১০ মিনিট)", done: false },
-            { id: 3, time: "09:00", task: "পুষ্টিকর সকালের নাস্তা ও ওষুধ গ্রহণ", done: false },
-            { id: 4, time: "12:00", task: "পানি পানের রিমাইন্ডার (৫০০ মিলি)", done: false },
-            { id: 5, time: "16:00", task: "২০-২০-২০ চোখের বিশ্রাম ও বিরতি", done: false },
-            { id: 6, time: "21:00", task: "মৃদু আলো ও ঘুমের প্রস্তুতি", done: false }
+            { id: 1, time: "07:00", task: "ঘুম থেকে উঠা ও ৫০০ মিলি পানি পান", done: false, days: [0,1,2,3,4,5,6] },
+            { id: 2, time: "07:30", task: "হালকা ঘাড় ও পিঠের স্ট্রেচিং (১০ মিনিট)", done: false, days: [0,1,2,3,4,5,6] },
+            { id: 3, time: "09:00", task: "পুষ্টিকর সকালের নাস্তা ও ওষুধ গ্রহণ", done: false, days: [0,1,2,3,4,5,6] },
+            { id: 4, time: "12:00", task: "পানি পানের রিমাইন্ডার (৫০০ মিলি)", done: false, days: [0,1,2,3,4,5,6] },
+            { id: 5, time: "16:00", task: "২০-২০-২০ চোখের বিশ্রাম ও বিরতি", done: false, days: [0,1,2,3,4,5,6] },
+            { id: 6, time: "21:00", task: "মৃদু আলো ও ঘুমের প্রস্তুতি", done: false, days: [0,1,2,3,4,5,6] }
         ],
         alarms: [
-            { id: 1, time: "07:00", label: "ঘুম থেকে উঠা ও পানি পান", active: true },
-            { id: 2, time: "09:00", label: "সকালের নাস্তা ও ওষুধ রিমাইন্ডার", active: true }
+            { id: 1, time: "07:00", label: "ঘুম থেকে উঠা ও পানি পান", active: true, days: [0,1,2,3,4,5,6] },
+            { id: 2, time: "09:00", label: "সকালের নাস্তা ও ওষুধ রিমাইন্ডার", active: true, days: [0,1,2,3,4,5,6] }
         ],
         comments: [
-            { id: 1, name: "তানজিম আহমেদ", msg: "অ্যাপটি অনেক সুন্দর হয়েছে। মাইগ্রেন রোগীদের জন্য খুব উপকারী!", reply: "ধন্যবাদ ভাই! সুস্থ থাকুন, ভালো থাকুন।" }
+            { id: 1, userName: "রিমু", name: "রিমু", msg: "অ্যাপটি অনেক সুন্দর হয়েছে। মাইগ্রেন রোগীদের জন্য খুব উপকারী!", reply: "ধন্যবাদ রিমু! স্বাস্থ্যবিধি মেনে নিয়মিত পানি পান করুন ও সুস্থ থাকুন।" }
         ],
         selectedNotifRingtone: "সফট চাইম", selectedAlarmRingtone: "৪৩২ হার্টজ ওয়েক-আপ",
         syncAlarm: true, darkMode: false, lang: "bn"
@@ -608,17 +644,28 @@
 
     function persist() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(appData)); } catch(e) {} }
 
-    // --- 2. AUTHENTICATION ---
+    // --- 2. AUTHENTICATION & LOGIN ---
     function checkAuth() {
         document.getElementById('authModal').style.display = appData.isLoggedIn ? 'none' : 'flex';
     }
-    function connectAuth(provider) {
-        appData.isLoggedIn = true; appData.authType = provider; persist();
-        document.getElementById('authModal').style.display = 'none';
-        alert(`${provider} দিয়ে কানেক্ট হয়েছে!`);
+    function quickLoginPrompt(provider) {
+        const val = prompt(`${provider} দিয়ে কানেক্ট করতে আপনার নাম লিখুন:`, appData.user.name || "ব্যবহারকারী");
+        if (val) {
+            appData.isLoggedIn = true;
+            appData.authType = provider;
+            appData.user.name = val.trim();
+            if (provider === 'Google') appData.user.avatar = "https://cdn-icons-png.flaticon.com/512/2991/2991148.png";
+            else if (provider === 'Facebook') appData.user.avatar = "https://cdn-icons-png.flaticon.com/512/5968/5968764.png";
+            persist();
+            renderUserProfileUI();
+            renderPublicComments();
+            document.getElementById('authModal').style.display = 'none';
+            alert(`${provider} দিয়ে সফলভাবে কানেক্ট হয়েছে! স্বাগতম ${appData.user.name}!`);
+        }
     }
     function loginAsGuest() {
         appData.isLoggedIn = true; appData.authType = 'guest'; persist();
+        renderUserProfileUI();
         document.getElementById('authModal').style.display = 'none';
     }
 
@@ -704,7 +751,6 @@
         updateAdherenceRate();
         renderDoctorReport();
     }
-
     function toggleComplianceDone(id) {
         const item = appData.complianceList.find(c => c.id === id);
         if (item) { item.done = !item.done; persist(); updateAdherenceRate(); renderDoctorReport(); }
@@ -751,7 +797,24 @@
         if (tag) tag.innerText = `${Math.round((done / list.length) * 100)}% পালন`;
     }
 
-    // --- 9. ROUTINES ---
+    // --- 9. DAYS PILL HELPER (SAT-FRI) ---
+    function toggleDayPill(el) {
+        el.classList.toggle('selected');
+    }
+    function getSelectedDays(containerId) {
+        const pills = document.querySelectorAll(`#${containerId} .day-pill.selected`);
+        return Array.from(pills).map(p => parseInt(p.getAttribute('data-day')));
+    }
+    function setSelectedDays(containerId, daysArray) {
+        const pills = document.querySelectorAll(`#${containerId} .day-pill`);
+        pills.forEach(p => {
+            const d = parseInt(p.getAttribute('data-day'));
+            if (daysArray && daysArray.includes(d)) p.classList.add('selected');
+            else p.classList.remove('selected');
+        });
+    }
+
+    // --- 10. ROUTINES ---
     function renderRoutines() {
         const box = document.getElementById('routine-list-box');
         if (!box) return;
@@ -776,6 +839,7 @@
         document.getElementById('edit-routine-id').value = '';
         document.getElementById('routine-modal-title').innerText = "📋 নতুন রুটিন যোগ করুন";
         document.getElementById('new-routine-task').value = '';
+        setSelectedDays('routine-days-selector', [0,1,2,3,4,5,6]);
         document.getElementById('routineModal').style.display = 'flex';
     }
     function openEditRoutineModal(id) {
@@ -785,6 +849,7 @@
             document.getElementById('routine-modal-title').innerText = "✏️ রুটিন পরিবর্তন করুন";
             document.getElementById('new-routine-time').value = item.time;
             document.getElementById('new-routine-task').value = item.task;
+            setSelectedDays('routine-days-selector', item.days || [0,1,2,3,4,5,6]);
             document.getElementById('routineModal').style.display = 'flex';
         }
     }
@@ -793,12 +858,13 @@
         const id = document.getElementById('edit-routine-id').value;
         const time = document.getElementById('new-routine-time').value;
         const task = document.getElementById('new-routine-task').value.trim();
+        const days = getSelectedDays('routine-days-selector');
         if (!task) return alert("কাজের বিবরণ দিন!");
         if (id) {
             const item = appData.routines.find(r => r.id == id);
-            if (item) { item.time = time; item.task = task; }
+            if (item) { item.time = time; item.task = task; item.days = days; }
         } else {
-            appData.routines.push({ id: Date.now(), time, task, done: false });
+            appData.routines.push({ id: Date.now(), time, task, done: false, days });
         }
         persist(); renderRoutines(); closeAddRoutineModal();
     }
@@ -813,7 +879,7 @@
         alert(checked ? "রুটিনের কাজগুলো স্বয়ংক্রিয় অ্যালার্ম হিসেবে সেট করা হয়েছে।" : "রুটিন ও অ্যালার্ম আলাদা করা হয়েছে।");
     }
 
-    // --- 10. ALARMS ---
+    // --- 11. ALARMS ---
     function renderAlarms() {
         const box = document.getElementById('alarm-list-box');
         if (!box) return;
@@ -839,6 +905,7 @@
         document.getElementById('edit-alarm-id').value = '';
         document.getElementById('alarm-modal-title').innerText = "⏰ কাস্টম অ্যালার্ম";
         document.getElementById('new-alarm-label').value = '';
+        setSelectedDays('alarm-days-selector', [0,1,2,3,4,5,6]);
         document.getElementById('alarmModal').style.display = 'flex';
     }
     function openEditAlarmModal(id) {
@@ -848,6 +915,7 @@
             document.getElementById('alarm-modal-title').innerText = "✏️ অ্যালার্ম এডিট করুন";
             document.getElementById('new-alarm-time').value = a.time;
             document.getElementById('new-alarm-label').value = a.label;
+            setSelectedDays('alarm-days-selector', a.days || [0,1,2,3,4,5,6]);
             document.getElementById('alarmModal').style.display = 'flex';
         }
     }
@@ -856,12 +924,13 @@
         const id = document.getElementById('edit-alarm-id').value;
         const time = document.getElementById('new-alarm-time').value;
         const label = document.getElementById('new-alarm-label').value.trim();
+        const days = getSelectedDays('alarm-days-selector');
         if (!label) return alert("অ্যালার্মের কাজের বিবরণ দিন!");
         if (id) {
             const a = appData.alarms.find(x => x.id == id);
-            if (a) { a.time = time; a.label = label; }
+            if (a) { a.time = time; a.label = label; a.days = days; }
         } else {
-            appData.alarms.push({ id: Date.now(), time, label, active: true });
+            appData.alarms.push({ id: Date.now(), time, label, active: true, days });
         }
         persist(); renderAlarms(); closeAddAlarmModal();
     }
@@ -872,24 +941,98 @@
         }
     }
 
-    // --- 11. AUDIO ENGINE & RINGTONES ---
+    // --- 12. WEB AUDIO API & ALARM/NOTIFICATION ENGINE ---
+    let audioCtx = null;
+    let alarmLoopInterval = null;
+
+    function getAudioContext() {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        return audioCtx;
+    }
+    document.addEventListener('click', getAudioContext, { once: true });
+    document.addEventListener('touchstart', getAudioContext, { once: true });
+
     function playAcousticTone(freq, type, duration, count = 1) {
         try {
-            const AudioCtx = window.AudioContext || window.webkitAudioContext;
-            const ctx = new AudioCtx();
+            const ctx = getAudioContext();
             for (let i = 0; i < count; i++) {
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 osc.type = type;
                 osc.frequency.setValueAtTime(freq + (i * 35), ctx.currentTime + (i * 0.12));
                 gain.gain.setValueAtTime(0.01, ctx.currentTime + (i * 0.12));
-                gain.gain.exponentialRampToValueAtTime(0.28, ctx.currentTime + (i * 0.12) + 0.04);
+                gain.gain.exponentialRampToValueAtTime(0.3, ctx.currentTime + (i * 0.12) + 0.04);
                 gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (i * 0.12) + duration);
                 osc.connect(gain); gain.connect(ctx.destination);
                 osc.start(ctx.currentTime + (i * 0.12));
                 osc.stop(ctx.currentTime + (i * 0.12) + duration + 0.05);
             }
         } catch(e) {}
+    }
+
+    // Alarm checking loop
+    let lastRingCheck = "";
+    setInterval(runAlarmTimerCheck, 2500);
+
+    function runAlarmTimerCheck() {
+        const now = new Date();
+        const currentDay = now.getDay(); // 0: Sun, 1: Mon, ... 6: Sat
+        const hh = String(now.getHours()).padStart(2, '0');
+        const mm = String(now.getMinutes()).padStart(2, '0');
+        const currentClock = `${hh}:${mm}`;
+
+        if (lastRingCheck === currentClock) return;
+
+        // Check active alarms
+        for (let a of appData.alarms) {
+            if (a.active && a.time === currentClock) {
+                const days = a.days || [0,1,2,3,4,5,6];
+                if (days.includes(currentDay)) {
+                    lastRingCheck = currentClock;
+                    triggerLiveAlarmRing(a.label);
+                    return;
+                }
+            }
+        }
+
+        // Check routines if synced
+        if (appData.syncAlarm) {
+            for (let r of appData.routines) {
+                if (!r.done && r.time === currentClock) {
+                    const days = r.days || [0,1,2,3,4,5,6];
+                    if (days.includes(currentDay)) {
+                        lastRingCheck = currentClock;
+                        triggerLiveAlarmRing(r.task);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    function triggerLiveAlarmRing(title) {
+        document.getElementById('alarm-trigger-title').innerText = title;
+        document.getElementById('alarmTriggerModal').style.display = 'flex';
+        // Ring sound in continuous loop
+        clearInterval(alarmLoopInterval);
+        playAlarmRingingBeat();
+        alarmLoopInterval = setInterval(playAlarmRingingBeat, 2000);
+    }
+
+    function playAlarmRingingBeat() {
+        playAcousticTone(520, 'sawtooth', 0.5, 4);
+    }
+
+    function dismissLiveAlarm() {
+        clearInterval(alarmLoopInterval);
+        document.getElementById('alarmTriggerModal').style.display = 'none';
+    }
+
+    function snoozeLiveAlarm() {
+        clearInterval(alarmLoopInterval);
+        document.getElementById('alarmTriggerModal').style.display = 'none';
+        alert("১০ মিনিটের জন্য স্নুজ করা হলো। ১০ মিনিট পর আবার বাজবে।");
     }
 
     let currentRingtoneMode = 'notification';
@@ -951,7 +1094,7 @@
         return `শক্তিশালী ওয়েক-আপ অ্যালার্ম ${i}`;
     }
 
-    // --- 12. DATE-WISE HISTORY & DOCTOR REPORT ---
+    // --- 13. DATE-WISE HISTORY & DOCTOR REPORT ---
     function filterHistory(type, btnEl) {
         document.querySelectorAll('.filter-tab-btn').forEach(b => b.classList.remove('active'));
         if (btnEl) btnEl.classList.add('active');
@@ -976,7 +1119,7 @@
             document.getElementById('hist-painfree-days').innerText = "২৬ দিন";
             document.getElementById('hist-med-count').innerText = "২ বার (৭%)";
             logsBox.innerHTML = `
-                <div class="timeline-item"><div><b>অক্টোবর মাস:</b> মোট ব্যথামুক্ত দিন ২৬ দিন</div><button class="btn-icon" onclick="openEditHistory('মাসিক ব্যথামুক্ত')">✏️</button></div>
+                <div class="timeline-item"><div><b>চলতি মাস:</b> মোট ব্যথামুক্ত দিন ২৬ দিন</div><button class="btn-icon" onclick="openEditHistory('মাসিক ব্যথামুক্ত')">✏️</button></div>
                 <div class="timeline-item"><div><b>ওষুধ ও মাইগ্রেন ব্যথা:</b> মাত্র ২ দিন ব্যথা ও ওষুধ লেগেছিল</div><button class="btn-icon" onclick="openEditHistory('মাসিক ওষুধ')">✏️</button></div>`;
         } else {
             document.getElementById('hist-painfree-days').innerText = "৩১০ দিন";
@@ -1016,7 +1159,7 @@
             </div>`;
     }
 
-    // --- 13. ANIMATED EXERCISE SIMULATOR ---
+    // --- 14. ANIMATED EXERCISE SIMULATOR ---
     const exerciseAnimSteps = [
         { label: "ধাপ A ➔ শুরু", icon: "🧘‍♀️", text: "১. সোজা হয়ে বসুন, কাঁধ আলতো পেছনে রাখুন" },
         { label: "ধাপ B ➔ মুভমেন্ট", icon: "🙆‍♀️", text: "২. হাত ডানে ও বামে আলতো স্ট্রেচ করে বুক প্রসারিত করুন" },
@@ -1097,7 +1240,7 @@
         }
     }
 
-    // --- 14. USER PROFILE & BMI ---
+    // --- 15. USER PROFILE & BMI ---
     function openUserModal() {
         document.getElementById('user-name-input').value = appData.user.name;
         document.getElementById('user-gender-input').value = appData.user.gender;
@@ -1129,7 +1272,7 @@
         const hM = heightCm / 100;
         const bmi = (weight / (hM * hM)).toFixed(1);
         const idealMin = Math.round(18.5 * hM * hM);
-const idealMax = Math.round(24.9 * hM * hM);
+        const idealMax = Math.round(24.9 * hM * hM);
         const idealAvg = Math.round((idealMin + idealMax) / 2);
         const fb = document.getElementById('profile-bmi-feedback');
         if (fb) {
@@ -1145,6 +1288,7 @@ const idealMax = Math.round(24.9 * hM * hM);
         appData.user.age = parseFloat(document.getElementById('calc-age').value) || 24;
         appData.user.weight = parseFloat(document.getElementById('calc-w').value) || 55;
         persist(); renderUserProfileUI(); renderExercisesByGender(); renderDoctorReport();
+        renderPublicComments();
         closeUserModal(); alert("প্রোফাইল সংরক্ষিত হয়েছে!");
     }
     function renderUserProfileUI() {
@@ -1156,28 +1300,30 @@ const idealMax = Math.round(24.9 * hM * hM);
         if (avEl && appData.user.avatar) avEl.src = appData.user.avatar;
     }
 
-    // --- 15. PUBLIC COMMENTS ---
+    // --- 16. PERSONALIZED PUBLIC COMMENTS (Only User Sees Own Replies) ---
     function submitPublicComment() {
-        const name = document.getElementById('user-comment-name').value.trim() || 'শুভাকাঙ্ক্ষী';
+        const name = document.getElementById('user-comment-name').value.trim() || appData.user.name;
         const msg = document.getElementById('user-comment-msg').value.trim();
         if (!msg) return alert("দয়া করে মন্তব্যটি লিখুন বা মুখে বলুন!");
-        appData.comments.push({ id: Date.now(), name, msg, reply: "" });
+        appData.comments.push({ id: Date.now(), userName: appData.user.name, name, msg, reply: "" });
         persist(); renderPublicComments();
         document.getElementById('user-comment-msg').value = '';
-        alert("আপনার মতামত পাঠানো হয়েছে! ওনার উত্তর দেবেন।");
+        alert("আপনার মতামত ওনার মোঃ সাকিব হোসাইন নিরব এর কাছে পাঠানো হয়েছে!");
     }
     function renderPublicComments() {
         const feed = document.getElementById('public-comments-feed');
         if (!feed) return;
         feed.innerHTML = '';
-        if (!appData.comments.length) {
-            feed.innerHTML = '<div style="font-size:0.75rem; color:var(--text-muted);">এখনো কোনো মন্তব্য নেই।</div>';
+        // Only show comments from current profile
+        const userComments = appData.comments.filter(c => c.userName === appData.user.name || c.name === appData.user.name);
+        if (!userComments.length) {
+            feed.innerHTML = '<div style="font-size:0.75rem; color:var(--text-muted);">আপনার কোনো পূর্ববর্তী মন্তব্য নেই। ওনারের পরামর্শের জন্য মন্তব্য লিখুন।</div>';
             return;
         }
-        appData.comments.forEach(c => {
+        userComments.forEach(c => {
             const div = document.createElement('div');
             div.className = "comment-item";
-            div.innerHTML = `<div><b>${c.name}:</b> ${c.msg}</div>${c.reply ? `<div class="owner-reply-box"><b>ওনার মোঃ সাকিব হোসাইন নিরব:</b> ${c.reply}</div>` : `<div style="font-size:0.68rem; color:var(--text-muted); margin-top:4px;">(ওনার এখনো উত্তর দেননি)</div>`}`;
+            div.innerHTML = `<div><b>${c.name}:</b> ${c.msg}</div>${c.reply ? `<div class="owner-reply-box"><b>ওনার মোঃ সাকিব হোসাইন নিরব:</b> ${c.reply}</div>` : `<div style="font-size:0.68rem; color:var(--text-muted); margin-top:4px;">(ওনার এখনো উত্তর দেননি, উত্তর দিলে শুধুমাত্র আপনার এই প্রোফাইলেই দেখা যাবে)</div>`}`;
             feed.appendChild(div);
         });
     }
@@ -1185,11 +1331,15 @@ const idealMax = Math.round(24.9 * hM * hM);
         const mgr = document.getElementById('owner-comments-manager');
         if (!mgr) return;
         mgr.innerHTML = '';
+        if (!appData.comments.length) {
+            mgr.innerHTML = '<div style="font-size:0.75rem; color:var(--text-muted);">কোনো নতুন মন্তব্য জমা নেই।</div>';
+            return;
+        }
         appData.comments.forEach(c => {
             const div = document.createElement('div');
             div.className = "comment-item";
             div.innerHTML = `
-                <div><b>${c.name}:</b> ${c.msg}</div>
+                <div><b>${c.name} (${c.userName}):</b> ${c.msg}</div>
                 <div style="margin-top:4px; font-size:0.75rem; color:var(--primary-dark);"><b>আপনার উত্তর:</b> ${c.reply || 'দেওয়া হয়নি'}</div>
                 <div style="margin-top:6px; display:flex; gap:6px;">
                     <button class="btn-prime" style="padding:4px 8px; font-size:0.7rem;" onclick="openReplyModal(${c.id})">💬 উত্তর / এডিট</button>
@@ -1213,7 +1363,7 @@ const idealMax = Math.round(24.9 * hM * hM);
         const c = appData.comments.find(x => x.id == id);
         if (c) {
             c.reply = reply; persist(); renderPublicComments(); renderOwnerCommentsManager();
-            closeReplyModal(); alert("উত্তর পোস্ট হয়েছে!");
+            closeReplyModal(); alert("উত্তর সফলভাবে পাঠানো হয়েছে! শুধুমাত্র ওই ব্যবহারকারীই এটি দেখতে পাবেন।");
         }
     }
     function deleteCommentPermanently(id) {
@@ -1227,7 +1377,7 @@ const idealMax = Math.round(24.9 * hM * hM);
         alert("ওনার ঘোষণা ও নতুন তথ্য সংরক্ষিত হয়েছে!");
     }
 
-    // --- 16. SECRET OWNER MASTER CONTROL (5-TAP) ---
+    // --- 17. SECRET OWNER MASTER CONTROL (5-TAP) ---
     let ownerTapCount = 0, ownerTapTimer = null;
     function handleOwnerSecretTap() {
         ownerTapCount++; clearTimeout(ownerTapTimer);
@@ -1256,7 +1406,7 @@ const idealMax = Math.round(24.9 * hM * hM);
         }
     }
 
-    // --- 17. AI DOCTOR CHATBOT ---
+    // --- 18. AI DOCTOR CHATBOT ---
     function sendChatMessage() {
         const input = document.getElementById('chatInput');
         const text = input.value.trim();
@@ -1282,7 +1432,7 @@ const idealMax = Math.round(24.9 * hM * hM);
         }, 500);
     }
 
-    // --- 18. DARK MODE & LANGUAGE ---
+    // --- 19. DARK MODE & LANGUAGE (Select Language Remains English) ---
     function toggleDarkMode() {
         appData.darkMode = document.getElementById('darkToggle').checked;
         persist(); applyTheme();
@@ -1302,7 +1452,7 @@ const idealMax = Math.round(24.9 * hM * hM);
         alert("Selected Language: " + lang.toUpperCase() + "\n(অ্যাপের ভাষা পরিবর্তিত হয়েছে!)");
     }
 
-    // --- 19. INITIALIZATION ---
+    // --- 20. INITIALIZATION ---
     function initApp() {
         try {
             checkAuth();
