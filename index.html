@@ -85,13 +85,16 @@
         .qr-card img { width: 100%; max-width: 120px; border-radius: 8px; margin-bottom: 4px; }
         .alarm-ring-popup { border: 3px solid var(--danger); text-align: center; animation: pulseAlarm 1s infinite alternate; }
         @keyframes pulseAlarm { from { transform: scale(0.98); } to { transform: scale(1.02); } }
+        .comment-history-row { cursor: pointer; transition: background 0.15s; }
+        .comment-history-row:hover, .comment-history-row.active-user { background: rgba(16, 185, 129, 0.08); }
+        .history-add-btn { background: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="app-shell" id="appShell">
 
-    <!-- AUTH MODAL (Passwordless & Instant Profile Update) -->
+    <!-- AUTH MODAL -->
     <div class="modal-overlay" id="authModal" style="display:none;">
         <div class="modal-card" style="text-align:center;">
             <div style="font-size:2.2rem; margin-bottom:4px;">🧠</div>
@@ -241,7 +244,10 @@
         <!-- 3. COMBINED: HEALTH & DOCTOR RECORDS -->
         <section id="view-records" class="view-screen">
             <div class="card">
-                <div class="card-header"><span>📊 স্বাস্থ্য ও ডাক্তারি হিস্ট্রি রেকর্ড</span></div>
+                <div class="card-header">
+                    <span>📊 স্বাস্থ্য ও ডাক্তারি হিস্ট্রি রেকর্ড</span>
+                    <button class="history-add-btn" onclick="openAddHistoryModal()">+ হিস্ট্রি যোগ</button>
+                </div>
                 <div class="filter-tab-bar">
                     <button class="filter-tab-btn active" id="btn-hist-daily" onclick="filterHistory('daily', this)">দৈনিক</button>
                     <button class="filter-tab-btn" id="btn-hist-weekly" onclick="filterHistory('weekly', this)">সাপ্তাহিক</button>
@@ -371,7 +377,7 @@
                 </div>
             </div>
 
-            <!-- OWNER PROFILE (PLACED DIRECTLY ABOVE PUBLIC COMMENT BOX) -->
+            <!-- OWNER PROFILE -->
             <div class="card" style="border: 2px solid var(--border); text-align:center; padding:16px;">
                 <div style="font-size:0.78rem; font-weight:700; margin-bottom:8px; color:var(--text-muted);">অ্যাপ উদ্ভাবক ও স্বত্বাধিকারী</div>
                 <div style="display:inline-block; cursor:pointer;" onclick="handleOwnerSecretTap()">
@@ -392,10 +398,10 @@
                         <span style="font-size:0.65rem; color:var(--safe); display:block;">sakibhossainkabiraj</span>
                     </div>
                 </div>
-                <div style="font-size:0.68rem; color:var(--text-muted); margin-top:10px;">Migraine Care v5.0 • Stay Healthy, Stay Happy 🌿</div>
+                <div style="font-size:0.68rem; color:var(--text-muted); margin-top:10px;">Migraine Care v5.1 • Stay Healthy, Stay Happy 🌿</div>
             </div>
 
-            <!-- PUBLIC COMMENT & FEEDBACK SECTION (BELOW OWNER PROFILE) -->
+            <!-- PUBLIC COMMENT & FEEDBACK -->
             <div class="card">
                 <div class="card-header">💬 মতামত ও পরামর্শ বক্স</div>
                 <p style="font-size:0.75rem; color:var(--primary-dark); font-weight:600; margin-bottom:8px;">
@@ -491,25 +497,68 @@
                     </div>
                     <button class="btn-prime" onclick="saveOwnerAnnouncements()">সংরক্ষণ ও আপডেট করুন</button>
                 </div>
-                <b style="font-size:0.8rem; display:block; margin-bottom:6px;">💬 পাবলিক কমেন্ট ও উত্তর দেওয়ার ব্যবস্থা:</b>
-                <div id="owner-comments-manager" style="max-height:180px; overflow-y:auto; margin-bottom:10px;"></div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                    <b style="font-size:0.8rem;">💬 পাবলিক কমেন্ট হিস্ট্রি (ফেসবুক স্টাইল)</b>
+                    <button class="btn-prime" style="width:auto; padding:4px 10px; font-size:0.72rem;" onclick="openOwnerAddCommentModal()">+ এডেড</button>
+                </div>
+                <div id="owner-comments-manager" style="max-height:220px; overflow-y:auto; margin-bottom:10px;"></div>
                 <button class="btn-prime" style="background:#0f172a; margin-top:10px;" onclick="closeSecretOwnerModal()">লক করে প্রস্থান করুন</button>
             </div>
         </div>
     </div>
 
-    <!-- OWNER REPLY MODAL -->
+    <!-- OWNER REPLY / EDIT MODAL -->
     <div class="modal-overlay" id="replyModal">
         <div class="modal-card">
-            <b style="font-size:0.95rem; margin-bottom:8px; display:block;">💬 কমেন্টের উত্তর (Reply) দিন</b>
+            <b style="font-size:0.95rem; margin-bottom:8px; display:block;" id="reply-modal-title">💬 কমেন্টের উত্তর (Reply) দিন</b>
             <input type="hidden" id="reply-comment-id">
+            <input type="hidden" id="reply-mode" value="reply">
             <div class="voice-input-group">
                 <textarea id="owner-reply-text" placeholder="আপনার উত্তর লিখুন বা মুখে বলুন..." rows="3"></textarea>
                 <button class="btn-mic" onclick="startVoiceInput('owner-reply-text', this)">🎤</button>
             </div>
             <div style="display:flex; gap:8px;">
-                <button class="btn-prime" onclick="saveOwnerReply()">উত্তর পাঠান</button>
+                <button class="btn-prime" onclick="saveOwnerReply()">সংরক্ষণ করুন</button>
                 <button class="btn-prime" style="background:#64748b;" onclick="closeReplyModal()">বাতিল</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- OWNER ADD COMMENT MODAL -->
+    <div class="modal-overlay" id="ownerAddCommentModal">
+        <div class="modal-card">
+            <b style="font-size:0.95rem; margin-bottom:8px; display:block;">+ নতুন কমেন্ট / নোট এড করুন</b>
+            <input type="text" id="owner-add-name" placeholder="ব্যবহারকারীর নাম (ঐচ্ছিক)" value="ওনার">
+            <div class="voice-input-group">
+                <textarea id="owner-add-msg" placeholder="কমেন্ট বা নোট লিখুন..." rows="3"></textarea>
+                <button class="btn-mic" onclick="startVoiceInput('owner-add-msg', this)">🎤</button>
+            </div>
+            <div style="display:flex; gap:8px;">
+                <button class="btn-prime" onclick="saveOwnerAddedComment()">এড করুন</button>
+                <button class="btn-prime" style="background:#64748b;" onclick="closeOwnerAddCommentModal()">বাতিল</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADD HISTORY MODAL -->
+    <div class="modal-overlay" id="historyModal">
+        <div class="modal-card">
+            <b style="font-size:0.95rem; margin-bottom:8px; display:block;">+ নতুন হিস্ট্রি লগ যোগ করুন</b>
+            <label style="font-size:0.72rem; color:var(--text-muted);">ক্যাটাগরি:</label>
+            <select id="new-history-category">
+                <option value="daily">দৈনিক</option>
+                <option value="weekly">সাপ্তাহিক</option>
+                <option value="monthly">মাসিক</option>
+                <option value="yearly">বাৎসরিক</option>
+            </select>
+            <div class="voice-input-group">
+                <textarea id="new-history-text" placeholder="হিস্ট্রির বিবরণ লিখুন..." rows="3"></textarea>
+                <button class="btn-mic" onclick="startVoiceInput('new-history-text', this)">🎤</button>
+            </div>
+            <div style="display:flex; gap:8px;">
+                <button class="btn-prime" onclick="saveHistoryItem()">সংরক্ষণ করুন</button>
+                <button class="btn-prime" style="background:#64748b;" onclick="closeHistoryModal()">বাতিল</button>
             </div>
         </div>
     </div>
@@ -530,7 +579,7 @@
         </div>
     </div>
 
-    <!-- ADD/EDIT ROUTINE MODAL (WITH SAT-FRI DAY SELECTION) -->
+    <!-- ADD/EDIT ROUTINE MODAL -->
     <div class="modal-overlay" id="routineModal">
         <div class="modal-card">
             <b style="font-size:0.95rem; margin-bottom:8px; display:block;" id="routine-modal-title">📋 নোটিফিকেশন রুটিন</b>
@@ -559,7 +608,7 @@
         </div>
     </div>
 
-    <!-- ADD/EDIT ALARM MODAL (WITH SAT-FRI DAY SELECTION) -->
+    <!-- ADD/EDIT ALARM MODAL -->
     <div class="modal-overlay" id="alarmModal">
         <div class="modal-card">
             <b style="font-size:0.95rem; margin-bottom:8px; display:block;" id="alarm-modal-title">⏰ কাস্টম অ্যালার্ম</b>
@@ -598,12 +647,12 @@
 </div>
 
 <script>
-    // --- 1. LOCALSTORAGE & PERSISTENCE ---
+    // --- 1. LOCALSTORAGE & PERSISTENCE (Profile Lock) ---
     const STORAGE_KEY = 'migraine_care_v8_master';
 
     const defaultData = {
         isLoggedIn: false, authType: 'guest',
-        user: { name: "রিমু", gender: "female", avatar: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", feet: 5, inches: 4, age: 24, weight: 55 },
+        user: { name: "রিমু", gender: "female", avatar: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", feet: 5, inches: 4, age: 24, weight: 55, locked: false },
         water: 0, pain: 0,
         complianceList: [
             { id: 1, text: "সকালের সুষম পুষ্টিকর খাবার খেয়েছি", done: true },
@@ -626,50 +675,93 @@
             { id: 2, time: "09:00", label: "সকালের নাস্তা ও ওষুধ রিমাইন্ডার", active: true, days: [0,1,2,3,4,5,6] }
         ],
         comments: [
-            { id: 1, userName: "রিমু", name: "রিমু", msg: "অ্যাপটি অনেক সুন্দর হয়েছে। মাইগ্রেন রোগীদের জন্য খুব উপকারী!", reply: "ধন্যবাদ রিমু! স্বাস্থ্যবিধি মেনে নিয়মিত পানি পান করুন ও সুস্থ থাকুন।" }
+            { id: 1, userName: "রিমু", name: "রিমু", msg: "অ্যাপটি অনেক সুন্দর হয়েছে। মাইগ্রেন রোগীদের জন্য খুব উপকারী!", reply: "ধন্যবাদ রিমু! স্বাস্থ্যবিধি মেনে নিয়মিত পানি পান করুন ও সুস্থ থাকুন।", timestamp: Date.now() - 86400000 }
         ],
+        historyLogs: [],
         selectedNotifRingtone: "সফট চাইম", selectedAlarmRingtone: "৪৩২ হার্টজ ওয়েক-আপ",
         syncAlarm: true, darkMode: false, lang: "bn"
     };
 
     let appData;
-    try { appData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultData; } catch(e) { appData = defaultData; }
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+            appData = JSON.parse(raw);
+        } else {
+            appData = JSON.parse(JSON.stringify(defaultData));
+        }
+    } catch(e) {
+        appData = JSON.parse(JSON.stringify(defaultData));
+    }
 
-    if (!appData.user) appData.user = defaultData.user;
+    // Safe merge – never overwrite existing user profile
+    if (!appData.user) appData.user = JSON.parse(JSON.stringify(defaultData.user));
+    if (appData.user.locked === undefined) appData.user.locked = false;
     if (!Array.isArray(appData.complianceList)) appData.complianceList = defaultData.complianceList;
     if (!Array.isArray(appData.routines)) appData.routines = defaultData.routines;
     if (!Array.isArray(appData.alarms)) appData.alarms = defaultData.alarms;
     if (!Array.isArray(appData.comments)) appData.comments = defaultData.comments;
+    if (!Array.isArray(appData.historyLogs)) appData.historyLogs = [];
     if (typeof appData.water !== 'number') appData.water = 0;
+    if (typeof appData.pain !== 'number') appData.pain = 0;
 
-    function persist() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(appData)); } catch(e) {} }
+    function persist() {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(appData)); } catch(e) {}
+    }
 
-    // --- 2. AUTHENTICATION & LOGIN ---
+    // --- 2. AUTHENTICATION (Profile never resets after first set) ---
     function checkAuth() {
         document.getElementById('authModal').style.display = appData.isLoggedIn ? 'none' : 'flex';
     }
+
     function quickLoginPrompt(provider) {
+        // If already logged in with a locked profile, just open the app
+        if (appData.isLoggedIn && appData.user.locked) {
+            document.getElementById('authModal').style.display = 'none';
+            renderUserProfileUI();
+            return;
+        }
+
         const val = prompt(`${provider} দিয়ে কানেক্ট করতে আপনার নাম লিখুন:`, appData.user.name || "ব্যবহারকারী");
-        if (val) {
+        if (val && val.trim()) {
             appData.isLoggedIn = true;
             appData.authType = provider;
             appData.user.name = val.trim();
-            if (provider === 'Google') appData.user.avatar = "https://cdn-icons-png.flaticon.com/512/2991/2991148.png";
-            else if (provider === 'Facebook') appData.user.avatar = "https://cdn-icons-png.flaticon.com/512/5968/5968764.png";
+            appData.user.locked = true; // permanently lock this profile
+
+            // Only set avatar if user has never uploaded a custom one
+            if (!appData.user.avatar || appData.user.avatar.includes('flaticon') || appData.user.avatar.includes('3135715')) {
+                if (provider === 'Google') {
+                    appData.user.avatar = "https://cdn-icons-png.flaticon.com/512/2991/2991148.png";
+                } else if (provider === 'Facebook') {
+                    appData.user.avatar = "https://cdn-icons-png.flaticon.com/512/5968/5968764.png";
+                } else {
+                    appData.user.avatar = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
+                }
+            }
+
             persist();
             renderUserProfileUI();
             renderPublicComments();
             document.getElementById('authModal').style.display = 'none';
-            alert(`${provider} দিয়ে সফলভাবে কানেক্ট হয়েছে! স্বাগতম ${appData.user.name}!`);
+            alert(`${provider} দিয়ে সফলভাবে কানেক্ট হয়েছে! স্বাগতম ${appData.user.name}!\n\nআপনার প্রোফাইল এখন স্থায়ীভাবে সংরক্ষিত। রিফ্রেশ করলেও পরিবর্তন হবে না।`);
         }
     }
+
     function loginAsGuest() {
-        appData.isLoggedIn = true; appData.authType = 'guest'; persist();
+        if (appData.isLoggedIn && appData.user.locked) {
+            document.getElementById('authModal').style.display = 'none';
+            return;
+        }
+        appData.isLoggedIn = true;
+        appData.authType = 'guest';
+        appData.user.locked = true;
+        persist();
         renderUserProfileUI();
         document.getElementById('authModal').style.display = 'none';
     }
 
-    // --- 3. NAVIGATION ROUTER ---
+    // --- 3. NAVIGATION ---
     function switchNav(viewId, tabEl) {
         document.querySelectorAll('.view-screen').forEach(v => v.classList.remove('active'));
         const target = document.getElementById(viewId);
@@ -707,7 +799,7 @@
         appData.pain = val; persist();
         const cat = val === 0 ? "ব্যথামুক্ত" : (val <= 3 ? "হালকা" : (val <= 6 ? "মাঝারি" : "তীব্র"));
         const pInd = document.getElementById('pain-indicator');
-        if (pInd) pInd.innerText = `${val}/১০ (${cat})`;
+        if (pInd) pInd.innerText = `\( {val}/১০ ( \){cat})`;
         const locBox = document.getElementById('head-pain-location-box');
         if (locBox) locBox.style.display = (val === 0) ? 'none' : 'block';
         renderDoctorReport();
@@ -731,7 +823,7 @@
         recognition.start();
     }
 
-    // --- 8. COMPLIANCE CHECKLIST ---
+    // --- 8. COMPLIANCE ---
     function renderCompliance() {
         const box = document.getElementById('compliance-checklist-box');
         if (!box) return;
@@ -742,7 +834,7 @@
             div.innerHTML = `
                 <span>${item.text}</span>
                 <div class="compliance-actions">
-                    <input type="checkbox" ${item.done ? 'checked' : ''} onchange="toggleComplianceDone(${item.id})">
+                    <input type="checkbox" \( {item.done ? 'checked' : ''} onchange="toggleComplianceDone( \){item.id})">
                     <button class="btn-icon" onclick="openEditComplianceModal(${item.id})">✏️</button>
                     <button class="btn-icon" onclick="deleteCompliance(${item.id})">🗑️</button>
                 </div>`;
@@ -797,10 +889,8 @@
         if (tag) tag.innerText = `${Math.round((done / list.length) * 100)}% পালন`;
     }
 
-    // --- 9. DAYS PILL HELPER (SAT-FRI) ---
-    function toggleDayPill(el) {
-        el.classList.toggle('selected');
-    }
+    // --- 9. DAYS PILL ---
+    function toggleDayPill(el) { el.classList.toggle('selected'); }
     function getSelectedDays(containerId) {
         const pills = document.querySelectorAll(`#${containerId} .day-pill.selected`);
         return Array.from(pills).map(p => parseInt(p.getAttribute('data-day')));
@@ -823,7 +913,7 @@
             const div = document.createElement('div');
             div.className = `timeline-item ${item.done ? 'done' : ''}`;
             div.innerHTML = `
-                <div style="flex:1; cursor:pointer;" onclick="toggleRoutineDone(${item.id})"><b>${item.time}</b> - ${item.task}</div>
+                <div style="flex:1; cursor:pointer;" onclick="toggleRoutineDone(\( {item.id})"><b> \){item.time}</b> - ${item.task}</div>
                 <div class="item-actions">
                     <button class="btn-icon" onclick="openEditRoutineModal(${item.id})">✏️</button>
                     <button class="btn-icon" onclick="deleteRoutine(${item.id})">🗑️</button>
@@ -890,7 +980,7 @@
             div.innerHTML = `
                 <div style="flex:1;"><b>${item.time}</b> - ${item.label}</div>
                 <div class="item-actions">
-                    <input type="checkbox" ${item.active ? 'checked' : ''} onchange="toggleAlarmActive(${item.id})" style="width:18px; height:18px; margin:0;">
+                    <input type="checkbox" \( {item.active ? 'checked' : ''} onchange="toggleAlarmActive( \){item.id})" style="width:18px; height:18px; margin:0;">
                     <button class="btn-icon" onclick="openEditAlarmModal(${item.id})">✏️</button>
                     <button class="btn-icon" onclick="deleteAlarm(${item.id})">🗑️</button>
                 </div>`;
@@ -941,7 +1031,7 @@
         }
     }
 
-    // --- 12. WEB AUDIO API & ALARM/NOTIFICATION ENGINE ---
+    // --- 12. WEB AUDIO & ALARM ENGINE ---
     let audioCtx = null;
     let alarmLoopInterval = null;
 
@@ -971,20 +1061,18 @@
         } catch(e) {}
     }
 
-    // Alarm checking loop
     let lastRingCheck = "";
     setInterval(runAlarmTimerCheck, 2500);
 
     function runAlarmTimerCheck() {
         const now = new Date();
-        const currentDay = now.getDay(); // 0: Sun, 1: Mon, ... 6: Sat
+        const currentDay = now.getDay();
         const hh = String(now.getHours()).padStart(2, '0');
         const mm = String(now.getMinutes()).padStart(2, '0');
-        const currentClock = `${hh}:${mm}`;
+        const currentClock = `\( {hh}: \){mm}`;
 
         if (lastRingCheck === currentClock) return;
 
-        // Check active alarms
         for (let a of appData.alarms) {
             if (a.active && a.time === currentClock) {
                 const days = a.days || [0,1,2,3,4,5,6];
@@ -996,7 +1084,6 @@
             }
         }
 
-        // Check routines if synced
         if (appData.syncAlarm) {
             for (let r of appData.routines) {
                 if (!r.done && r.time === currentClock) {
@@ -1014,7 +1101,6 @@
     function triggerLiveAlarmRing(title) {
         document.getElementById('alarm-trigger-title').innerText = title;
         document.getElementById('alarmTriggerModal').style.display = 'flex';
-        // Ring sound in continuous loop
         clearInterval(alarmLoopInterval);
         playAlarmRingingBeat();
         alarmLoopInterval = setInterval(playAlarmRingingBeat, 2000);
@@ -1047,7 +1133,7 @@
                 const name = `টোন ${i}: ${getNotifToneName(i)}`;
                 const row = document.createElement('div');
                 row.className = "sound-item-row";
-                row.innerHTML = `<span>${name}</span><div><button class="btn-icon" onclick="testNotifSound(${i})">▶️</button><button class="btn-icon" style="color:var(--primary); font-weight:bold;" onclick="selectRingtone('${name}')">সেট</button></div>`;
+                row.innerHTML = `<span>\( {name}</span><div><button class="btn-icon" onclick="testNotifSound( \){i})">▶️</button><button class="btn-icon" style="color:var(--primary); font-weight:bold;" onclick="selectRingtone('${name}')">সেট</button></div>`;
                 container.appendChild(row);
             }
         } else {
@@ -1056,7 +1142,7 @@
                 const name = `অ্যালার্ম ${i}: ${getAlarmToneName(i)}`;
                 const row = document.createElement('div');
                 row.className = "sound-item-row";
-                row.innerHTML = `<span>${name}</span><div><button class="btn-icon" onclick="testAlarmSound(${i})">▶️</button><button class="btn-icon" style="color:var(--primary); font-weight:bold;" onclick="selectRingtone('${name}')">সেট</button></div>`;
+                row.innerHTML = `<span>\( {name}</span><div><button class="btn-icon" onclick="testAlarmSound( \){i})">▶️</button><button class="btn-icon" style="color:var(--primary); font-weight:bold;" onclick="selectRingtone('${name}')">সেট</button></div>`;
                 container.appendChild(row);
             }
         }
@@ -1094,48 +1180,91 @@
         return `শক্তিশালী ওয়েক-আপ অ্যালার্ম ${i}`;
     }
 
-    // --- 13. DATE-WISE HISTORY & DOCTOR REPORT ---
+    // --- 13. HISTORY LOGS (with Add + Remove) ---
+    let currentHistoryFilter = 'daily';
+
+    function openAddHistoryModal() {
+        document.getElementById('new-history-category').value = currentHistoryFilter;
+        document.getElementById('new-history-text').value = '';
+        document.getElementById('historyModal').style.display = 'flex';
+    }
+    function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; }
+    function saveHistoryItem() {
+        const cat = document.getElementById('new-history-category').value;
+        const text = document.getElementById('new-history-text').value.trim();
+        if (!text) return alert("হিস্ট্রির বিবরণ লিখুন!");
+        appData.historyLogs.push({
+            id: Date.now(),
+            category: cat,
+            text: text,
+            dateStr: new Date().toLocaleDateString('bn-BD'),
+            timestamp: Date.now()
+        });
+        persist();
+        closeHistoryModal();
+        filterHistory(currentHistoryFilter, document.getElementById('btn-hist-' + currentHistoryFilter));
+        alert("হিস্ট্রি লগ সফলভাবে যোগ হয়েছে!");
+    }
+    function removeHistoryItem(id) {
+        if (confirm("এই হিস্ট্রি লগটি মুছে ফেলতে চান?")) {
+            appData.historyLogs = appData.historyLogs.filter(h => h.id !== id);
+            persist();
+            filterHistory(currentHistoryFilter, document.getElementById('btn-hist-' + currentHistoryFilter));
+        }
+    }
+
     function filterHistory(type, btnEl) {
+        currentHistoryFilter = type;
         document.querySelectorAll('.filter-tab-btn').forEach(b => b.classList.remove('active'));
         if (btnEl) btnEl.classList.add('active');
         const logsBox = document.getElementById('history-logs-container');
         if (!logsBox) return;
         logsBox.innerHTML = '';
+
+        // Dynamic current summary
         if (type === 'daily') {
             document.getElementById('hist-painfree-days').innerText = "আজকের দিন";
             document.getElementById('hist-med-count').innerText = "০ বার (০%)";
-            logsBox.innerHTML = `
-                <div class="timeline-item"><div><b>আজকের পানি:</b> ${appData.water} মিলি (লক্ষ্য: ৩৫০০ মিলি)</div><button class="btn-icon" onclick="openEditHistory('পানি পান')">✏️</button></div>
-                <div class="timeline-item"><div><b>মাইগ্রেন তীব্রতা ও ওষুধ:</b> ${appData.pain} / ১০ (ওষুধ লাগেনি)</div><button class="btn-icon" onclick="openEditHistory('ব্যথা ও ওষুধ')">✏️</button></div>
-                <div class="timeline-item"><div><b>স্বাস্থ্য নিয়মানুবর্তিতা:</b> ${document.getElementById('adherence-percent-tag').innerText} সম্পন্ন</div><button class="btn-icon" onclick="openEditHistory('নিয়ম পালন')">✏️</button></div>`;
+            logsBox.innerHTML += `
+                <div class="timeline-item"><div><b>আজকের পানি:</b> ${appData.water} মিলি (লক্ষ্য: ৩৫০০ মিলি)</div></div>
+                <div class="timeline-item"><div><b>মাইগ্রেন তীব্রতা:</b> ${appData.pain} / ১০</div></div>
+                <div class="timeline-item"><div><b>স্বাস্থ্য নিয়মানুবর্তিতা:</b> ${document.getElementById('adherence-percent-tag')?.innerText || '০%'} সম্পন্ন</div></div>`;
         } else if (type === 'weekly') {
             document.getElementById('hist-painfree-days').innerText = "৬ দিন";
             document.getElementById('hist-med-count').innerText = "১ বার (১৪%)";
-            logsBox.innerHTML = `
-                <div class="timeline-item"><div><b>চলতি সপ্তাহ:</b> ৬ দিন সম্পূর্ণ ব্যথামুক্ত ছিলেন</div><button class="btn-icon" onclick="openEditHistory('সাপ্তাহিক ব্যথামুক্ত')">✏️</button></div>
-                <div class="timeline-item"><div><b>গড় পানি পান:</b> ৩.৪ লিটার / দিন</div><button class="btn-icon" onclick="openEditHistory('সাপ্তাহিক পানি')">✏️</button></div>
-                <div class="timeline-item"><div><b>ব্যায়াম ও ওষুধ:</b> ৫ দিন ব্যায়াম, ১ দিন ওষুধ প্রয়োজন হয়েছে</div><button class="btn-icon" onclick="openEditHistory('ব্যায়াম ও ওষুধ')">✏️</button></div>`;
         } else if (type === 'monthly') {
             document.getElementById('hist-painfree-days').innerText = "২৬ দিন";
             document.getElementById('hist-med-count').innerText = "২ বার (৭%)";
-            logsBox.innerHTML = `
-                <div class="timeline-item"><div><b>চলতি মাস:</b> মোট ব্যথামুক্ত দিন ২৬ দিন</div><button class="btn-icon" onclick="openEditHistory('মাসিক ব্যথামুক্ত')">✏️</button></div>
-                <div class="timeline-item"><div><b>ওষুধ ও মাইগ্রেন ব্যথা:</b> মাত্র ২ দিন ব্যথা ও ওষুধ লেগেছিল</div><button class="btn-icon" onclick="openEditHistory('মাসিক ওষুধ')">✏️</button></div>`;
         } else {
             document.getElementById('hist-painfree-days').innerText = "৩১০ দিন";
             document.getElementById('hist-med-count').innerText = "১৮ বার (৫%)";
-            logsBox.innerHTML = `
-                <div class="timeline-item"><div><b>বার্ষিক রেকর্ড:</b> ৩১০ দিন সম্পূর্ণ সুস্থ ও কর্মক্ষম</div><button class="btn-icon" onclick="openEditHistory('বার্ষিক রেকর্ড')">✏️</button></div>
-                <div class="timeline-item"><div><b>দীর্ঘতম সুস্থতার স্ট্রিক:</b> ৪২ দিন একটানা ব্যথামুক্ত</div><button class="btn-icon" onclick="openEditHistory('সুস্থতার স্ট্রিক')">✏️</button></div>`;
         }
+
+        // Stored custom history logs for this category
+        const filtered = appData.historyLogs
+            .filter(h => h.category === type)
+            .sort((a, b) => b.timestamp - a.timestamp);
+
+        if (filtered.length === 0 && type !== 'daily') {
+            logsBox.innerHTML += `<div style="font-size:0.75rem; color:var(--text-muted); padding:8px;">এই ক্যাটাগরিতে এখনো কোনো কাস্টম হিস্ট্রি নেই। “+ হিস্ট্রি যোগ” দিয়ে যোগ করুন।</div>`;
+        }
+
+        filtered.forEach(h => {
+            const div = document.createElement('div');
+            div.className = "timeline-item";
+            div.innerHTML = `
+                <div style="flex:1;">
+                    <div style="font-size:0.68rem; color:var(--text-muted);">${h.dateStr}</div>
+                    <b>${h.text}</b>
+                </div>
+                <button class="btn-icon" onclick="removeHistoryItem(${h.id})" title="রিমুভ">🗑️</button>`;
+            logsBox.appendChild(div);
+        });
+
         renderDoctorReport();
     }
 
-    function openEditHistory(field) {
-        const val = prompt(`${field}-এর তথ্য এডিট করুন:`, "তথ্য আপডেট করা হয়েছে");
-        if (val) alert(`${field} সফলভাবে এডিট হয়েছে!`);
-    }
-
+    // --- 14. DOCTOR REPORT ---
     function renderDoctorReport() {
         const r = document.getElementById('doctor-report-content');
         if (!r) return;
@@ -1148,8 +1277,8 @@
                 <h3 style="color:var(--secondary); margin-bottom:2px;">🏥 রোগীর পূর্ণাঙ্গ ক্লিনিক্যাল ডাটা ফাইল</h3>
                 <span style="font-size:0.7rem; color:var(--text-muted);">তারিখ: ${new Date().toLocaleDateString('bn-BD')} | আইডি: #MC-2026</span>
             </div>
-            <div>• রোগী: <b>${appData.user.name}</b> (${appData.user.gender === 'female' ? 'নারী' : 'পুরুষ'} | বয়স: ${appData.user.age || 24} বছর)</div>
-            <div>• বর্তমান মাইগ্রেন তীব্রতা স্কেল: <b>${appData.pain} / ১০ (${appData.pain === 0 ? 'ব্যথামুক্ত' : (appData.pain <= 3 ? 'হালকা' : 'মাঝারি/তীব্র')})</b></div>
+            <div>• রোগী: <b>\( {appData.user.name}</b> ( \){appData.user.gender === 'female' ? 'নারী' : 'পুরুষ'} | বয়স: ${appData.user.age || 24} বছর)</div>
+            <div>• বর্তমান মাইগ্রেন তীব্রতা স্কেল: <b>\( {appData.pain} / ১০ ( \){appData.pain === 0 ? 'ব্যথামুক্ত' : (appData.pain <= 3 ? 'হালকা' : 'মাঝারি/তীব্র')})</b></div>
             <div>• দৈনিক হাইড্রেশন হিসেব: <b>${appData.water} মিলি (নির্ধারিত: ৩৫০০ মিলি)</b></div>
             <div>• স্বাস্থ্য নিয়মানুবর্তিতা ও খাদ্য স্কোর: <b>${compliancePct}% রুটিন সফল</b></div>
             <div>• ওষুধ ও ব্যথার রেকর্ড: <b>এই মাসে ২ বার (৭% দিন)</b> (নিয়ম মেনে চলা হয়েছে)</div>
@@ -1159,7 +1288,7 @@
             </div>`;
     }
 
-    // --- 14. ANIMATED EXERCISE SIMULATOR ---
+    // --- 15. EXERCISE ANIMATION ---
     const exerciseAnimSteps = [
         { label: "ধাপ A ➔ শুরু", icon: "🧘‍♀️", text: "১. সোজা হয়ে বসুন, কাঁধ আলতো পেছনে রাখুন" },
         { label: "ধাপ B ➔ মুভমেন্ট", icon: "🙆‍♀️", text: "২. হাত ডানে ও বামে আলতো স্ট্রেচ করে বুক প্রসারিত করুন" },
@@ -1240,7 +1369,7 @@
         }
     }
 
-    // --- 15. USER PROFILE & BMI ---
+    // --- 16. USER PROFILE (Locked after first save) ---
     function openUserModal() {
         document.getElementById('user-name-input').value = appData.user.name;
         document.getElementById('user-gender-input').value = appData.user.gender;
@@ -1258,8 +1387,10 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 appData.user.avatar = e.target.result;
+                appData.user.locked = true;
                 const av = document.getElementById('user-header-avatar');
                 if (av) av.src = e.target.result;
+                persist();
             };
             reader.readAsDataURL(file);
         }
@@ -1276,20 +1407,26 @@
         const idealAvg = Math.round((idealMin + idealMax) / 2);
         const fb = document.getElementById('profile-bmi-feedback');
         if (fb) {
-            fb.innerHTML = `আপনার শারীরিক গঠন অনুযায়ী ওজন <b>${idealMin} - ${idealMax} কেজি</b> হওয়া উচিত ছিল।<br>✨ আপনি <b>${idealAvg} কেজি</b> ওজনের হলে দেখতে আরও সুন্দর লাগবে ও পুরোপুরি সুস্থ থাকবেন! (বর্তমান BMI: ${bmi})`;
+            fb.innerHTML = `আপনার শারীরিক গঠন অনুযায়ী ওজন <b>${idealMin} - \( {idealMax} কেজি</b> হওয়া উচিত ছিল।<br>✨ আপনি <b> \){idealAvg} কেজি</b> ওজনের হলে দেখতে আরও সুন্দর লাগবে ও পুরোপুরি সুস্থ থাকবেন! (বর্তমান BMI: ${bmi})`;
         }
     }
     function saveUserProfile() {
-        const name = document.getElementById('user-name-input').value.trim() || 'রিমু';
+        const name = document.getElementById('user-name-input').value.trim() || appData.user.name;
         const gender = document.getElementById('user-gender-input').value;
-        appData.user.name = name; appData.user.gender = gender;
+        appData.user.name = name;
+        appData.user.gender = gender;
         appData.user.feet = parseFloat(document.getElementById('calc-feet').value) || 5;
         appData.user.inches = parseFloat(document.getElementById('calc-inches').value) || 4;
         appData.user.age = parseFloat(document.getElementById('calc-age').value) || 24;
         appData.user.weight = parseFloat(document.getElementById('calc-w').value) || 55;
-        persist(); renderUserProfileUI(); renderExercisesByGender(); renderDoctorReport();
+        appData.user.locked = true; // lock forever
+        persist();
+        renderUserProfileUI();
+        renderExercisesByGender();
+        renderDoctorReport();
         renderPublicComments();
-        closeUserModal(); alert("প্রোফাইল সংরক্ষিত হয়েছে!");
+        closeUserModal();
+        alert("প্রোফাইল সংরক্ষিত হয়েছে! এখন থেকে রিফ্রেশ করলেও আপনার নাম, ছবি ও তথ্য পরিবর্তন হবে না।");
     }
     function renderUserProfileUI() {
         const nameEl = document.getElementById('user-header-name');
@@ -1300,84 +1437,154 @@
         if (avEl && appData.user.avatar) avEl.src = appData.user.avatar;
     }
 
-    // --- 16. PERSONALIZED PUBLIC COMMENTS (Only User Sees Own Replies) ---
+    // --- 17. PUBLIC COMMENTS + OWNER FULL HISTORY ---
     function submitPublicComment() {
         const name = document.getElementById('user-comment-name').value.trim() || appData.user.name;
         const msg = document.getElementById('user-comment-msg').value.trim();
         if (!msg) return alert("দয়া করে মন্তব্যটি লিখুন বা মুখে বলুন!");
-        appData.comments.push({ id: Date.now(), userName: appData.user.name, name, msg, reply: "" });
-        persist(); renderPublicComments();
+        appData.comments.push({
+            id: Date.now(),
+            userName: appData.user.name,
+            name: name,
+            msg: msg,
+            reply: "",
+            timestamp: Date.now()
+        });
+        persist();
+        renderPublicComments();
         document.getElementById('user-comment-msg').value = '';
         alert("আপনার মতামত ওনার মোঃ সাকিব হোসাইন নিরব এর কাছে পাঠানো হয়েছে!");
     }
+
     function renderPublicComments() {
         const feed = document.getElementById('public-comments-feed');
         if (!feed) return;
         feed.innerHTML = '';
-        // Only show comments from current profile
-        const userComments = appData.comments.filter(c => c.userName === appData.user.name || c.name === appData.user.name);
+        const userComments = appData.comments
+            .filter(c => c.userName === appData.user.name || c.name === appData.user.name)
+            .sort((a, b) => b.timestamp - a.timestamp);
+
         if (!userComments.length) {
             feed.innerHTML = '<div style="font-size:0.75rem; color:var(--text-muted);">আপনার কোনো পূর্ববর্তী মন্তব্য নেই। ওনারের পরামর্শের জন্য মন্তব্য লিখুন।</div>';
             return;
         }
         userComments.forEach(c => {
+            const dateStr = new Date(c.timestamp).toLocaleString('bn-BD', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
             const div = document.createElement('div');
             div.className = "comment-item";
-            div.innerHTML = `<div><b>${c.name}:</b> ${c.msg}</div>${c.reply ? `<div class="owner-reply-box"><b>ওনার মোঃ সাকিব হোসাইন নিরব:</b> ${c.reply}</div>` : `<div style="font-size:0.68rem; color:var(--text-muted); margin-top:4px;">(ওনার এখনো উত্তর দেননি, উত্তর দিলে শুধুমাত্র আপনার এই প্রোফাইলেই দেখা যাবে)</div>`}`;
+            div.innerHTML = `
+                <div style="font-size:0.68rem; color:var(--text-muted); margin-bottom:2px;">${dateStr}</div>
+                <div><b>${c.name}:</b> ${c.msg}</div>
+                ${c.reply ? `<div class="owner-reply-box"><b>ওনার মোঃ সাকিব হোসাইন নিরব:</b> ${c.reply}</div>` : `<div style="font-size:0.68rem; color:var(--text-muted); margin-top:4px;">(ওনার এখনো উত্তর দেননি)</div>`}`;
             feed.appendChild(div);
         });
     }
+
     function renderOwnerCommentsManager() {
         const mgr = document.getElementById('owner-comments-manager');
         if (!mgr) return;
         mgr.innerHTML = '';
+
         if (!appData.comments.length) {
             mgr.innerHTML = '<div style="font-size:0.75rem; color:var(--text-muted);">কোনো নতুন মন্তব্য জমা নেই।</div>';
             return;
         }
-        appData.comments.forEach(c => {
+
+        // Serial history like Facebook (newest first)
+        const sorted = [...appData.comments].sort((a, b) => b.timestamp - a.timestamp);
+
+        sorted.forEach(c => {
+            const dateStr = new Date(c.timestamp).toLocaleString('bn-BD', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
             const div = document.createElement('div');
-            div.className = "comment-item";
+            div.className = "comment-item comment-history-row";
+            div.onclick = function() { focusUserThread(c.userName || c.name); };
             div.innerHTML = `
-                <div><b>${c.name} (${c.userName}):</b> ${c.msg}</div>
-                <div style="margin-top:4px; font-size:0.75rem; color:var(--primary-dark);"><b>আপনার উত্তর:</b> ${c.reply || 'দেওয়া হয়নি'}</div>
-                <div style="margin-top:6px; display:flex; gap:6px;">
-                    <button class="btn-prime" style="padding:4px 8px; font-size:0.7rem;" onclick="openReplyModal(${c.id})">💬 উত্তর / এডিট</button>
-                    <button class="btn-prime" style="background:var(--danger); padding:4px 8px; font-size:0.7rem;" onclick="deleteCommentPermanently(${c.id})">🗑️ ডিলিট</button>
+                <div style="font-size:0.68rem; color:var(--text-muted);">${dateStr} • ${c.userName || c.name}</div>
+                <div><b>${c.name}:</b> ${c.msg}</div>
+                <div style="margin-top:4px; font-size:0.75rem; color:var(--primary-dark);"><b>উত্তর:</b> ${c.reply || 'দেওয়া হয়নি'}</div>
+                <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;" onclick="event.stopPropagation()">
+                    <button class="btn-prime" style="padding:4px 8px; font-size:0.7rem; width:auto;" onclick="openReplyModal(${c.id}, 'reply')">💬 উত্তর</button>
+                    <button class="btn-prime" style="padding:4px 8px; font-size:0.7rem; width:auto; background:#0284c7;" onclick="openReplyModal(${c.id}, 'edit')">✏️ এডিট</button>
+                    <button class="btn-prime" style="background:var(--danger); padding:4px 8px; font-size:0.7rem; width:auto;" onclick="deleteCommentPermanently(${c.id})">🗑️ ডিলিট</button>
                 </div>`;
             mgr.appendChild(div);
         });
     }
-    function openReplyModal(id) {
+
+    function focusUserThread(userName) {
+        // Highlight / filter to that user in the manager
+        const rows = document.querySelectorAll('.comment-history-row');
+        rows.forEach(r => r.classList.remove('active-user'));
+        // Simple visual feedback
+        alert(`এই ব্যবহারকারীর (${userName}) সব কমেন্ট হাইলাইট করা হয়েছে। উপরের তালিকায় দেখুন।`);
+    }
+
+    function openReplyModal(id, mode) {
         const c = appData.comments.find(x => x.id === id);
-        if (c) {
-            document.getElementById('reply-comment-id').value = c.id;
-            document.getElementById('owner-reply-text').value = c.reply || '';
-            document.getElementById('replyModal').style.display = 'flex';
-        }
+        if (!c) return;
+        document.getElementById('reply-comment-id').value = c.id;
+        document.getElementById('reply-mode').value = mode || 'reply';
+        document.getElementById('reply-modal-title').innerText = mode === 'edit' ? '✏️ কমেন্ট এডিট করুন' : '💬 কমেন্টের উত্তর দিন';
+        document.getElementById('owner-reply-text').value = mode === 'edit' ? c.msg : (c.reply || '');
+        document.getElementById('replyModal').style.display = 'flex';
     }
     function closeReplyModal() { document.getElementById('replyModal').style.display = 'none'; }
     function saveOwnerReply() {
         const id = document.getElementById('reply-comment-id').value;
-        const reply = document.getElementById('owner-reply-text').value.trim();
+        const mode = document.getElementById('reply-mode').value;
+        const text = document.getElementById('owner-reply-text').value.trim();
         const c = appData.comments.find(x => x.id == id);
-        if (c) {
-            c.reply = reply; persist(); renderPublicComments(); renderOwnerCommentsManager();
-            closeReplyModal(); alert("উত্তর সফলভাবে পাঠানো হয়েছে! শুধুমাত্র ওই ব্যবহারকারীই এটি দেখতে পাবেন।");
+        if (!c) return;
+        if (mode === 'edit') {
+            c.msg = text;
+        } else {
+            c.reply = text;
         }
+        persist();
+        renderPublicComments();
+        renderOwnerCommentsManager();
+        closeReplyModal();
+        alert(mode === 'edit' ? "কমেন্ট এডিট সফল!" : "উত্তর সফলভাবে পাঠানো হয়েছে! শুধুমাত্র ওই ব্যবহারকারীই এটি দেখতে পাবেন।");
     }
     function deleteCommentPermanently(id) {
         if (confirm("কমেন্টটি কি উভয় সাইড থেকে স্থায়ীভাবে ডিলিট করতে চান?")) {
             appData.comments = appData.comments.filter(c => c.id !== id);
-            persist(); renderPublicComments(); renderOwnerCommentsManager();
+            persist();
+            renderPublicComments();
+            renderOwnerCommentsManager();
             alert("কমেন্টটি ডিলিট করা হয়েছে!");
         }
     }
+
+    function openOwnerAddCommentModal() {
+        document.getElementById('owner-add-name').value = "ওনার";
+        document.getElementById('owner-add-msg').value = '';
+        document.getElementById('ownerAddCommentModal').style.display = 'flex';
+    }
+    function closeOwnerAddCommentModal() { document.getElementById('ownerAddCommentModal').style.display = 'none'; }
+    function saveOwnerAddedComment() {
+        const name = document.getElementById('owner-add-name').value.trim() || "ওনার";
+        const msg = document.getElementById('owner-add-msg').value.trim();
+        if (!msg) return alert("কমেন্ট লিখুন!");
+        appData.comments.push({
+            id: Date.now(),
+            userName: name,
+            name: name,
+            msg: msg,
+            reply: "",
+            timestamp: Date.now()
+        });
+        persist();
+        renderOwnerCommentsManager();
+        closeOwnerAddCommentModal();
+        alert("নতুন কমেন্ট/নোট এড হয়েছে!");
+    }
+
     function saveOwnerAnnouncements() {
         alert("ওনার ঘোষণা ও নতুন তথ্য সংরক্ষিত হয়েছে!");
     }
 
-    // --- 17. SECRET OWNER MASTER CONTROL (5-TAP) ---
+    // --- 18. SECRET OWNER (5-TAP) ---
     let ownerTapCount = 0, ownerTapTimer = null;
     function handleOwnerSecretTap() {
         ownerTapCount++; clearTimeout(ownerTapTimer);
@@ -1406,7 +1613,7 @@
         }
     }
 
-    // --- 18. AI DOCTOR CHATBOT ---
+    // --- 19. AI CHAT ---
     function sendChatMessage() {
         const input = document.getElementById('chatInput');
         const text = input.value.trim();
@@ -1432,7 +1639,7 @@
         }, 500);
     }
 
-    // --- 19. DARK MODE & LANGUAGE (Select Language Remains English) ---
+    // --- 20. DARK MODE & LANGUAGE ---
     function toggleDarkMode() {
         appData.darkMode = document.getElementById('darkToggle').checked;
         persist(); applyTheme();
@@ -1452,7 +1659,7 @@
         alert("Selected Language: " + lang.toUpperCase() + "\n(অ্যাপের ভাষা পরিবর্তিত হয়েছে!)");
     }
 
-    // --- 20. INITIALIZATION ---
+    // --- 21. INITIALIZATION ---
     function initApp() {
         try {
             checkAuth();
@@ -1494,4 +1701,4 @@
 </script>
 
 </body>
-        </html>
+    </html>
