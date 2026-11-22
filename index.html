@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Migraine Care - Better Mind • Better Life</title>
-    <link rel="manifest" href="manifest.json">
     <style>
         :root {
             --primary: #10b981; --primary-dark: #059669; --secondary: #0284c7; --accent: #8b5cf6;
@@ -73,8 +72,8 @@
         .nav-tab span { font-size: 1.15rem; }
         input, select, textarea { width: 100%; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 8px; font-size: 0.85rem; background: var(--card-bg); color: var(--text-main); }
         .btn-prime { width: 100%; background: var(--primary); color: white; border: none; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.82rem; }
-        .modal-overlay { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 50; justify-content: center; align-items: center; padding: 16px; }
-        .modal-card { background: var(--card-bg); border-radius: 20px; padding: 16px; width: 100%; max-width: 380px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); color: var(--text-main); max-height: 90vh; overflow-y: auto; }
+        .modal-overlay { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(8px); z-index: 50; justify-content: center; align-items: center; padding: 16px; }
+        .modal-card { background: var(--card-bg); border-radius: 20px; padding: 16px; width: 100%; max-width: 380px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); color: var(--text-main); max-height: 90vh; overflow-y: auto; position: relative; z-index: 51; }
         .nutrient-badge { display: inline-block; font-size: 0.68rem; padding: 2px 6px; border-radius: 4px; margin: 2px; background: rgba(16, 185, 129, 0.15); color: var(--primary-dark); font-weight: 600; }
         .infographic-banner-box { width: 100%; border-radius: 14px; overflow: hidden; margin-bottom: 12px; border: 1px solid var(--border); background: #000; }
         .infographic-banner-box img { width: 100%; height: auto; display: block; }
@@ -88,6 +87,14 @@
         .comment-history-row { cursor: pointer; transition: background 0.15s; }
         .comment-history-row:hover, .comment-history-row.active-user { background: rgba(16, 185, 129, 0.08); }
         .history-add-btn { background: var(--primary); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
+        .custom-item-card { background: var(--bg-color); border: 1px solid var(--border); border-radius: 12px; padding: 10px; margin-bottom: 10px; }
+        .custom-item-card img { width: 100%; max-height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 6px; }
+        .custom-item-actions { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+        .custom-item-actions button { padding: 4px 10px; border-radius: 6px; border: none; font-size: 0.72rem; font-weight: 700; cursor: pointer; }
+        .btn-edit-c { background: #0284c7; color: white; }
+        .btn-del-c { background: var(--danger); color: white; }
+        .owner-top-actions { display: flex; gap: 6px; align-items: center; }
+        .owner-top-actions button { background: var(--primary); color: white; border: none; padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -129,7 +136,7 @@
                 <div style="font-size:0.65rem; opacity:0.9;" id="user-header-gender">নারী প্রোফাইল ও BMI • এডিট ✏️</div>
             </div>
         </div>
-        <div class="header-date-badge" id="live-header-date">আজ: ২৬ অক্টোবর</div>
+        <div class="header-date-badge" id="live-header-date">আজ: ২৩ নভেম্বর</div>
     </header>
 
     <main class="app-body">
@@ -137,8 +144,8 @@
         <!-- 1. HOME SCREEN -->
         <section id="view-home" class="view-screen active">
             <div style="background: linear-gradient(135deg, #0284c7, #8b5cf6); color:white; padding:8px 12px; border-radius:12px; margin-bottom:10px; font-size:0.75rem; display:flex; justify-content:space-between; align-items:center;">
-                <span>📢 সেটিংসে গিয়ে অ্যাপসের আপডেট সম্পর্কে মূল্যবান কমেন্ট করুন</span>
-                <button onclick="switchNav('view-settings', document.querySelectorAll('.nav-tab')[4])" style="background:white; color:#0284c7; border:none; padding:4px 8px; border-radius:6px; font-size:0.68rem; font-weight:bold; cursor:pointer;">কমেন্ট</button>
+                <span id="home-banner-text" style="flex:1; line-height:1.35;">📢 সেটিংসে গিয়ে অ্যাপসের আপডেট সম্পর্কে মূল্যবান কমেন্ট করুন</span>
+                <button onclick="switchNav('view-settings', document.querySelectorAll('.nav-tab')[4])" style="background:white; color:#0284c7; border:none; padding:4px 10px; border-radius:6px; font-size:0.68rem; font-weight:bold; cursor:pointer; margin-left:8px;">কমেন্ট</button>
             </div>
 
             <div class="card" style="background: linear-gradient(135deg, #ecfdf5, #dbeafe); border-left: 4px solid var(--primary);">
@@ -207,7 +214,7 @@
             </div>
         </section>
 
-        <!-- 2. NOTIFICATION ROUTINE & ALARM -->
+        <!-- 2. ROUTINE & ALARM -->
         <section id="view-routine-alarm" class="view-screen">
             <div class="card" style="background: linear-gradient(135deg, #e0f2fe, #f0fdf4);">
                 <div class="card-header"><span>🎵 রিংটোন নির্বাচন (নোটিফিকেশন ও অ্যালার্ম)</span></div>
@@ -241,7 +248,7 @@
             </div>
         </section>
 
-        <!-- 3. COMBINED: HEALTH & DOCTOR RECORDS -->
+        <!-- 3. RECORDS -->
         <section id="view-records" class="view-screen">
             <div class="card">
                 <div class="card-header">
@@ -254,7 +261,6 @@
                     <button class="filter-tab-btn" id="btn-hist-monthly" onclick="filterHistory('monthly', this)">মাসিক</button>
                     <button class="filter-tab-btn" id="btn-hist-yearly" onclick="filterHistory('yearly', this)">বাৎসরিক</button>
                 </div>
-
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
                     <div style="background:var(--bg-color); padding:10px; border-radius:10px; text-align:center; border:1px solid var(--border);">
                         <div style="font-size:1.25rem; font-weight:800; color:var(--safe);" id="hist-painfree-days">আজকের দিন</div>
@@ -265,7 +271,6 @@
                         <div style="font-size:0.7rem; color:var(--text-muted);">ওষুধ ও ব্যথার হিসেব</div>
                     </div>
                 </div>
-
                 <div style="font-size:0.8rem; font-weight:700; margin-bottom:6px;">তারিখ অনুযায়ী হিস্ট্রি লগ:</div>
                 <div id="history-logs-container"></div>
             </div>
@@ -291,7 +296,7 @@
             </div>
         </section>
 
-        <!-- 4. FOOD & EXERCISES -->
+        <!-- 4. FOOD & EXERCISE -->
         <section id="view-food-exercise" class="view-screen">
             <div class="card">
                 <div class="card-header">
@@ -307,38 +312,34 @@
                         <span style="font-size:0.7rem; color:#94a3b8;">ধাপ A ➔ B ➔ C ➔ D মুভমেন্ট</span>
                     </div>
                 </div>
-                <div id="female-poster-box" class="infographic-banner-box">
-                    <img src="exercise_women.jpg" onerror="this.onerror=null; this.src='exercise_women.png'; this.onerror=function(){this.src='exercise.png';};" alt="মেয়েদের ৭টি ব্যায়াম">
-                </div>
-                <div id="male-poster-box" class="infographic-banner-box" style="display:none;">
-                    <img src="exercise_men.jpg" onerror="this.onerror=null; this.src='exercise_men.png'; this.onerror=function(){this.src='exercise.png';};" alt="ছেলেদের ৭টি ব্যায়াম">
-                </div>
                 <div id="exercise-steps-dynamic"></div>
             </div>
 
+            <div class="card">
+                <div class="card-header">
+                    <span>📤 আমার কাস্টম ব্যায়াম ও খাবার (আপলোড)</span>
+                    <button onclick="openCustomItemModal()" style="background:var(--primary); color:white; border:none; padding:5px 10px; border-radius:6px; font-size:0.72rem; cursor:pointer;">+ নতুন যোগ</button>
+                </div>
+                <p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:8px;">ছবি আপলোড + তথ্য লিখে এডিট/ডিলিট/সেভ করতে পারবেন।</p>
+                <div id="custom-items-container"></div>
+            </div>
+
             <div class="card" style="background: rgba(2, 132, 199, 0.05); border: 2px dashed var(--secondary);">
-                <div class="card-header" style="color:var(--secondary);"><span>🌿 সাধারণ মানুষের সুস্থ ও সুন্দর জীবনের ব্যায়াম</span></div>
-                <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:8px;">যারা শারীরিক গঠন ফিট ও সুস্থ জীবনযাপন করতে চান:</p>
-                <div class="timeline-item"><div><b>১. নিয়মিত ২০ মিনিট হাঁটা বা জগিং</b><div style="font-size:0.7rem; color:var(--text-muted);">রক্তচাপ নিয়ন্ত্রণ ও ফুসফুসের ক্ষমতা বৃদ্ধি করে।</div></div></div>
-                <div class="timeline-item"><div><b>২. মেরুদণ্ড প্রসারণ</b><div style="font-size:0.7rem; color:var(--text-muted);">ক্লান্তি দূর করে ও শরীরের নমনীয়তা বহুগুণ বাড়িয়ে দেয়।</div></div></div>
-                <div class="timeline-item"><div><b>৩. ব্রিদিং বা অনুলোম-বিলোম প্রাণায়াম</b><div style="font-size:0.7rem; color:var(--text-muted);">অক্সিজেন সরবরাহ বাড়ায় এবং মানসিক উদ্বেগ দূর করে।</div></div></div>
+                <div class="card-header" style="color:var(--secondary);"><span>🌿 সাধারণ মানুষের সুস্থ জীবনের ব্যায়াম</span></div>
+                <div class="timeline-item"><div><b>১. নিয়মিত ২০ মিনিট হাঁটা বা জগিং</b></div></div>
+                <div class="timeline-item"><div><b>২. মেরুদণ্ড প্রসারণ</b></div></div>
+                <div class="timeline-item"><div><b>৩. ব্রিদিং বা অনুলোম-বিলোম প্রাণায়াম</b></div></div>
             </div>
 
             <div class="card">
-                <div class="card-header"><span>🍎 ২. পুষ্টিকর খাদ্যতালিকা ও ঘাটতি পূরণ চার্ট</span></div>
-                <div class="infographic-banner-box">
-                    <img src="food.jpg" onerror="this.onerror=null; this.src='food.png'; this.onerror=function(){this.src='food.ing';};" alt="খাদ্য তালিকা">
-                </div>
-                <div style="font-size:0.8rem; font-weight:700; margin:10px 0 6px 0;">🥗 পুষ্টি উপাদান ও রোগের ঘাটতি পূরণ চার্ট:</div>
+                <div class="card-header"><span>🍎 ২. পুষ্টিকর খাদ্যতালিকা</span></div>
                 <div class="card" style="background:var(--bg-color); padding:10px; margin-bottom:8px;">
-                    <b>১. ম্যাগনেসিয়ামের ঘাটতি (মাথাব্যথা, মাংসপেশির টান)</b>
+                    <b>১. ম্যাগনেসিয়ামের ঘাটতি</b>
                     <div><span class="nutrient-badge">পালং শাক</span><span class="nutrient-badge">কাঠবাদাম</span><span class="nutrient-badge">মিষ্টি কুমড়ার বীজ</span></div>
-                    <div style="font-size:0.72rem; color:var(--text-muted); margin-top:3px;">ঘাটতি মেটায়: স্নায়ু শান্ত করে ও পেশির খিঁচুনি দূর করে।</div>
                 </div>
                 <div class="card" style="background:var(--bg-color); padding:10px; margin-bottom:8px;">
-                    <b>২. ভিটামিন B12 ও আয়রনের ঘাটতি (ক্লান্তি, রক্তাল্পতা)</b>
+                    <b>২. ভিটামিন B12 ও আয়রন</b>
                     <div><span class="nutrient-badge">দেশি তাজা মাছ</span><span class="nutrient-badge">ডিম</span><span class="nutrient-badge">কলিজা</span></div>
-                    <div style="font-size:0.72rem; color:var(--text-muted); margin-top:3px;">ঘাটতি মেটায়: লোহিত রক্তকণিকা বাড়িয়ে শক্তি যোগায়।</div>
                 </div>
             </div>
         </section>
@@ -349,29 +350,17 @@
                 <div class="card-header">Select Language (ভাষা নির্বাচন)</div>
                 <select id="lang-select" onchange="applyLanguage(this.value)">
                     <option value="bn" selected>বাংলা (Bangla)</option>
-                    <option value="en">English (US & UK)</option>
-                    <option value="ar">العربية (Arabic)</option>
-                    <option value="hi">हिन्दी (Hindi)</option>
-                    <option value="ur">اردو (Urdu)</option>
-                    <option value="es">Español (Spanish)</option>
-                    <option value="fr">Français (French)</option>
-                    <option value="de">Deutsch (German)</option>
-                    <option value="pt">Português (Portuguese)</option>
-                    <option value="ru">Русский (Russian)</option>
-                    <option value="zh">中文 (Chinese)</option>
-                    <option value="ja">日本語 (Japanese)</option>
-                    <option value="ko">한국어 (Korean)</option>
-                    <option value="tr">Türkçe (Turkish)</option>
-                    <option value="id">Bahasa Indonesia</option>
-                    <option value="it">Italiano (Italian)</option>
+                    <option value="en">English</option>
+                    <option value="ar">العربية</option>
+                    <option value="hi">हिन्दी</option>
                 </select>
             </div>
 
             <div class="card">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <div>
-                        <div style="font-weight:700; font-size:0.85rem;">🌙 ডার্ক মোড (Dark Mode)</div>
-                        <div style="font-size:0.72rem; color:var(--text-muted);">আলো কমিয়ে চোখের সুরক্ষা নিন</div>
+                        <div style="font-weight:700; font-size:0.85rem;">🌙 ডার্ক মোড</div>
+                        <div style="font-size:0.72rem; color:var(--text-muted);">চোখের সুরক্ষা</div>
                     </div>
                     <input type="checkbox" id="darkToggle" onchange="toggleDarkMode()" style="width:20px; height:20px; margin:0;">
                 </div>
@@ -381,159 +370,155 @@
             <div class="card" style="border: 2px solid var(--border); text-align:center; padding:16px;">
                 <div style="font-size:0.78rem; font-weight:700; margin-bottom:8px; color:var(--text-muted);">অ্যাপ উদ্ভাবক ও স্বত্বাধিকারী</div>
                 <div style="display:inline-block; cursor:pointer;" onclick="handleOwnerSecretTap()">
-                    <img src="owner.jpg" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80'" style="width:65px; height:65px; border-radius:50%; object-fit:cover; border:3px solid var(--primary); display:block; margin:0 auto;" alt="Md. Sakib Hossain Nirob">
+                    <img id="owner-settings-img" src="" style="width:65px; height:65px; border-radius:50%; object-fit:cover; border:3px solid var(--primary); display:block; margin:0 auto;" alt="মোঃ সাকিব হোসাইন নিরব">
                     <div style="font-weight:800; font-size:0.9rem; margin-top:6px; color:var(--text-main);">মোঃ সাকিব হোসাইন নিরব</div>
                     <div style="font-size:0.7rem; color:var(--primary-dark); font-weight:600;">(ওনার ও ডেভেলপার)</div>
                 </div>
-
-                <div class="qr-grid">
-                    <div class="qr-card">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.facebook.com/share/1F3TrhVYCj/" alt="Facebook QR">
-                        <div style="font-size:0.7rem; font-weight:bold; margin-top:2px;">ফেসবুক কিউআর</div>
-                        <a href="https://www.facebook.com/share/1F3TrhVYCj/" target="_blank" style="font-size:0.65rem; color:#1877f2; text-decoration:none; display:block;">সরাসরি মেসেজ দিন</a>
-                    </div>
-                    <div class="qr-card">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wa.me/message/sakibhossainkabiraj" alt="WhatsApp QR">
-                        <div style="font-size:0.7rem; font-weight:bold; margin-top:2px;">হোয়াটসঅ্যাপ কিউআর</div>
-                        <span style="font-size:0.65rem; color:var(--safe); display:block;">sakibhossainkabiraj</span>
-                    </div>
-                </div>
-                <div style="font-size:0.68rem; color:var(--text-muted); margin-top:10px;">Migraine Care v5.1 • Stay Healthy, Stay Happy 🌿</div>
+                <div style="font-size:0.68rem; color:var(--text-muted); margin-top:10px;">Migraine Care v5.2 • Stay Healthy 🌿</div>
             </div>
 
-            <!-- PUBLIC COMMENT & FEEDBACK -->
+            <!-- PUBLIC COMMENT -->
             <div class="card">
                 <div class="card-header">💬 মতামত ও পরামর্শ বক্স</div>
-                <p style="font-size:0.75rem; color:var(--primary-dark); font-weight:600; margin-bottom:8px;">
-                    (এই অ্যাপসে কোনো কিছু পরিবর্তন অথবা যোগ করতে চাইলে আপনারা মন্তব্য করুন, সংশোধন করার চেষ্টা করবো ইনশাআল্লাহ)
-                </p>
                 <div class="voice-input-group">
-                    <input type="text" id="user-comment-name" placeholder="আপনার নাম ও পরিচয় লিখুন...">
+                    <input type="text" id="user-comment-name" placeholder="আপনার নাম...">
                     <button class="btn-mic" onclick="startVoiceInput('user-comment-name', this)">🎤</button>
                 </div>
                 <div class="voice-input-group">
-                    <textarea id="user-comment-msg" placeholder="আপনার পরামর্শ বা মন্তব্য লিখুন..." rows="2"></textarea>
+                    <textarea id="user-comment-msg" placeholder="মন্তব্য লিখুন..." rows="2"></textarea>
                     <button class="btn-mic" onclick="startVoiceInput('user-comment-msg', this)">🎤</button>
                 </div>
                 <button class="btn-prime" onclick="submitPublicComment()">মতামত পাঠান</button>
-                <div style="font-size:0.8rem; font-weight:700; margin:12px 0 6px 0;">আপনার পূর্ববর্তী মন্তব্য ও ওনারের উত্তর:</div>
+                <div style="font-size:0.8rem; font-weight:700; margin:12px 0 6px 0;">আপনার পূর্ববর্তী মন্তব্য:</div>
                 <div id="public-comments-feed"></div>
             </div>
         </section>
-
     </main>
 
-    <!-- USER PROFILE & BMI MODAL -->
+    <!-- USER PROFILE MODAL -->
     <div class="modal-overlay" id="userModal">
         <div class="modal-card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <b style="font-size:0.95rem;">👤 আপনার প্রোফাইল ও BMI গঠন</b>
-                <button onclick="closeUserModal()" style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:var(--text-main);">✕</button>
+                <b style="font-size:0.95rem;">👤 আপনার প্রোফাইল ও BMI</b>
+                <button onclick="closeUserModal()" style="background:none; border:none; font-size:1.2rem; cursor:pointer;">✕</button>
             </div>
-            <label style="font-size:0.72rem; color:var(--text-muted);">আপনার নাম:</label>
-            <div class="voice-input-group">
-                <input type="text" id="user-name-input" value="রিমু">
-                <button class="btn-mic" onclick="startVoiceInput('user-name-input', this)">🎤</button>
-            </div>
-            <label style="font-size:0.72rem; color:var(--text-muted);">লিঙ্গ নির্বাচন (ব্যায়াম স্বয়ংক্রিয় পরিবর্তিত হবে):</label>
+            <label style="font-size:0.72rem; color:var(--text-muted);">নাম:</label>
+            <input type="text" id="user-name-input" value="রিমু">
+            <label style="font-size:0.72rem; color:var(--text-muted);">লিঙ্গ:</label>
             <select id="user-gender-input">
-                <option value="female" selected>নারী প্রোফাইল (Female)</option>
-                <option value="male">পুরুষ প্রোফাইল (Male)</option>
+                <option value="female" selected>নারী</option>
+                <option value="male">পুরুষ</option>
             </select>
             <div style="background:var(--bg-color); padding:10px; border-radius:12px; margin:8px 0; border:1px solid var(--border);">
-                <b style="font-size:0.8rem; color:var(--secondary); display:block; margin-bottom:6px;">⚖️ বিএমআই (BMI) ও ওজন নির্ধারণ:</b>
+                <b style="font-size:0.8rem; color:var(--secondary);">⚖️ BMI</b>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
-                    <div><label style="font-size:0.68rem; color:var(--text-muted);">উচ্চতা (ফিট):</label><input type="number" id="calc-feet" placeholder="5" value="5" oninput="calculateProfileBMI()"></div>
-                    <div><label style="font-size:0.68rem; color:var(--text-muted);">ইঞ্চি:</label><input type="number" id="calc-inches" placeholder="4" value="4" oninput="calculateProfileBMI()"></div>
+                    <div><label style="font-size:0.68rem;">উচ্চতা (ফিট)</label><input type="number" id="calc-feet" value="5" oninput="calculateProfileBMI()"></div>
+                    <div><label style="font-size:0.68rem;">ইঞ্চি</label><input type="number" id="calc-inches" value="4" oninput="calculateProfileBMI()"></div>
+                    <div><label style="font-size:0.68rem;">বয়স</label><input type="number" id="calc-age" value="24" oninput="calculateProfileBMI()"></div>
+                    <div><label style="font-size:0.68rem;">ওজন (কেজি)</label><input type="number" id="calc-w" value="55" oninput="calculateProfileBMI()"></div>
                 </div>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
-                    <div><label style="font-size:0.68rem; color:var(--text-muted);">বয়স (বছর):</label><input type="number" id="calc-age" placeholder="24" value="24" oninput="calculateProfileBMI()"></div>
-                    <div><label style="font-size:0.68rem; color:var(--text-muted);">বর্তমান ওজন (কেজি):</label><input type="number" id="calc-w" placeholder="55" value="55" oninput="calculateProfileBMI()"></div>
-                </div>
-                <div id="profile-bmi-feedback" style="font-size:0.75rem; font-weight:600; color:var(--primary-dark); margin-top:6px; line-height:1.4;"></div>
+                <div id="profile-bmi-feedback" style="font-size:0.75rem; font-weight:600; color:var(--primary-dark); margin-top:6px;"></div>
             </div>
-            <label style="font-size:0.72rem; color:var(--text-muted);">প্রোফাইল ছবি পরিবর্তন করুন:</label>
+            <label style="font-size:0.72rem; color:var(--text-muted);">প্রোফাইল ছবি:</label>
             <input type="file" accept="image/*" onchange="previewUserAvatar(event)">
-            <button class="btn-prime" onclick="saveUserProfile()">প্রোফাইল ও বিএমআই সংরক্ষণ করুন</button>
+            <button class="btn-prime" onclick="saveUserProfile()">প্রোফাইল সংরক্ষণ করুন</button>
         </div>
     </div>
 
-    <!-- RINGTONE MODAL -->
-    <div class="modal-overlay" id="ringtoneModal">
-        <div class="modal-card">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <b id="ringtone-modal-title" style="font-size:0.92rem;">রিংটোন নির্বাচন</b>
-                <button onclick="closeRingtoneModal()" style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:var(--text-main);">✕</button>
-            </div>
-            <div class="sound-list-scroll" id="ringtone-list-container"></div>
-            <button class="btn-prime" onclick="closeRingtoneModal()">সম্পন্ন</button>
-        </div>
-    </div>
-
-    <!-- SECRET OWNER MASTER CONTROL MODAL -->
+    <!-- SECRET OWNER MODAL -->
     <div class="modal-overlay" id="secretOwnerModal">
         <div class="modal-card" style="border: 2px solid var(--primary);">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <div style="font-weight:800; font-size:0.95rem; color:var(--primary-dark);">🔐 ওনার মাস্টার কন্ট্রোল প্যানেল</div>
-                <button onclick="closeSecretOwnerModal()" style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:var(--text-main);">✕</button>
+                <div style="font-weight:800; font-size:0.95rem; color:var(--primary-dark);">🔐 ওনার মাস্টার কন্ট্রোল</div>
+                <button onclick="closeSecretOwnerModal()" style="background:none; border:none; font-size:1.2rem; cursor:pointer;">✕</button>
             </div>
             <div id="secret-pass-box">
-                <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:8px;">শুধুমাত্র ওনার <b>মোঃ সাকিব হোসাইন নিরব</b> এর জন্য সংরক্ষিত।</p>
+                <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:8px;">শুধুমাত্র ওনার <b>মোঃ সাকিব হোসাইন নিরব</b> এর জন্য।</p>
                 <input type="password" id="secret-password-input" placeholder="পাসওয়ার্ড দিন...">
                 <button class="btn-prime" onclick="verifySecretPassword()">আনলক করুন</button>
             </div>
             <div id="secret-features-unlocked" style="display:none; margin-top:8px;">
-                <div style="font-size:0.8rem; font-weight:bold; margin-bottom:6px; color:var(--safe);">✔ স্বাগতম নিরব ভাই! মাস্টার কন্ট্রোল সক্রিয়:</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <div style="font-size:0.8rem; font-weight:bold; color:var(--safe);">✔ সক্রিয়:</div>
+                    <div class="owner-top-actions">
+                        <button onclick="openOwnerAddCommentModal()">এড</button>
+                        <button onclick="ownerEditSelectedComment()" style="background:#0284c7;">এডিট</button>
+                        <button onclick="ownerRemoveSelectedComment()" style="background:var(--danger);">রিমুভ</button>
+                    </div>
+                </div>
+
+                <!-- 1. Owner Photo -->
+                <div style="background:var(--bg-color); padding:10px; border-radius:10px; border:1px solid var(--border); margin-bottom:10px; text-align:center;">
+                    <b style="font-size:0.78rem; display:block; margin-bottom:6px;">১. ওনার প্রোফাইল পিকচার সেট</b>
+                    <img id="owner-panel-preview" src="" style="width:70px; height:70px; border-radius:50%; object-fit:cover; border:3px solid var(--primary); margin-bottom:6px;" alt="Owner">
+                    <input type="file" id="owner-photo-input" accept="image/*" onchange="previewOwnerPhoto(event)" style="font-size:0.72rem; margin-bottom:6px;">
+                    <button class="btn-prime" style="padding:6px; font-size:0.75rem;" onclick="saveOwnerPhoto()">পিকচার সংরক্ষণ করুন</button>
+                </div>
+
+                <!-- 2. Announcement -->
                 <div style="background:var(--bg-color); padding:10px; border-radius:10px; border:1px solid var(--border); margin-bottom:10px;">
-                    <b style="font-size:0.78rem; display:block; margin-bottom:4px;">১. এডিট বক্স (ঘোষণা / আপডেট):</b>
-                    <div class="voice-input-group">
-                        <input type="text" id="owner-announcement-edit" placeholder="অ্যাপে নতুন ঘোষণা এডিট করুন...">
-                        <button class="btn-mic" onclick="startVoiceInput('owner-announcement-edit', this)">🎤</button>
-                    </div>
-                    <b style="font-size:0.78rem; display:block; margin:6px 0 4px 0;">২. যোগ বক্স (নতুন ফিচার / টিপস):</b>
-                    <div class="voice-input-group">
-                        <input type="text" id="owner-feature-add" placeholder="নতুন কোনো টিপস বা তথ্য যোগ করুন...">
-                        <button class="btn-mic" onclick="startVoiceInput('owner-feature-add', this)">🎤</button>
-                    </div>
+                    <b style="font-size:0.78rem; display:block; margin-bottom:4px;">২. এডিট বক্স (ঘোষণা / আপডেট):</b>
+                    <textarea id="owner-announcement-edit" rows="3" placeholder="নতুন ঘোষণা লিখুন..." style="width:100%; resize:vertical;"></textarea>
+                    <b style="font-size:0.78rem; display:block; margin:6px 0 4px 0;">৩. যোগ বক্স (নতুন ফিচার / টিপস):</b>
+                    <textarea id="owner-feature-add" rows="3" placeholder="নতুন টিপস লিখুন..." style="width:100%; resize:vertical;"></textarea>
                     <button class="btn-prime" onclick="saveOwnerAnnouncements()">সংরক্ষণ ও আপডেট করুন</button>
                 </div>
 
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                    <b style="font-size:0.8rem;">💬 পাবলিক কমেন্ট হিস্ট্রি (ফেসবুক স্টাইল)</b>
-                    <button class="btn-prime" style="width:auto; padding:4px 10px; font-size:0.72rem;" onclick="openOwnerAddCommentModal()">+ এডেড</button>
+                <!-- 4. Apps Privacy -->
+                <div style="background:rgba(139,92,246,0.08); padding:10px; border-radius:10px; border:2px solid var(--accent); margin-bottom:10px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                        <b style="font-size:0.82rem; color:var(--accent);">🔒 এপস প্রাইভেসি (শুধু ওনার)</b>
+                        <button onclick="openPrivacyModal()" style="background:var(--accent); color:white; border:none; padding:4px 10px; border-radius:6px; font-size:0.7rem; font-weight:700; cursor:pointer;">+ যোগ</button>
+                    </div>
+                    <p style="font-size:0.68rem; color:var(--text-muted); margin-bottom:6px;">আনলিমিটেড লেখা + পিকচার। শুধু আপনি দেখতে পারবেন।</p>
+                    <div id="privacy-list-box" style="max-height:180px; overflow-y:auto;"></div>
                 </div>
-                <div id="owner-comments-manager" style="max-height:220px; overflow-y:auto; margin-bottom:10px;"></div>
-                <button class="btn-prime" style="background:#0f172a; margin-top:10px;" onclick="closeSecretOwnerModal()">লক করে প্রস্থান করুন</button>
+
+                <div style="margin-bottom:6px;"><b style="font-size:0.8rem;">💬 পাবলিক কমেন্ট হিস্ট্রি</b></div>
+                <div id="owner-comments-manager" style="max-height:180px; overflow-y:auto; margin-bottom:10px;"></div>
+                <button class="btn-prime" style="background:#0f172a;" onclick="closeSecretOwnerModal()">লক করে প্রস্থান করুন</button>
             </div>
         </div>
     </div>
 
-    <!-- OWNER REPLY / EDIT MODAL -->
+    <!-- Privacy Modal -->
+    <div class="modal-overlay" id="privacyModal">
+        <div class="modal-card">
+            <b style="font-size:0.95rem; margin-bottom:8px; display:block;" id="privacy-modal-title">🔒 এপস প্রাইভেসি - নতুন নোট</b>
+            <input type="hidden" id="edit-privacy-id">
+            <label style="font-size:0.72rem; color:var(--text-muted);">শিরোনাম:</label>
+            <input type="text" id="privacy-title" placeholder="শিরোনাম...">
+            <label style="font-size:0.72rem; color:var(--text-muted);">বিস্তারিত (আনলিমিটেড):</label>
+            <textarea id="privacy-text" rows="5" placeholder="যা ইচ্ছা লিখুন..." style="resize:vertical;"></textarea>
+            <label style="font-size:0.72rem; color:var(--text-muted);">পিকচার (ঐচ্ছিক):</label>
+            <input type="file" id="privacy-image" accept="image/*" onchange="previewPrivacyImage(event)">
+            <div id="privacy-image-preview" style="margin:8px 0; text-align:center;"></div>
+            <div style="display:flex; gap:8px;">
+                <button class="btn-prime" onclick="savePrivacyItem()">সংরক্ষণ করুন</button>
+                <button class="btn-prime" style="background:#64748b;" onclick="closePrivacyModal()">বাতিল</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Other Modals (Reply, History, Compliance, Routine, Alarm, Custom Item) -->
     <div class="modal-overlay" id="replyModal">
         <div class="modal-card">
-            <b style="font-size:0.95rem; margin-bottom:8px; display:block;" id="reply-modal-title">💬 কমেন্টের উত্তর (Reply) দিন</b>
+            <b id="reply-modal-title">💬 উত্তর দিন</b>
             <input type="hidden" id="reply-comment-id">
             <input type="hidden" id="reply-mode" value="reply">
-            <div class="voice-input-group">
-                <textarea id="owner-reply-text" placeholder="আপনার উত্তর লিখুন বা মুখে বলুন..." rows="3"></textarea>
-                <button class="btn-mic" onclick="startVoiceInput('owner-reply-text', this)">🎤</button>
-            </div>
+            <textarea id="owner-reply-text" rows="3" placeholder="উত্তর লিখুন..."></textarea>
             <div style="display:flex; gap:8px;">
-                <button class="btn-prime" onclick="saveOwnerReply()">সংরক্ষণ করুন</button>
+                <button class="btn-prime" onclick="saveOwnerReply()">সংরক্ষণ</button>
                 <button class="btn-prime" style="background:#64748b;" onclick="closeReplyModal()">বাতিল</button>
             </div>
         </div>
     </div>
 
-    <!-- OWNER ADD COMMENT MODAL -->
     <div class="modal-overlay" id="ownerAddCommentModal">
         <div class="modal-card">
-            <b style="font-size:0.95rem; margin-bottom:8px; display:block;">+ নতুন কমেন্ট / নোট এড করুন</b>
-            <input type="text" id="owner-add-name" placeholder="ব্যবহারকারীর নাম (ঐচ্ছিক)" value="ওনার">
-            <div class="voice-input-group">
-                <textarea id="owner-add-msg" placeholder="কমেন্ট বা নোট লিখুন..." rows="3"></textarea>
-                <button class="btn-mic" onclick="startVoiceInput('owner-add-msg', this)">🎤</button>
-            </div>
+            <b>+ নতুন কমেন্ট</b>
+            <input type="text" id="owner-add-name" value="ওনার">
+            <textarea id="owner-add-msg" rows="3" placeholder="কমেন্ট..."></textarea>
             <div style="display:flex; gap:8px;">
                 <button class="btn-prime" onclick="saveOwnerAddedComment()">এড করুন</button>
                 <button class="btn-prime" style="background:#64748b;" onclick="closeOwnerAddCommentModal()">বাতিল</button>
@@ -541,57 +526,41 @@
         </div>
     </div>
 
-    <!-- ADD HISTORY MODAL -->
     <div class="modal-overlay" id="historyModal">
         <div class="modal-card">
-            <b style="font-size:0.95rem; margin-bottom:8px; display:block;">+ নতুন হিস্ট্রি লগ যোগ করুন</b>
-            <label style="font-size:0.72rem; color:var(--text-muted);">ক্যাটাগরি:</label>
+            <b>+ হিস্ট্রি যোগ</b>
             <select id="new-history-category">
                 <option value="daily">দৈনিক</option>
                 <option value="weekly">সাপ্তাহিক</option>
                 <option value="monthly">মাসিক</option>
                 <option value="yearly">বাৎসরিক</option>
             </select>
-            <div class="voice-input-group">
-                <textarea id="new-history-text" placeholder="হিস্ট্রির বিবরণ লিখুন..." rows="3"></textarea>
-                <button class="btn-mic" onclick="startVoiceInput('new-history-text', this)">🎤</button>
-            </div>
+            <textarea id="new-history-text" rows="3" placeholder="বিবরণ..."></textarea>
             <div style="display:flex; gap:8px;">
-                <button class="btn-prime" onclick="saveHistoryItem()">সংরক্ষণ করুন</button>
+                <button class="btn-prime" onclick="saveHistoryItem()">সংরক্ষণ</button>
                 <button class="btn-prime" style="background:#64748b;" onclick="closeHistoryModal()">বাতিল</button>
             </div>
         </div>
     </div>
 
-    <!-- ADD/EDIT COMPLIANCE MODAL -->
     <div class="modal-overlay" id="complianceModal">
         <div class="modal-card">
-            <b style="font-size:0.95rem; margin-bottom:8px; display:block;" id="comp-modal-title">+ স্বাস্থ্য নিয়ম</b>
+            <b id="comp-modal-title">+ স্বাস্থ্য নিয়ম</b>
             <input type="hidden" id="edit-comp-id">
-            <div class="voice-input-group">
-                <input type="text" id="new-comp-text" placeholder="যেমন: পর্যাপ্ত ঘুম (৭ ঘণ্টা)...">
-                <button class="btn-mic" onclick="startVoiceInput('new-comp-text', this)">🎤</button>
-            </div>
+            <input type="text" id="new-comp-text" placeholder="নিয়ম লিখুন...">
             <div style="display:flex; gap:8px;">
-                <button class="btn-prime" onclick="saveComplianceItem()">সংরক্ষণ করুন</button>
+                <button class="btn-prime" onclick="saveComplianceItem()">সংরক্ষণ</button>
                 <button class="btn-prime" style="background:#64748b;" onclick="closeComplianceModal()">বাতিল</button>
             </div>
         </div>
     </div>
 
-    <!-- ADD/EDIT ROUTINE MODAL -->
     <div class="modal-overlay" id="routineModal">
         <div class="modal-card">
-            <b style="font-size:0.95rem; margin-bottom:8px; display:block;" id="routine-modal-title">📋 নোটিফিকেশন রুটিন</b>
+            <b id="routine-modal-title">📋 রুটিন</b>
             <input type="hidden" id="edit-routine-id">
-            <label style="font-size:0.72rem; color:var(--text-muted);">সময় নির্ধারণ করুন:</label>
             <input type="time" id="new-routine-time" value="09:00">
-            <label style="font-size:0.72rem; color:var(--text-muted);">কাজের বিবরণ:</label>
-            <div class="voice-input-group">
-                <input type="text" id="new-routine-task" placeholder="যেমন: ওষুধ খাওয়া / পানি পান">
-                <button class="btn-mic" onclick="startVoiceInput('new-routine-task', this)">🎤</button>
-            </div>
-            <label style="font-size:0.72rem; color:var(--text-muted);">কি কি বারে নোটিফিকেশন চান (শনি-শুক্র):</label>
+            <input type="text" id="new-routine-task" placeholder="কাজ...">
             <div class="days-pill-group" id="routine-days-selector">
                 <div class="day-pill selected" onclick="toggleDayPill(this)" data-day="6">শনি</div>
                 <div class="day-pill selected" onclick="toggleDayPill(this)" data-day="0">রবি</div>
@@ -602,23 +571,18 @@
                 <div class="day-pill selected" onclick="toggleDayPill(this)" data-day="5">শুক্র</div>
             </div>
             <div style="display:flex; gap:8px;">
-                <button class="btn-prime" onclick="saveRoutineItem()">সংরক্ষণ করুন</button>
+                <button class="btn-prime" onclick="saveRoutineItem()">সংরক্ষণ</button>
                 <button class="btn-prime" style="background:#64748b;" onclick="closeAddRoutineModal()">বাতিল</button>
             </div>
         </div>
     </div>
 
-    <!-- ADD/EDIT ALARM MODAL -->
     <div class="modal-overlay" id="alarmModal">
         <div class="modal-card">
-            <b style="font-size:0.95rem; margin-bottom:8px; display:block;" id="alarm-modal-title">⏰ কাস্টম অ্যালার্ম</b>
+            <b id="alarm-modal-title">⏰ অ্যালার্ম</b>
             <input type="hidden" id="edit-alarm-id">
             <input type="time" id="new-alarm-time" value="08:00">
-            <div class="voice-input-group">
-                <input type="text" id="new-alarm-label" placeholder="অ্যালার্মের কাজের বিবরণ...">
-                <button class="btn-mic" onclick="startVoiceInput('new-alarm-label', this)">🎤</button>
-            </div>
-            <label style="font-size:0.72rem; color:var(--text-muted);">কি কি বারে অ্যালার্ম বাজবে (শনি-শুক্র):</label>
+            <input type="text" id="new-alarm-label" placeholder="বিবরণ...">
             <div class="days-pill-group" id="alarm-days-selector">
                 <div class="day-pill selected" onclick="toggleDayPill(this)" data-day="6">শনি</div>
                 <div class="day-pill selected" onclick="toggleDayPill(this)" data-day="0">রবি</div>
@@ -629,1076 +593,954 @@
                 <div class="day-pill selected" onclick="toggleDayPill(this)" data-day="5">শুক্র</div>
             </div>
             <div style="display:flex; gap:8px;">
-                <button class="btn-prime" onclick="saveAlarmItem()">সংরক্ষণ করুন</button>
+                <button class="btn-prime" onclick="saveAlarmItem()">সংরক্ষণ</button>
                 <button class="btn-prime" style="background:#64748b;" onclick="closeAddAlarmModal()">বাতিল</button>
             </div>
         </div>
     </div>
 
-    <!-- BOTTOM NAVIGATION -->
+    <div class="modal-overlay" id="customItemModal">
+        <div class="modal-card">
+            <b id="custom-item-modal-title">+ কাস্টম আইটেম</b>
+            <input type="hidden" id="edit-custom-id">
+            <select id="custom-item-type">
+                <option value="exercise">ব্যায়াম</option>
+                <option value="food">খাবার</option>
+            </select>
+            <input type="text" id="custom-item-title" placeholder="শিরোনাম">
+            <textarea id="custom-item-desc" rows="3" placeholder="বিবরণ..."></textarea>
+            <input type="file" id="custom-item-image" accept="image/*" onchange="previewCustomImage(event)">
+            <div id="custom-image-preview" style="margin:8px 0; text-align:center;"></div>
+            <div style="display:flex; gap:8px;">
+                <button class="btn-prime" onclick="saveCustomItem()">সংরক্ষণ</button>
+                <button class="btn-prime" style="background:#64748b;" onclick="closeCustomItemModal()">বাতিল</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="ringtoneModal">
+        <div class="modal-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <b id="ringtone-modal-title">রিংটোন</b>
+                <button onclick="closeRingtoneModal()" style="background:none; border:none; font-size:1.2rem;">✕</button>
+            </div>
+            <div class="sound-list-scroll" id="ringtone-list-container"></div>
+            <button class="btn-prime" onclick="closeRingtoneModal()">সম্পন্ন</button>
+        </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
     <nav class="bottom-nav">
         <div class="nav-tab active" onclick="switchNav('view-home', this)"><span>🏠</span><label>হোম</label></div>
-        <div class="nav-tab" onclick="switchNav('view-routine-alarm', this)"><span>📋</span><label>রুটিন/অ্যালার্ম</label></div>
-        <div class="nav-tab" onclick="switchNav('view-records', this)"><span>📊</span><label>হিস্ট্রি/ডাক্তার</label></div>
-        <div class="nav-tab" onclick="switchNav('view-food-exercise', this)"><span>🥗</span><label>খাদ্য ও ব্যায়াম</label></div>
+        <div class="nav-tab" onclick="switchNav('view-routine-alarm', this)"><span>📋</span><label>রুটিন</label></div>
+        <div class="nav-tab" onclick="switchNav('view-records', this)"><span>📊</span><label>হিস্ট্রি</label></div>
+        <div class="nav-tab" onclick="switchNav('view-food-exercise', this)"><span>🥗</span><label>খাদ্য</label></div>
         <div class="nav-tab" onclick="switchNav('view-settings', this)"><span>⚙️</span><label>সেটিংস</label></div>
     </nav>
-
 </div>
 
 <script>
-    // --- 1. LOCALSTORAGE & PERSISTENCE (Profile Lock) ---
-    const STORAGE_KEY = 'migraine_care_v8_master';
+/* ========== FULL WORKING SCRIPT ========== */
+const STORAGE_KEY = 'migraine_care_v8_master';
+const OWNER_PHOTO_B64 = ""; // Will be set on load if needed
 
-    const defaultData = {
-        isLoggedIn: false, authType: 'guest',
-        user: { name: "রিমু", gender: "female", avatar: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", feet: 5, inches: 4, age: 24, weight: 55, locked: false },
-        water: 0, pain: 0,
-        complianceList: [
-            { id: 1, text: "সকালের সুষম পুষ্টিকর খাবার খেয়েছি", done: true },
-            { id: 2, text: "দুপুরের পুষ্টিকর খাবার ও প্রোটিন সময়মতো নিয়েছি", done: true },
-            { id: 3, text: "প্রেসক্রিপশনের ওষুধ সময়মতো নিয়েছি", done: true },
-            { id: 4, text: "আজকের রিলাক্সেশন ও পোশ্চার ব্যায়াম করেছি", done: false },
-            { id: 5, text: "পর্যাপ্ত ঘুম (৭-৮ ঘণ্টা) হয়েছে", done: true },
-            { id: 6, text: "৩৫০০ মিলি পানি পানের লক্ষ্য পূরণ করেছি", done: false }
-        ],
-        routines: [
-            { id: 1, time: "07:00", task: "ঘুম থেকে উঠা ও ৫০০ মিলি পানি পান", done: false, days: [0,1,2,3,4,5,6] },
-            { id: 2, time: "07:30", task: "হালকা ঘাড় ও পিঠের স্ট্রেচিং (১০ মিনিট)", done: false, days: [0,1,2,3,4,5,6] },
-            { id: 3, time: "09:00", task: "পুষ্টিকর সকালের নাস্তা ও ওষুধ গ্রহণ", done: false, days: [0,1,2,3,4,5,6] },
-            { id: 4, time: "12:00", task: "পানি পানের রিমাইন্ডার (৫০০ মিলি)", done: false, days: [0,1,2,3,4,5,6] },
-            { id: 5, time: "16:00", task: "২০-২০-২০ চোখের বিশ্রাম ও বিরতি", done: false, days: [0,1,2,3,4,5,6] },
-            { id: 6, time: "21:00", task: "মৃদু আলো ও ঘুমের প্রস্তুতি", done: false, days: [0,1,2,3,4,5,6] }
-        ],
-        alarms: [
-            { id: 1, time: "07:00", label: "ঘুম থেকে উঠা ও পানি পান", active: true, days: [0,1,2,3,4,5,6] },
-            { id: 2, time: "09:00", label: "সকালের নাস্তা ও ওষুধ রিমাইন্ডার", active: true, days: [0,1,2,3,4,5,6] }
-        ],
-        comments: [
-            { id: 1, userName: "রিমু", name: "রিমু", msg: "অ্যাপটি অনেক সুন্দর হয়েছে। মাইগ্রেন রোগীদের জন্য খুব উপকারী!", reply: "ধন্যবাদ রিমু! স্বাস্থ্যবিধি মেনে নিয়মিত পানি পান করুন ও সুস্থ থাকুন।", timestamp: Date.now() - 86400000 }
-        ],
-        historyLogs: [],
-        selectedNotifRingtone: "সফট চাইম", selectedAlarmRingtone: "৪৩২ হার্টজ ওয়েক-আপ",
-        syncAlarm: true, darkMode: false, lang: "bn"
-    };
+const defaultData = {
+    isLoggedIn: false, authType: 'guest',
+    user: { name: "রিমু", gender: "female", avatar: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", feet: 5, inches: 4, age: 24, weight: 55, locked: false },
+    water: 0, pain: 0,
+    bannerText: "📢 সেটিংসে গিয়ে অ্যাপসের আপডেট সম্পর্কে মূল্যবান কমেন্ট করুন",
+    bannerList: ["📢 সেটিংসে গিয়ে অ্যাপসের আপডেট সম্পর্কে মূল্যবান কমেন্ট করুন"],
+    complianceList: [
+        { id: 1, text: "সকালের সুষম পুষ্টিকর খাবার খেয়েছি", done: true },
+        { id: 2, text: "দুপুরের পুষ্টিকর খাবার নিয়েছি", done: true },
+        { id: 3, text: "প্রেসক্রিপশনের ওষুধ নিয়েছি", done: true },
+        { id: 4, text: "রিলাক্সেশন ব্যায়াম করেছি", done: false },
+        { id: 5, text: "পর্যাপ্ত ঘুম হয়েছে", done: true },
+        { id: 6, text: "৩৫০০ মিলি পানি পান করেছি", done: false }
+    ],
+    routines: [
+        { id: 1, time: "07:00", task: "ঘুম থেকে উঠা ও পানি পান", done: false, days: [0,1,2,3,4,5,6] },
+        { id: 2, time: "09:00", task: "সকালের নাস্তা ও ওষুধ", done: false, days: [0,1,2,3,4,5,6] },
+        { id: 3, time: "12:00", task: "পানি পানের রিমাইন্ডার", done: false, days: [0,1,2,3,4,5,6] },
+        { id: 4, time: "21:00", task: "ঘুমের প্রস্তুতি", done: false, days: [0,1,2,3,4,5,6] }
+    ],
+    alarms: [
+        { id: 1, time: "07:00", label: "ঘুম থেকে উঠা", active: true, days: [0,1,2,3,4,5,6] },
+        { id: 2, time: "09:00", label: "ওষুধ রিমাইন্ডার", active: true, days: [0,1,2,3,4,5,6] }
+    ],
+    comments: [
+        { id: 1, userName: "রিমু", name: "রিমু", msg: "অ্যাপটি অনেক সুন্দর হয়েছে।", reply: "ধন্যবাদ! সুস্থ থাকুন।", timestamp: Date.now() - 86400000 }
+    ],
+    historyLogs: [], customItems: [], privacyNotes: [],
+    ownerPhoto: "", // will be loaded from embedded or localStorage
+    selectedNotifRingtone: "সফট চাইম", selectedAlarmRingtone: "৪৩২ হার্টজ ওয়েক-আপ",
+    syncAlarm: true, darkMode: false, lang: "bn"
+};
 
-    let appData;
-    try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) {
-            appData = JSON.parse(raw);
-        } else {
-            appData = JSON.parse(JSON.stringify(defaultData));
-        }
-    } catch(e) {
-        appData = JSON.parse(JSON.stringify(defaultData));
-    }
+let appData;
+try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    appData = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(defaultData));
+} catch(e) { appData = JSON.parse(JSON.stringify(defaultData)); }
 
-    // Safe merge – never overwrite existing user profile
-    if (!appData.user) appData.user = JSON.parse(JSON.stringify(defaultData.user));
-    if (appData.user.locked === undefined) appData.user.locked = false;
-    if (!Array.isArray(appData.complianceList)) appData.complianceList = defaultData.complianceList;
-    if (!Array.isArray(appData.routines)) appData.routines = defaultData.routines;
-    if (!Array.isArray(appData.alarms)) appData.alarms = defaultData.alarms;
-    if (!Array.isArray(appData.comments)) appData.comments = defaultData.comments;
-    if (!Array.isArray(appData.historyLogs)) appData.historyLogs = [];
-    if (typeof appData.water !== 'number') appData.water = 0;
-    if (typeof appData.pain !== 'number') appData.pain = 0;
+if (!appData.user) appData.user = JSON.parse(JSON.stringify(defaultData.user));
+if (appData.user.locked === undefined) appData.user.locked = false;
+if (!Array.isArray(appData.complianceList)) appData.complianceList = defaultData.complianceList;
+if (!Array.isArray(appData.routines)) appData.routines = defaultData.routines;
+if (!Array.isArray(appData.alarms)) appData.alarms = defaultData.alarms;
+if (!Array.isArray(appData.comments)) appData.comments = defaultData.comments;
+if (!Array.isArray(appData.historyLogs)) appData.historyLogs = [];
+if (!Array.isArray(appData.customItems)) appData.customItems = [];
+if (!Array.isArray(appData.privacyNotes)) appData.privacyNotes = [];
+if (!Array.isArray(appData.bannerList)) appData.bannerList = [appData.bannerText || defaultData.bannerText];
+if (typeof appData.water !== 'number') appData.water = 0;
+if (typeof appData.pain !== 'number') appData.pain = 0;
+if (!appData.bannerText) appData.bannerText = defaultData.bannerText;
 
-    function persist() {
-        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(appData)); } catch(e) {}
-    }
+function persist() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(appData)); } catch(e) {} }
 
-    // --- 2. AUTHENTICATION (Profile never resets after first set) ---
-    function checkAuth() {
-        document.getElementById('authModal').style.display = appData.isLoggedIn ? 'none' : 'flex';
-    }
-
-    function quickLoginPrompt(provider) {
-        // If already logged in with a locked profile, just open the app
-        if (appData.isLoggedIn && appData.user.locked) {
-            document.getElementById('authModal').style.display = 'none';
-            renderUserProfileUI();
-            return;
-        }
-
-        const val = prompt(`${provider} দিয়ে কানেক্ট করতে আপনার নাম লিখুন:`, appData.user.name || "ব্যবহারকারী");
-        if (val && val.trim()) {
-            appData.isLoggedIn = true;
-            appData.authType = provider;
-            appData.user.name = val.trim();
-            appData.user.locked = true; // permanently lock this profile
-
-            // Only set avatar if user has never uploaded a custom one
-            if (!appData.user.avatar || appData.user.avatar.includes('flaticon') || appData.user.avatar.includes('3135715')) {
-                if (provider === 'Google') {
-                    appData.user.avatar = "https://cdn-icons-png.flaticon.com/512/2991/2991148.png";
-                } else if (provider === 'Facebook') {
-                    appData.user.avatar = "https://cdn-icons-png.flaticon.com/512/5968/5968764.png";
-                } else {
-                    appData.user.avatar = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
-                }
-            }
-
-            persist();
-            renderUserProfileUI();
-            renderPublicComments();
-            document.getElementById('authModal').style.display = 'none';
-            alert(`${provider} দিয়ে সফলভাবে কানেক্ট হয়েছে! স্বাগতম ${appData.user.name}!\n\nআপনার প্রোফাইল এখন স্থায়ীভাবে সংরক্ষিত। রিফ্রেশ করলেও পরিবর্তন হবে না।`);
-        }
-    }
-
-    function loginAsGuest() {
-        if (appData.isLoggedIn && appData.user.locked) {
-            document.getElementById('authModal').style.display = 'none';
-            return;
-        }
+function checkAuth() {
+    if (appData.user && appData.user.locked) {
         appData.isLoggedIn = true;
-        appData.authType = 'guest';
+        document.getElementById('authModal').style.display = 'none';
+        return;
+    }
+    document.getElementById('authModal').style.display = appData.isLoggedIn ? 'none' : 'flex';
+}
+
+function quickLoginPrompt(provider) {
+    if (appData.user && appData.user.locked) {
+        appData.isLoggedIn = true;
+        document.getElementById('authModal').style.display = 'none';
+        renderUserProfileUI();
+        return;
+    }
+    const val = prompt(`${provider} দিয়ে কানেক্ট করতে নাম লিখুন:`, appData.user.name || "ব্যবহারকারী");
+    if (val && val.trim()) {
+        appData.isLoggedIn = true;
+        appData.authType = provider;
+        appData.user.name = val.trim();
         appData.user.locked = true;
         persist();
         renderUserProfileUI();
         document.getElementById('authModal').style.display = 'none';
+        alert(`${provider} দিয়ে কানেক্ট হয়েছে! স্বাগতম ${appData.user.name}!`);
     }
+}
 
-    // --- 3. NAVIGATION ---
-    function switchNav(viewId, tabEl) {
-        document.querySelectorAll('.view-screen').forEach(v => v.classList.remove('active'));
-        const target = document.getElementById(viewId);
-        if (target) target.classList.add('active');
-        if (tabEl) {
-            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-            tabEl.classList.add('active');
-        }
+function loginAsGuest() {
+    if (appData.user && appData.user.locked) {
+        appData.isLoggedIn = true;
+        document.getElementById('authModal').style.display = 'none';
+        return;
     }
+    appData.isLoggedIn = true;
+    appData.authType = 'guest';
+    appData.user.locked = true;
+    persist();
+    renderUserProfileUI();
+    document.getElementById('authModal').style.display = 'none';
+}
 
-    // --- 4. LIVE DATE ---
-    function updateLiveDate() {
-        const today = new Date();
-        try { document.getElementById('live-header-date').innerText = "আজ: " + today.toLocaleDateString('bn-BD', { day: 'numeric', month: 'long' }); }
-        catch(e) { document.getElementById('live-header-date').innerText = "আজ: " + today.getDate() + " তারিখ"; }
+function switchNav(viewId, tabEl) {
+    document.querySelectorAll('.view-screen').forEach(v => v.classList.remove('active'));
+    const target = document.getElementById(viewId);
+    if (target) target.classList.add('active');
+    if (tabEl) {
+        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+        tabEl.classList.add('active');
     }
+}
 
-    // --- 5. WATER TRACKER ---
-    function adjustWater(amount) {
-        appData.water = Math.max(0, Math.min(3500, appData.water + amount));
-        persist(); renderWater();
-    }
-    function renderWater() {
-        const txt = document.getElementById('water-stat-txt');
-        const fill = document.getElementById('water-progress-fill');
-        if (txt) txt.innerText = `${appData.water} / 3500 মিলি`;
-        if (fill) fill.style.width = ((appData.water / 3500) * 100) + '%';
-        if (appData.water >= 3500) alert("মাশাআল্লাহ! ৩৫০০ মিলি পানির লক্ষ্য পূর্ণ হয়েছে!");
-    }
+function updateLiveDate() {
+    const today = new Date();
+    try { document.getElementById('live-header-date').innerText = "আজ: " + today.toLocaleDateString('bn-BD', { day: 'numeric', month: 'long' }); }
+    catch(e) { document.getElementById('live-header-date').innerText = "আজ: " + today.getDate(); }
+}
 
-    // --- 6. PAIN SCALE ---
-    function setPainVal(val, el) {
-        document.querySelectorAll('.pain-pill').forEach(p => p.classList.remove('active'));
-        if (el) el.classList.add('active');
-        appData.pain = val; persist();
-        const cat = val === 0 ? "ব্যথামুক্ত" : (val <= 3 ? "হালকা" : (val <= 6 ? "মাঝারি" : "তীব্র"));
-        const pInd = document.getElementById('pain-indicator');
-        if (pInd) pInd.innerText = `\( {val}/১০ ( \){cat})`;
-        const locBox = document.getElementById('head-pain-location-box');
-        if (locBox) locBox.style.display = (val === 0) ? 'none' : 'block';
-        renderDoctorReport();
-    }
+function renderBanner() {
+    const el = document.getElementById('home-banner-text');
+    if (el) el.innerText = (appData.bannerList && appData.bannerList[0]) || appData.bannerText || defaultData.bannerText;
+}
 
-    // --- 7. VOICE-TO-TEXT ---
-    function startVoiceInput(inputId, btnEl) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SpeechRecognition) return alert("আপনার ডিভাইসে ভয়েস টাইপিং সমর্থন করে না।");
-        const recognition = new SpeechRecognition();
-        recognition.lang = (appData.lang === 'en') ? 'en-US' : 'bn-BD';
-        btnEl.innerText = "🔴";
-        recognition.onresult = function(event) {
-            const transcript = event.results[0][0].transcript;
-            const input = document.getElementById(inputId);
-            if (input) input.value = input.value ? (input.value + " " + transcript) : transcript;
-            btnEl.innerText = "🎤";
-        };
-        recognition.onerror = function() { btnEl.innerText = "🎤"; alert("ভয়েস শোনা যায়নি।"); };
-        recognition.onend = function() { btnEl.innerText = "🎤"; };
-        recognition.start();
-    }
+function adjustWater(amount) {
+    appData.water = Math.max(0, Math.min(3500, appData.water + amount));
+    persist(); renderWater();
+}
+function renderWater() {
+    const txt = document.getElementById('water-stat-txt');
+    const fill = document.getElementById('water-progress-fill');
+    if (txt) txt.innerText = `${appData.water} / ৩৫০০ মিলি`;
+    if (fill) fill.style.width = ((appData.water / 3500) * 100) + '%';
+}
 
-    // --- 8. COMPLIANCE ---
-    function renderCompliance() {
-        const box = document.getElementById('compliance-checklist-box');
-        if (!box) return;
-        box.innerHTML = '';
-        appData.complianceList.forEach(item => {
-            const div = document.createElement('div');
-            div.className = "compliance-row";
-            div.innerHTML = `
-                <span>${item.text}</span>
-                <div class="compliance-actions">
-                    <input type="checkbox" \( {item.done ? 'checked' : ''} onchange="toggleComplianceDone( \){item.id})">
-                    <button class="btn-icon" onclick="openEditComplianceModal(${item.id})">✏️</button>
-                    <button class="btn-icon" onclick="deleteCompliance(${item.id})">🗑️</button>
-                </div>`;
-            box.appendChild(div);
-        });
-        updateAdherenceRate();
-        renderDoctorReport();
-    }
-    function toggleComplianceDone(id) {
-        const item = appData.complianceList.find(c => c.id === id);
-        if (item) { item.done = !item.done; persist(); updateAdherenceRate(); renderDoctorReport(); }
-    }
-    function openAddComplianceModal() {
-        document.getElementById('edit-comp-id').value = '';
-        document.getElementById('comp-modal-title').innerText = "+ নতুন স্বাস্থ্য নিয়ম";
-        document.getElementById('new-comp-text').value = '';
+function setPainVal(val, el) {
+    document.querySelectorAll('.pain-pill').forEach(p => p.classList.remove('active'));
+    if (el) el.classList.add('active');
+    appData.pain = val; persist();
+    const cat = val === 0 ? "ব্যথামুক্ত" : (val <= 3 ? "হালকা" : (val <= 6 ? "মাঝারি" : "তীব্র"));
+    const pInd = document.getElementById('pain-indicator');
+    if (pInd) pInd.innerText = `\( {val}/১০ ( \){cat})`;
+    const locBox = document.getElementById('head-pain-location-box');
+    if (locBox) locBox.style.display = (val === 0) ? 'none' : 'block';
+    renderDoctorReport();
+}
+
+function startVoiceInput(inputId, btnEl) {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return alert("ভয়েস সাপোর্ট নেই।");
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'bn-BD';
+    btnEl.innerText = "🔴";
+    recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        const input = document.getElementById(inputId);
+        if (input) input.value = input.value ? (input.value + " " + transcript) : transcript;
+        btnEl.innerText = "🎤";
+    };
+    recognition.onerror = recognition.onend = function() { btnEl.innerText = "🎤"; };
+    recognition.start();
+}
+
+function renderCompliance() {
+    const box = document.getElementById('compliance-checklist-box');
+    if (!box) return;
+    box.innerHTML = '';
+    appData.complianceList.forEach(item => {
+        const div = document.createElement('div');
+        div.className = "compliance-row";
+        div.innerHTML = `<span>${item.text}</span>
+            <div class="compliance-actions">
+                <input type="checkbox" \( {item.done ? 'checked' : ''} onchange="toggleComplianceDone( \){item.id})">
+                <button class="btn-icon" onclick="openEditComplianceModal(${item.id})">✏️</button>
+                <button class="btn-icon" onclick="deleteCompliance(${item.id})">🗑️</button>
+            </div>`;
+        box.appendChild(div);
+    });
+    updateAdherenceRate();
+}
+function toggleComplianceDone(id) {
+    const item = appData.complianceList.find(c => c.id === id);
+    if (item) { item.done = !item.done; persist(); updateAdherenceRate(); }
+}
+function openAddComplianceModal() {
+    document.getElementById('edit-comp-id').value = '';
+    document.getElementById('comp-modal-title').innerText = "+ নতুন নিয়ম";
+    document.getElementById('new-comp-text').value = '';
+    document.getElementById('complianceModal').style.display = 'flex';
+}
+function openEditComplianceModal(id) {
+    const item = appData.complianceList.find(c => c.id === id);
+    if (item) {
+        document.getElementById('edit-comp-id').value = item.id;
+        document.getElementById('comp-modal-title').innerText = "✏️ এডিট";
+        document.getElementById('new-comp-text').value = item.text;
         document.getElementById('complianceModal').style.display = 'flex';
     }
-    function openEditComplianceModal(id) {
-        const item = appData.complianceList.find(c => c.id === id);
-        if (item) {
-            document.getElementById('edit-comp-id').value = item.id;
-            document.getElementById('comp-modal-title').innerText = "✏️ স্বাস্থ্য নিয়ম এডিট";
-            document.getElementById('new-comp-text').value = item.text;
-            document.getElementById('complianceModal').style.display = 'flex';
-        }
+}
+function closeComplianceModal() { document.getElementById('complianceModal').style.display = 'none'; }
+function saveComplianceItem() {
+    const id = document.getElementById('edit-comp-id').value;
+    const text = document.getElementById('new-comp-text').value.trim();
+    if (!text) return alert("লিখুন!");
+    if (id) {
+        const item = appData.complianceList.find(c => c.id == id);
+        if (item) item.text = text;
+    } else {
+        appData.complianceList.push({ id: Date.now(), text, done: false });
     }
-    function closeComplianceModal() { document.getElementById('complianceModal').style.display = 'none'; }
-    function saveComplianceItem() {
-        const id = document.getElementById('edit-comp-id').value;
-        const text = document.getElementById('new-comp-text').value.trim();
-        if (!text) return alert("নিয়মের বিবরণ লিখুন!");
-        if (id) {
-            const item = appData.complianceList.find(c => c.id == id);
-            if (item) item.text = text;
-        } else {
-            appData.complianceList.push({ id: Date.now(), text, done: false });
-        }
-        persist(); renderCompliance(); closeComplianceModal();
+    persist(); renderCompliance(); closeComplianceModal();
+}
+function deleteCompliance(id) {
+    if (confirm("ডিলিট?")) {
+        appData.complianceList = appData.complianceList.filter(c => c.id !== id);
+        persist(); renderCompliance();
     }
-    function deleteCompliance(id) {
-        if (confirm("এই নিয়মটি ডিলিট করতে চান?")) {
-            appData.complianceList = appData.complianceList.filter(c => c.id !== id);
-            persist(); renderCompliance();
-        }
-    }
-    function updateAdherenceRate() {
-        const list = appData.complianceList;
-        if (!list || !list.length) return;
-        const done = list.filter(c => c.done).length;
-        const tag = document.getElementById('adherence-percent-tag');
-        if (tag) tag.innerText = `${Math.round((done / list.length) * 100)}% পালন`;
-    }
+}
+function updateAdherenceRate() {
+    const list = appData.complianceList;
+    if (!list.length) return;
+    const done = list.filter(c => c.done).length;
+    const tag = document.getElementById('adherence-percent-tag');
+    if (tag) tag.innerText = `${Math.round((done / list.length) * 100)}% পালন`;
+}
 
-    // --- 9. DAYS PILL ---
-    function toggleDayPill(el) { el.classList.toggle('selected'); }
-    function getSelectedDays(containerId) {
-        const pills = document.querySelectorAll(`#${containerId} .day-pill.selected`);
-        return Array.from(pills).map(p => parseInt(p.getAttribute('data-day')));
-    }
-    function setSelectedDays(containerId, daysArray) {
-        const pills = document.querySelectorAll(`#${containerId} .day-pill`);
-        pills.forEach(p => {
-            const d = parseInt(p.getAttribute('data-day'));
-            if (daysArray && daysArray.includes(d)) p.classList.add('selected');
-            else p.classList.remove('selected');
-        });
-    }
+function toggleDayPill(el) { el.classList.toggle('selected'); }
+function getSelectedDays(containerId) {
+    return Array.from(document.querySelectorAll(`#${containerId} .day-pill.selected`)).map(p => parseInt(p.getAttribute('data-day')));
+}
+function setSelectedDays(containerId, daysArray) {
+    document.querySelectorAll(`#${containerId} .day-pill`).forEach(p => {
+        const d = parseInt(p.getAttribute('data-day'));
+        if (daysArray && daysArray.includes(d)) p.classList.add('selected');
+        else p.classList.remove('selected');
+    });
+}
 
-    // --- 10. ROUTINES ---
-    function renderRoutines() {
-        const box = document.getElementById('routine-list-box');
-        if (!box) return;
-        box.innerHTML = '';
-        appData.routines.forEach(item => {
-            const div = document.createElement('div');
-            div.className = `timeline-item ${item.done ? 'done' : ''}`;
-            div.innerHTML = `
-                <div style="flex:1; cursor:pointer;" onclick="toggleRoutineDone(\( {item.id})"><b> \){item.time}</b> - ${item.task}</div>
-                <div class="item-actions">
-                    <button class="btn-icon" onclick="openEditRoutineModal(${item.id})">✏️</button>
-                    <button class="btn-icon" onclick="deleteRoutine(${item.id})">🗑️</button>
-                </div>`;
-            box.appendChild(div);
-        });
-    }
-    function toggleRoutineDone(id) {
-        const item = appData.routines.find(r => r.id === id);
-        if (item) { item.done = !item.done; persist(); renderRoutines(); }
-    }
-    function openAddRoutineModal() {
-        document.getElementById('edit-routine-id').value = '';
-        document.getElementById('routine-modal-title').innerText = "📋 নতুন রুটিন যোগ করুন";
-        document.getElementById('new-routine-task').value = '';
-        setSelectedDays('routine-days-selector', [0,1,2,3,4,5,6]);
+function renderRoutines() {
+    const box = document.getElementById('routine-list-box');
+    if (!box) return;
+    box.innerHTML = '';
+    appData.routines.forEach(item => {
+        const div = document.createElement('div');
+        div.className = `timeline-item ${item.done ? 'done' : ''}`;
+        div.innerHTML = `<div style="flex:1; cursor:pointer;" onclick="toggleRoutineDone(\( {item.id})"><b> \){item.time}</b> - ${item.task}</div>
+            <div><button class="btn-icon" onclick="openEditRoutineModal(${item.id})">✏️</button>
+            <button class="btn-icon" onclick="deleteRoutine(${item.id})">🗑️</button></div>`;
+        box.appendChild(div);
+    });
+}
+function toggleRoutineDone(id) {
+    const item = appData.routines.find(r => r.id === id);
+    if (item) { item.done = !item.done; persist(); renderRoutines(); }
+}
+function openAddRoutineModal() {
+    document.getElementById('edit-routine-id').value = '';
+    document.getElementById('routine-modal-title').innerText = "📋 নতুন রুটিন";
+    document.getElementById('new-routine-task').value = '';
+    setSelectedDays('routine-days-selector', [0,1,2,3,4,5,6]);
+    document.getElementById('routineModal').style.display = 'flex';
+}
+function openEditRoutineModal(id) {
+    const item = appData.routines.find(r => r.id === id);
+    if (item) {
+        document.getElementById('edit-routine-id').value = item.id;
+        document.getElementById('new-routine-time').value = item.time;
+        document.getElementById('new-routine-task').value = item.task;
+        setSelectedDays('routine-days-selector', item.days || [0,1,2,3,4,5,6]);
         document.getElementById('routineModal').style.display = 'flex';
     }
-    function openEditRoutineModal(id) {
-        const item = appData.routines.find(r => r.id === id);
-        if (item) {
-            document.getElementById('edit-routine-id').value = item.id;
-            document.getElementById('routine-modal-title').innerText = "✏️ রুটিন পরিবর্তন করুন";
-            document.getElementById('new-routine-time').value = item.time;
-            document.getElementById('new-routine-task').value = item.task;
-            setSelectedDays('routine-days-selector', item.days || [0,1,2,3,4,5,6]);
-            document.getElementById('routineModal').style.display = 'flex';
-        }
+}
+function closeAddRoutineModal() { document.getElementById('routineModal').style.display = 'none'; }
+function saveRoutineItem() {
+    const id = document.getElementById('edit-routine-id').value;
+    const time = document.getElementById('new-routine-time').value;
+    const task = document.getElementById('new-routine-task').value.trim();
+    const days = getSelectedDays('routine-days-selector');
+    if (!task) return alert("কাজ লিখুন!");
+    if (id) {
+        const item = appData.routines.find(r => r.id == id);
+        if (item) { item.time = time; item.task = task; item.days = days; }
+    } else {
+        appData.routines.push({ id: Date.now(), time, task, done: false, days });
     }
-    function closeAddRoutineModal() { document.getElementById('routineModal').style.display = 'none'; }
-    function saveRoutineItem() {
-        const id = document.getElementById('edit-routine-id').value;
-        const time = document.getElementById('new-routine-time').value;
-        const task = document.getElementById('new-routine-task').value.trim();
-        const days = getSelectedDays('routine-days-selector');
-        if (!task) return alert("কাজের বিবরণ দিন!");
-        if (id) {
-            const item = appData.routines.find(r => r.id == id);
-            if (item) { item.time = time; item.task = task; item.days = days; }
-        } else {
-            appData.routines.push({ id: Date.now(), time, task, done: false, days });
-        }
-        persist(); renderRoutines(); closeAddRoutineModal();
+    persist(); renderRoutines(); closeAddRoutineModal();
+}
+function deleteRoutine(id) {
+    if (confirm("মুছে ফেলবেন?")) {
+        appData.routines = appData.routines.filter(r => r.id !== id);
+        persist(); renderRoutines();
     }
-    function deleteRoutine(id) {
-        if (confirm("এই রুটিনটি মুছে ফেলতে চান?")) {
-            appData.routines = appData.routines.filter(r => r.id !== id);
-            persist(); renderRoutines();
-        }
-    }
-    function toggleSyncAlarm(checked) {
-        appData.syncAlarm = checked; persist();
-        alert(checked ? "রুটিনের কাজগুলো স্বয়ংক্রিয় অ্যালার্ম হিসেবে সেট করা হয়েছে।" : "রুটিন ও অ্যালার্ম আলাদা করা হয়েছে।");
-    }
+}
+function toggleSyncAlarm(checked) { appData.syncAlarm = checked; persist(); }
 
-    // --- 11. ALARMS ---
-    function renderAlarms() {
-        const box = document.getElementById('alarm-list-box');
-        if (!box) return;
-        box.innerHTML = '';
-        appData.alarms.forEach(item => {
-            const div = document.createElement('div');
-            div.className = "timeline-item";
-            div.innerHTML = `
-                <div style="flex:1;"><b>${item.time}</b> - ${item.label}</div>
-                <div class="item-actions">
-                    <input type="checkbox" \( {item.active ? 'checked' : ''} onchange="toggleAlarmActive( \){item.id})" style="width:18px; height:18px; margin:0;">
-                    <button class="btn-icon" onclick="openEditAlarmModal(${item.id})">✏️</button>
-                    <button class="btn-icon" onclick="deleteAlarm(${item.id})">🗑️</button>
-                </div>`;
-            box.appendChild(div);
-        });
-    }
-    function toggleAlarmActive(id) {
-        const a = appData.alarms.find(x => x.id === id);
-        if (a) { a.active = !a.active; persist(); }
-    }
-    function openAddAlarmModal() {
-        document.getElementById('edit-alarm-id').value = '';
-        document.getElementById('alarm-modal-title').innerText = "⏰ কাস্টম অ্যালার্ম";
-        document.getElementById('new-alarm-label').value = '';
-        setSelectedDays('alarm-days-selector', [0,1,2,3,4,5,6]);
+function renderAlarms() {
+    const box = document.getElementById('alarm-list-box');
+    if (!box) return;
+    box.innerHTML = '';
+    appData.alarms.forEach(item => {
+        const div = document.createElement('div');
+        div.className = "timeline-item";
+        div.innerHTML = `<div style="flex:1;"><b>${item.time}</b> - ${item.label}</div>
+            <div><input type="checkbox" \( {item.active ? 'checked' : ''} onchange="toggleAlarmActive( \){item.id})" style="width:18px;height:18px;margin:0;">
+            <button class="btn-icon" onclick="openEditAlarmModal(${item.id})">✏️</button>
+            <button class="btn-icon" onclick="deleteAlarm(${item.id})">🗑️</button></div>`;
+        box.appendChild(div);
+    });
+}
+function toggleAlarmActive(id) {
+    const a = appData.alarms.find(x => x.id === id);
+    if (a) { a.active = !a.active; persist(); }
+}
+function openAddAlarmModal() {
+    document.getElementById('edit-alarm-id').value = '';
+    document.getElementById('new-alarm-label').value = '';
+    setSelectedDays('alarm-days-selector', [0,1,2,3,4,5,6]);
+    document.getElementById('alarmModal').style.display = 'flex';
+}
+function openEditAlarmModal(id) {
+    const a = appData.alarms.find(x => x.id === id);
+    if (a) {
+        document.getElementById('edit-alarm-id').value = a.id;
+        document.getElementById('new-alarm-time').value = a.time;
+        document.getElementById('new-alarm-label').value = a.label;
+        setSelectedDays('alarm-days-selector', a.days || [0,1,2,3,4,5,6]);
         document.getElementById('alarmModal').style.display = 'flex';
     }
-    function openEditAlarmModal(id) {
-        const a = appData.alarms.find(x => x.id === id);
-        if (a) {
-            document.getElementById('edit-alarm-id').value = a.id;
-            document.getElementById('alarm-modal-title').innerText = "✏️ অ্যালার্ম এডিট করুন";
-            document.getElementById('new-alarm-time').value = a.time;
-            document.getElementById('new-alarm-label').value = a.label;
-            setSelectedDays('alarm-days-selector', a.days || [0,1,2,3,4,5,6]);
-            document.getElementById('alarmModal').style.display = 'flex';
+}
+function closeAddAlarmModal() { document.getElementById('alarmModal').style.display = 'none'; }
+function saveAlarmItem() {
+    const id = document.getElementById('edit-alarm-id').value;
+    const time = document.getElementById('new-alarm-time').value;
+    const label = document.getElementById('new-alarm-label').value.trim();
+    const days = getSelectedDays('alarm-days-selector');
+    if (!label) return alert("বিবরণ দিন!");
+    if (id) {
+        const a = appData.alarms.find(x => x.id == id);
+        if (a) { a.time = time; a.label = label; a.days = days; }
+    } else {
+        appData.alarms.push({ id: Date.now(), time, label, active: true, days });
+    }
+    persist(); renderAlarms(); closeAddAlarmModal();
+}
+function deleteAlarm(id) {
+    if (confirm("ডিলিট?")) {
+        appData.alarms = appData.alarms.filter(a => a.id !== id);
+        persist(); renderAlarms();
+    }
+}
+
+// Alarm engine (simplified)
+let lastRingCheck = "";
+setInterval(() => {
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    const currentClock = `\( {hh}: \){mm}`;
+    if (lastRingCheck === currentClock) return;
+    for (let a of appData.alarms) {
+        if (a.active && a.time === currentClock && (a.days||[0,1,2,3,4,5,6]).includes(now.getDay())) {
+            lastRingCheck = currentClock;
+            document.getElementById('alarm-trigger-title').innerText = a.label;
+            document.getElementById('alarmTriggerModal').style.display = 'flex';
+            return;
         }
     }
-    function closeAddAlarmModal() { document.getElementById('alarmModal').style.display = 'none'; }
-    function saveAlarmItem() {
-        const id = document.getElementById('edit-alarm-id').value;
-        const time = document.getElementById('new-alarm-time').value;
-        const label = document.getElementById('new-alarm-label').value.trim();
-        const days = getSelectedDays('alarm-days-selector');
-        if (!label) return alert("অ্যালার্মের কাজের বিবরণ দিন!");
-        if (id) {
-            const a = appData.alarms.find(x => x.id == id);
-            if (a) { a.time = time; a.label = label; a.days = days; }
-        } else {
-            appData.alarms.push({ id: Date.now(), time, label, active: true, days });
-        }
-        persist(); renderAlarms(); closeAddAlarmModal();
-    }
-    function deleteAlarm(id) {
-        if (confirm("এই অ্যালার্মটি ডিলিট করতে চান?")) {
-            appData.alarms = appData.alarms.filter(a => a.id !== id);
-            persist(); renderAlarms();
-        }
-    }
+}, 2500);
+function dismissLiveAlarm() { document.getElementById('alarmTriggerModal').style.display = 'none'; }
+function snoozeLiveAlarm() { dismissLiveAlarm(); alert("১০ মিনিট স্নুজ"); }
 
-    // --- 12. WEB AUDIO & ALARM ENGINE ---
-    let audioCtx = null;
-    let alarmLoopInterval = null;
+function openRingtoneModal(mode) {
+    const container = document.getElementById('ringtone-list-container');
+    container.innerHTML = '';
+    document.getElementById('ringtone-modal-title').innerText = mode === 'notification' ? "🔔 নোটিফিকেশন" : "⏰ অ্যালার্ম";
+    for (let i = 1; i <= (mode==='notification'?15:20); i++) {
+        const row = document.createElement('div');
+        row.className = "sound-item-row";
+        row.innerHTML = `<span>টোন ${i}</span><button class="btn-icon" onclick="selectRingtone('টোন ${i}')">সেট</button>`;
+        container.appendChild(row);
+    }
+    document.getElementById('ringtoneModal').style.display = 'flex';
+}
+function closeRingtoneModal() { document.getElementById('ringtoneModal').style.display = 'none'; }
+function selectRingtone(name) {
+    appData.selectedNotifRingtone = name;
+    document.getElementById('lbl-selected-notif').innerText = name;
+    persist(); closeRingtoneModal();
+}
 
-    function getAudioContext() {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        return audioCtx;
+function openAddHistoryModal() {
+    document.getElementById('new-history-text').value = '';
+    document.getElementById('historyModal').style.display = 'flex';
+}
+function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; }
+function saveHistoryItem() {
+    const cat = document.getElementById('new-history-category').value;
+    const text = document.getElementById('new-history-text').value.trim();
+    if (!text) return alert("লিখুন!");
+    appData.historyLogs.push({ id: Date.now(), category: cat, text, dateStr: new Date().toLocaleDateString('bn-BD'), timestamp: Date.now() });
+    persist(); closeHistoryModal();
+    filterHistory(cat, document.getElementById('btn-hist-' + cat));
+}
+function filterHistory(type, btnEl) {
+    document.querySelectorAll('.filter-tab-btn').forEach(b => b.classList.remove('active'));
+    if (btnEl) btnEl.classList.add('active');
+    const logsBox = document.getElementById('history-logs-container');
+    if (!logsBox) return;
+    logsBox.innerHTML = '';
+    if (type === 'daily') {
+        logsBox.innerHTML = `<div class="timeline-item"><div><b>পানি:</b> ${appData.water} মিলি</div></div>
+            <div class="timeline-item"><div><b>ব্যথা:</b> ${appData.pain}/১০</div></div>`;
     }
-    document.addEventListener('click', getAudioContext, { once: true });
-    document.addEventListener('touchstart', getAudioContext, { once: true });
+    appData.historyLogs.filter(h => h.category === type).sort((a,b)=>b.timestamp-a.timestamp).forEach(h => {
+        const div = document.createElement('div');
+        div.className = "timeline-item";
+        div.innerHTML = `<div><div style="font-size:0.68rem;color:var(--text-muted);">\( {h.dateStr}</div><b> \){h.text}</b></div>`;
+        logsBox.appendChild(div);
+    });
+    renderDoctorReport();
+}
 
-    function playAcousticTone(freq, type, duration, count = 1) {
-        try {
-            const ctx = getAudioContext();
-            for (let i = 0; i < count; i++) {
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = type;
-                osc.frequency.setValueAtTime(freq + (i * 35), ctx.currentTime + (i * 0.12));
-                gain.gain.setValueAtTime(0.01, ctx.currentTime + (i * 0.12));
-                gain.gain.exponentialRampToValueAtTime(0.3, ctx.currentTime + (i * 0.12) + 0.04);
-                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (i * 0.12) + duration);
-                osc.connect(gain); gain.connect(ctx.destination);
-                osc.start(ctx.currentTime + (i * 0.12));
-                osc.stop(ctx.currentTime + (i * 0.12) + duration + 0.05);
-            }
-        } catch(e) {}
-    }
+function renderDoctorReport() {
+    const r = document.getElementById('doctor-report-content');
+    if (!r) return;
+    const done = appData.complianceList.filter(c => c.done).length;
+    const pct = appData.complianceList.length ? Math.round((done / appData.complianceList.length)*100) : 100;
+    r.innerHTML = `<h3 style="color:var(--secondary);">🏥 ক্লিনিক্যাল ডাটা</h3>
+        <div>• রোগী: <b>${appData.user.name}</b></div>
+        <div>• মাইগ্রেন: <b>${appData.pain}/১০</b></div>
+        <div>• পানি: <b>${appData.water} মিলি</b></div>
+        <div>• নিয়মানুবর্তিতা: <b>${pct}%</b></div>`;
+}
 
-    let lastRingCheck = "";
-    setInterval(runAlarmTimerCheck, 2500);
+const exerciseAnimSteps = [
+    { label: "ধাপ A", icon: "🧘‍♀️", text: "সোজা হয়ে বসুন" },
+    { label: "ধাপ B", icon: "🙆‍♀️", text: "হাত স্ট্রেচ করুন" },
+    { label: "ধাপ C", icon: "💆‍♀️", text: "চিবুক পেছনে টানুন" },
+    { label: "ধাপ D", icon: "🛌", text: "শ্বাস ছেড়ে দিন" }
+];
+let currentAnimIdx = 0, animTimer = null, isAnimPlaying = true;
+function cycleExerciseAnim() {
+    const step = exerciseAnimSteps[currentAnimIdx];
+    document.getElementById('anim-step-label').innerText = step.label;
+    document.getElementById('anim-viewport-char').innerText = step.icon;
+    document.getElementById('anim-guidance-text').innerText = step.text;
+    currentAnimIdx = (currentAnimIdx + 1) % exerciseAnimSteps.length;
+}
+function startExerciseAnimation() { if (!animTimer) animTimer = setInterval(cycleExerciseAnim, 1800); }
+function toggleExerciseAnimation() {
+    if (isAnimPlaying) { clearInterval(animTimer); animTimer = null; document.getElementById('anim-ctrl-btn').innerText = "▶️ চালু"; isAnimPlaying = false; }
+    else { startExerciseAnimation(); document.getElementById('anim-ctrl-btn').innerText = "⏸️ পজ"; isAnimPlaying = true; }
+}
 
-    function runAlarmTimerCheck() {
-        const now = new Date();
-        const currentDay = now.getDay();
-        const hh = String(now.getHours()).padStart(2, '0');
-        const mm = String(now.getMinutes()).padStart(2, '0');
-        const currentClock = `\( {hh}: \){mm}`;
+function renderExercisesByGender() {
+    const holder = document.getElementById('exercise-steps-dynamic');
+    const badge = document.getElementById('current-exercise-gender-badge');
+    if (!holder) return;
+    holder.innerHTML = '';
+    const list = appData.user.gender === 'female' ?
+        ["১. বুকের পেশী", "২. কোমর গঠন", "৩. কোর স্ট্রেংথ", "৪. ঘাড় অ্যালাইনমেন্ট", "৫. ফুল বডি", "৬. ফ্যাট বার্ন", "৭. রিলিফ পোজ"] :
+        ["১. নেক রিলিফ", "২. ক্যাট-কাউ", "৩. প্ল্যাঙ্ক", "৪. পুশ-আপ", "৫. স্কোয়াট", "৬. জাম্পিং জ্যাক", "৭. চাইল্ডস পোজ"];
+    if (badge) badge.innerText = appData.user.gender === 'female' ? "নারী প্রোফাইল" : "পুরুষ প্রোফাইল";
+    list.forEach(t => {
+        const b = document.createElement('div');
+        b.className = "timeline-item";
+        b.innerHTML = `<div><b>${t}</b></div>`;
+        holder.appendChild(b);
+    });
+}
 
-        if (lastRingCheck === currentClock) return;
-
-        for (let a of appData.alarms) {
-            if (a.active && a.time === currentClock) {
-                const days = a.days || [0,1,2,3,4,5,6];
-                if (days.includes(currentDay)) {
-                    lastRingCheck = currentClock;
-                    triggerLiveAlarmRing(a.label);
-                    return;
-                }
-            }
-        }
-
-        if (appData.syncAlarm) {
-            for (let r of appData.routines) {
-                if (!r.done && r.time === currentClock) {
-                    const days = r.days || [0,1,2,3,4,5,6];
-                    if (days.includes(currentDay)) {
-                        lastRingCheck = currentClock;
-                        triggerLiveAlarmRing(r.task);
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
-    function triggerLiveAlarmRing(title) {
-        document.getElementById('alarm-trigger-title').innerText = title;
-        document.getElementById('alarmTriggerModal').style.display = 'flex';
-        clearInterval(alarmLoopInterval);
-        playAlarmRingingBeat();
-        alarmLoopInterval = setInterval(playAlarmRingingBeat, 2000);
-    }
-
-    function playAlarmRingingBeat() {
-        playAcousticTone(520, 'sawtooth', 0.5, 4);
-    }
-
-    function dismissLiveAlarm() {
-        clearInterval(alarmLoopInterval);
-        document.getElementById('alarmTriggerModal').style.display = 'none';
-    }
-
-    function snoozeLiveAlarm() {
-        clearInterval(alarmLoopInterval);
-        document.getElementById('alarmTriggerModal').style.display = 'none';
-        alert("১০ মিনিটের জন্য স্নুজ করা হলো। ১০ মিনিট পর আবার বাজবে।");
-    }
-
-    let currentRingtoneMode = 'notification';
-    function openRingtoneModal(mode) {
-        currentRingtoneMode = mode;
-        const title = document.getElementById('ringtone-modal-title');
-        const container = document.getElementById('ringtone-list-container');
-        container.innerHTML = '';
-        if (mode === 'notification') {
-            title.innerText = "🔔 ৩০টি নোটিফিকেশন রিংটোন (ভিন্ন সুর)";
-            for (let i = 1; i <= 30; i++) {
-                const name = `টোন ${i}: ${getNotifToneName(i)}`;
-                const row = document.createElement('div');
-                row.className = "sound-item-row";
-                row.innerHTML = `<span>\( {name}</span><div><button class="btn-icon" onclick="testNotifSound( \){i})">▶️</button><button class="btn-icon" style="color:var(--primary); font-weight:bold;" onclick="selectRingtone('${name}')">সেট</button></div>`;
-                container.appendChild(row);
-            }
-        } else {
-            title.innerText = "⏰ ৫০টি ঘুম ভাঙার অ্যালার্ম (ভিন্ন সুর)";
-            for (let i = 1; i <= 50; i++) {
-                const name = `অ্যালার্ম ${i}: ${getAlarmToneName(i)}`;
-                const row = document.createElement('div');
-                row.className = "sound-item-row";
-                row.innerHTML = `<span>\( {name}</span><div><button class="btn-icon" onclick="testAlarmSound( \){i})">▶️</button><button class="btn-icon" style="color:var(--primary); font-weight:bold;" onclick="selectRingtone('${name}')">সেট</button></div>`;
-                container.appendChild(row);
-            }
-        }
-        document.getElementById('ringtoneModal').style.display = 'flex';
-    }
-    function closeRingtoneModal() { document.getElementById('ringtoneModal').style.display = 'none'; }
-    function selectRingtone(name) {
-        if (currentRingtoneMode === 'notification') {
-            appData.selectedNotifRingtone = name;
-            document.getElementById('lbl-selected-notif').innerText = name.split(':')[1] || name;
-        } else {
-            appData.selectedAlarmRingtone = name;
-            document.getElementById('lbl-selected-alarm').innerText = name.split(':')[1] || name;
-        }
-        persist(); closeRingtoneModal(); alert("রিংটোন সেট হয়েছে!");
-    }
-    function testNotifSound(index) {
-        const freqs = [480, 520, 560, 600, 640, 680, 720, 760, 800, 840, 880, 920, 960, 1000, 1050, 420, 460, 540, 620, 700, 780, 860, 940, 1020, 510, 590, 670, 750, 830, 910];
-        const types = ['sine', 'triangle', 'sine', 'sine', 'triangle', 'square', 'sine', 'triangle'];
-        playAcousticTone(freqs[index - 1] || 600, types[index % types.length], 0.22, 2);
-    }
-    function testAlarmSound(index) {
-        const baseFreq = 260 + (index * 16);
-        const types = ['sine', 'triangle', 'sawtooth', 'square'];
-        playAcousticTone(baseFreq, types[index % types.length], 0.35, 4);
-    }
-    function getNotifToneName(i) {
-        const names = ["সফট চাইম", "ওয়াটার ড্রপ", "ক্রিস্টাল বেল", "হার্প প্ল্যাক", "জেন বেল", "মারিম্বা", "সিলভার টিংক", "মর্নিং বার্ড", "পিসফুল ড্রপ", "মৃদু পিয়ানো", "স্মার্ট পিং", "অরা বেল", "গোল্ডেন চাইম", "স্নিগ্ধ সুর", "লোটাস পপ", "শিশির ড্রপ", "ফরেস্ট উইন্ড", "লাইট ভাইব", "মিষ্টি ঘণ্টা", "সোলো বাঁশি", "ডাবল বিট", "ন্যাচারাল ভাইব", "সফট ক্লিক", "টুইঙ্কল", "উইন্ডচাইম", "রেনড্রপ", "ক্লিন পপ", "সিল্কি টিউন", "শান্ত ঢেউ", "মেডিটেশন টিউন"];
-        return names[i - 1] || `টোন ${i}`;
-    }
-    function getAlarmToneName(i) {
-        if (i <= 10) return `৪৩২Hz জেন্টল ওয়েক ${i}`;
-        if (i <= 25) return `সকালের অ্যাকোস্টিক বাঁশি ${i}`;
-        if (i <= 40) return `উদ্যমী অ্যাকোস্টিক বীট ${i}`;
-        return `শক্তিশালী ওয়েক-আপ অ্যালার্ম ${i}`;
-    }
-
-    // --- 13. HISTORY LOGS (with Add + Remove) ---
-    let currentHistoryFilter = 'daily';
-
-    function openAddHistoryModal() {
-        document.getElementById('new-history-category').value = currentHistoryFilter;
-        document.getElementById('new-history-text').value = '';
-        document.getElementById('historyModal').style.display = 'flex';
-    }
-    function closeHistoryModal() { document.getElementById('historyModal').style.display = 'none'; }
-    function saveHistoryItem() {
-        const cat = document.getElementById('new-history-category').value;
-        const text = document.getElementById('new-history-text').value.trim();
-        if (!text) return alert("হিস্ট্রির বিবরণ লিখুন!");
-        appData.historyLogs.push({
-            id: Date.now(),
-            category: cat,
-            text: text,
-            dateStr: new Date().toLocaleDateString('bn-BD'),
-            timestamp: Date.now()
-        });
-        persist();
-        closeHistoryModal();
-        filterHistory(currentHistoryFilter, document.getElementById('btn-hist-' + currentHistoryFilter));
-        alert("হিস্ট্রি লগ সফলভাবে যোগ হয়েছে!");
-    }
-    function removeHistoryItem(id) {
-        if (confirm("এই হিস্ট্রি লগটি মুছে ফেলতে চান?")) {
-            appData.historyLogs = appData.historyLogs.filter(h => h.id !== id);
-            persist();
-            filterHistory(currentHistoryFilter, document.getElementById('btn-hist-' + currentHistoryFilter));
+// Custom items
+let tempCustomImage = null;
+function openCustomItemModal(id = null) {
+    document.getElementById('edit-custom-id').value = id || '';
+    document.getElementById('custom-item-title').value = '';
+    document.getElementById('custom-item-desc').value = '';
+    document.getElementById('custom-image-preview').innerHTML = '';
+    tempCustomImage = null;
+    if (id) {
+        const item = appData.customItems.find(x => x.id == id);
+        if (item) {
+            document.getElementById('custom-item-title').value = item.title || '';
+            document.getElementById('custom-item-desc').value = item.desc || '';
+            document.getElementById('custom-item-type').value = item.type || 'exercise';
+            if (item.image) { tempCustomImage = item.image; document.getElementById('custom-image-preview').innerHTML = `<img src="${item.image}" style="max-width:100%;max-height:120px;border-radius:8px;">`; }
         }
     }
-
-    function filterHistory(type, btnEl) {
-        currentHistoryFilter = type;
-        document.querySelectorAll('.filter-tab-btn').forEach(b => b.classList.remove('active'));
-        if (btnEl) btnEl.classList.add('active');
-        const logsBox = document.getElementById('history-logs-container');
-        if (!logsBox) return;
-        logsBox.innerHTML = '';
-
-        // Dynamic current summary
-        if (type === 'daily') {
-            document.getElementById('hist-painfree-days').innerText = "আজকের দিন";
-            document.getElementById('hist-med-count').innerText = "০ বার (০%)";
-            logsBox.innerHTML += `
-                <div class="timeline-item"><div><b>আজকের পানি:</b> ${appData.water} মিলি (লক্ষ্য: ৩৫০০ মিলি)</div></div>
-                <div class="timeline-item"><div><b>মাইগ্রেন তীব্রতা:</b> ${appData.pain} / ১০</div></div>
-                <div class="timeline-item"><div><b>স্বাস্থ্য নিয়মানুবর্তিতা:</b> ${document.getElementById('adherence-percent-tag')?.innerText || '০%'} সম্পন্ন</div></div>`;
-        } else if (type === 'weekly') {
-            document.getElementById('hist-painfree-days').innerText = "৬ দিন";
-            document.getElementById('hist-med-count').innerText = "১ বার (১৪%)";
-        } else if (type === 'monthly') {
-            document.getElementById('hist-painfree-days').innerText = "২৬ দিন";
-            document.getElementById('hist-med-count').innerText = "২ বার (৭%)";
-        } else {
-            document.getElementById('hist-painfree-days').innerText = "৩১০ দিন";
-            document.getElementById('hist-med-count').innerText = "১৮ বার (৫%)";
-        }
-
-        // Stored custom history logs for this category
-        const filtered = appData.historyLogs
-            .filter(h => h.category === type)
-            .sort((a, b) => b.timestamp - a.timestamp);
-
-        if (filtered.length === 0 && type !== 'daily') {
-            logsBox.innerHTML += `<div style="font-size:0.75rem; color:var(--text-muted); padding:8px;">এই ক্যাটাগরিতে এখনো কোনো কাস্টম হিস্ট্রি নেই। “+ হিস্ট্রি যোগ” দিয়ে যোগ করুন।</div>`;
-        }
-
-        filtered.forEach(h => {
-            const div = document.createElement('div');
-            div.className = "timeline-item";
-            div.innerHTML = `
-                <div style="flex:1;">
-                    <div style="font-size:0.68rem; color:var(--text-muted);">${h.dateStr}</div>
-                    <b>${h.text}</b>
-                </div>
-                <button class="btn-icon" onclick="removeHistoryItem(${h.id})" title="রিমুভ">🗑️</button>`;
-            logsBox.appendChild(div);
-        });
-
-        renderDoctorReport();
+    document.getElementById('customItemModal').style.display = 'flex';
+}
+function closeCustomItemModal() { document.getElementById('customItemModal').style.display = 'none'; }
+function previewCustomImage(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => { tempCustomImage = ev.target.result; document.getElementById('custom-image-preview').innerHTML = `<img src="${ev.target.result}" style="max-width:100%;max-height:120px;border-radius:8px;">`; };
+    reader.readAsDataURL(file);
+}
+function saveCustomItem() {
+    const id = document.getElementById('edit-custom-id').value;
+    const title = document.getElementById('custom-item-title').value.trim();
+    const desc = document.getElementById('custom-item-desc').value.trim();
+    const type = document.getElementById('custom-item-type').value;
+    if (!title) return alert("শিরোনাম দিন!");
+    if (id) {
+        const item = appData.customItems.find(x => x.id == id);
+        if (item) { item.title = title; item.desc = desc; item.type = type; if (tempCustomImage) item.image = tempCustomImage; }
+    } else {
+        appData.customItems.push({ id: Date.now(), title, desc, type, image: tempCustomImage || "", timestamp: Date.now() });
     }
-
-    // --- 14. DOCTOR REPORT ---
-    function renderDoctorReport() {
-        const r = document.getElementById('doctor-report-content');
-        if (!r) return;
-        const doneCount = appData.complianceList.filter(c => c.done).length;
-        const totalCount = appData.complianceList.length;
-        const compliancePct = totalCount ? Math.round((doneCount / totalCount) * 100) : 100;
-
-        r.innerHTML = `
-            <div style="border-bottom:2px solid var(--secondary); padding-bottom:6px; margin-bottom:8px;">
-                <h3 style="color:var(--secondary); margin-bottom:2px;">🏥 রোগীর পূর্ণাঙ্গ ক্লিনিক্যাল ডাটা ফাইল</h3>
-                <span style="font-size:0.7rem; color:var(--text-muted);">তারিখ: ${new Date().toLocaleDateString('bn-BD')} | আইডি: #MC-2026</span>
-            </div>
-            <div>• রোগী: <b>\( {appData.user.name}</b> ( \){appData.user.gender === 'female' ? 'নারী' : 'পুরুষ'} | বয়স: ${appData.user.age || 24} বছর)</div>
-            <div>• বর্তমান মাইগ্রেন তীব্রতা স্কেল: <b>\( {appData.pain} / ১০ ( \){appData.pain === 0 ? 'ব্যথামুক্ত' : (appData.pain <= 3 ? 'হালকা' : 'মাঝারি/তীব্র')})</b></div>
-            <div>• দৈনিক হাইড্রেশন হিসেব: <b>${appData.water} মিলি (নির্ধারিত: ৩৫০০ মিলি)</b></div>
-            <div>• স্বাস্থ্য নিয়মানুবর্তিতা ও খাদ্য স্কোর: <b>${compliancePct}% রুটিন সফল</b></div>
-            <div>• ওষুধ ও ব্যথার রেকর্ড: <b>এই মাসে ২ বার (৭% দিন)</b> (নিয়ম মেনে চলা হয়েছে)</div>
-            <div>• ৭টি অঙ্গভঙ্গি ও স্ট্রেচিং ব্যায়াম: <b>নিয়মিত সম্পন্ন হচ্ছে</b></div>
-            <div style="margin-top:10px; padding:8px; background:rgba(16, 185, 129, 0.12); border-left:4px solid var(--primary); border-radius:6px; font-weight:600;">
-                👨‍⚕️ ডাক্তারের প্রেসক্রিপশন নোট: রোগীর নিয়মিত পানি পান ও খাদ্যতালিকা অনুসরণের কারণে মাইগ্রেন ট্রিগার উল্লেখযোগ্যভাবে কমেছে। বর্তমান খাদ্যতালিকা ও হালকা রিলাক্সেশন স্ট্রেচিং অব্যাহত রাখুন।
+    persist(); renderCustomItems(); closeCustomItemModal();
+}
+function deleteCustomItem(id) {
+    if (confirm("ডিলিট?")) { appData.customItems = appData.customItems.filter(x => x.id !== id); persist(); renderCustomItems(); }
+}
+function renderCustomItems() {
+    const box = document.getElementById('custom-items-container');
+    if (!box) return;
+    box.innerHTML = '';
+    if (!appData.customItems.length) { box.innerHTML = '<div style="font-size:0.75rem;color:var(--text-muted);">কোনো আইটেম নেই।</div>'; return; }
+    [...appData.customItems].sort((a,b)=>b.timestamp-a.timestamp).forEach(item => {
+        const div = document.createElement('div');
+        div.className = "custom-item-card";
+        div.innerHTML = `\( {item.image ? `<img src=" \){item.image}">` : ''}
+            <div style="font-size:0.68rem;color:var(--primary-dark);">${item.type==='food'?'🍎 খাবার':'🤸 ব্যায়াম'}</div>
+            <b>${item.title}</b>
+            <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">${item.desc||''}</div>
+            <div class="custom-item-actions">
+                <button class="btn-edit-c" onclick="openCustomItemModal(${item.id})">✏️ এডিট</button>
+                <button class="btn-del-c" onclick="deleteCustomItem(${item.id})">🗑️ ডিলিট</button>
             </div>`;
-    }
+        box.appendChild(div);
+    });
+}
 
-    // --- 15. EXERCISE ANIMATION ---
-    const exerciseAnimSteps = [
-        { label: "ধাপ A ➔ শুরু", icon: "🧘‍♀️", text: "১. সোজা হয়ে বসুন, কাঁধ আলতো পেছনে রাখুন" },
-        { label: "ধাপ B ➔ মুভমেন্ট", icon: "🙆‍♀️", text: "২. হাত ডানে ও বামে আলতো স্ট্রেচ করে বুক প্রসারিত করুন" },
-        { label: "ধাপ C ➔ স্ট্রেচ/হোল্ড", icon: "💆‍♀️", text: "৩. চিবুক পেছনে টেনে ৫ সেকেন্ড ধরে রাখুন" },
-        { label: "ধাপ D ➔ রিল্যাক্স", icon: "🛌", text: "৪. স্বাভাবিক গভীর শ্বাস ছেড়ে আগের অবস্থায় ফিরে আসুন" }
-    ];
-    let currentAnimIdx = 0, animTimer = null, isAnimPlaying = true;
-
-    function cycleExerciseAnim() {
-        const step = exerciseAnimSteps[currentAnimIdx];
-        const lbl = document.getElementById('anim-step-label');
-        const view = document.getElementById('anim-viewport-char');
-        const txt = document.getElementById('anim-guidance-text');
-        if (lbl) lbl.innerText = step.label;
-        if (view) view.innerText = step.icon;
-        if (txt) txt.innerText = step.text;
-        currentAnimIdx = (currentAnimIdx + 1) % exerciseAnimSteps.length;
-    }
-    function startExerciseAnimation() {
-        if (!animTimer) animTimer = setInterval(cycleExerciseAnim, 1800);
-    }
-    function toggleExerciseAnimation() {
-        if (isAnimPlaying) {
-            clearInterval(animTimer); animTimer = null;
-            document.getElementById('anim-ctrl-btn').innerText = "▶️ চালু করুন"; isAnimPlaying = false;
-        } else {
-            startExerciseAnimation();
-            document.getElementById('anim-ctrl-btn').innerText = "⏸️ পজ করুন"; isAnimPlaying = true;
-        }
-    }
-
-    const womenExercisesList = [
-        { title: "১. বুকের পেশী মজবুত ও সুন্দর গঠন", sets: "৩ সেট × ১২ বার" },
-        { title: "২. কোমরের সুন্দর আকৃতি গঠন (Waistline Shaping)", sets: "৩ সেট × ১৫ বার প্রতি পাশে" },
-        { title: "৩. পেটের পেশী মজবুত ও সমতল রাখা (Core Strength)", sets: "৩০-৪৫ সেকেন্ড × ৩ বার" },
-        { title: "৪. ঘাড় সোজা ও ব্যথামুক্ত রাখা (Neck Alignment)", sets: "৩০ সেকেন্ড প্রতি পাশে × ৩" },
-        { title: "৫. শরীরের লম্বা ও সোজা অবয়ব (Full Body Lengthening)", sets: "৩ সেট × ১০ বার" },
-        { title: "৬. শরীরের অতিরিক্ত চর্বি কমানো (Fat Burning)", sets: "৩ সেট × ৩০ সেকেন্ড" },
-        { title: "৭. মাইগ্রেন উপশম ও মানসিক প্রশান্তি (Relief Pose)", sets: "১-২ মিনিট ধরে রাখুন" }
-    ];
-    const menExercisesList = [
-        { title: "১. ঘাড় ও মাইগ্রেন রিলিফ স্ট্রেচ (Neck Relief)", sets: "৩০ সেকেন্ড প্রতি পাশে × ৩" },
-        { title: "২. মেরুদণ্ড নমনীয়তা (Cat-Cow Spine Mobility)", sets: "১০ ধীর রেপ × ৩" },
-        { title: "৩. কোর শক্তি প্ল্যাঙ্ক (Core Strength Plank)", sets: "৪০-৬০ সেকেন্ড × ৩" },
-        { title: "৪. পুরো শরীরের পুশ-আপ (Full Body Push-ups)", sets: "৩ সেট × ১২-১৫" },
-        { title: "৫. পায়ের শক্তি স্কোয়াট (Leg Strength Squats)", sets: "৩ সেট × ১৫" },
-        { title: "৬. চর্বি কমানোর জাম্পিং জ্যাক (Jumping Jacks)", sets: "৩ সেট × ৪০ সেকেন্ড" },
-        { title: "৭. মাইগ্রেন শান্ত করার চাইল্ডস পোজ (Child's Pose)", sets: "১-২ মিনিট" }
-    ];
-
-    function renderExercisesByGender() {
-        const holder = document.getElementById('exercise-steps-dynamic');
-        const badge = document.getElementById('current-exercise-gender-badge');
-        const fPoster = document.getElementById('female-poster-box');
-        const mPoster = document.getElementById('male-poster-box');
-        if (!holder) return;
-        holder.innerHTML = '';
-        if (appData.user.gender === 'female') {
-            if (badge) badge.innerText = "নারী প্রোফাইল অনুযায়ী";
-            if (fPoster) fPoster.style.display = "block";
-            if (mPoster) mPoster.style.display = "none";
-            womenExercisesList.forEach(item => {
-                const b = document.createElement('div');
-                b.className = "timeline-item";
-                b.innerHTML = `<div><b>${item.title}</b><div style="font-size:0.7rem; color:var(--primary-dark); font-weight:600;">⏱️ ${item.sets}</div></div>`;
-                holder.appendChild(b);
-            });
-        } else {
-            if (badge) badge.innerText = "পুরুষ প্রোফাইল অনুযায়ী";
-            if (fPoster) fPoster.style.display = "none";
-            if (mPoster) mPoster.style.display = "block";
-            menExercisesList.forEach(item => {
-                const b = document.createElement('div');
-                b.className = "timeline-item";
-                b.innerHTML = `<div><b>${item.title}</b><div style="font-size:0.7rem; color:var(--primary-dark); font-weight:600;">⏱️ ${item.sets}</div></div>`;
-                holder.appendChild(b);
-            });
-        }
-    }
-
-    // --- 16. USER PROFILE (Locked after first save) ---
-    function openUserModal() {
-        document.getElementById('user-name-input').value = appData.user.name;
-        document.getElementById('user-gender-input').value = appData.user.gender;
-        document.getElementById('calc-feet').value = appData.user.feet || 5;
-        document.getElementById('calc-inches').value = appData.user.inches || 4;
-        document.getElementById('calc-age').value = appData.user.age || 24;
-        document.getElementById('calc-w').value = appData.user.weight || 55;
-        calculateProfileBMI();
-        document.getElementById('userModal').style.display = 'flex';
-    }
-    function closeUserModal() { document.getElementById('userModal').style.display = 'none'; }
-    function previewUserAvatar(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                appData.user.avatar = e.target.result;
-                appData.user.locked = true;
-                const av = document.getElementById('user-header-avatar');
-                if (av) av.src = e.target.result;
-                persist();
-            };
-            reader.readAsDataURL(file);
-        }
-    }
-    function calculateProfileBMI() {
-        const feet = parseFloat(document.getElementById('calc-feet').value) || 5;
-        const inches = parseFloat(document.getElementById('calc-inches').value) || 0;
-        const weight = parseFloat(document.getElementById('calc-w').value) || 55;
-        const heightCm = (feet * 30.48) + (inches * 2.54);
-        const hM = heightCm / 100;
-        const bmi = (weight / (hM * hM)).toFixed(1);
-        const idealMin = Math.round(18.5 * hM * hM);
-        const idealMax = Math.round(24.9 * hM * hM);
-        const idealAvg = Math.round((idealMin + idealMax) / 2);
-        const fb = document.getElementById('profile-bmi-feedback');
-        if (fb) {
-            fb.innerHTML = `আপনার শারীরিক গঠন অনুযায়ী ওজন <b>${idealMin} - \( {idealMax} কেজি</b> হওয়া উচিত ছিল।<br>✨ আপনি <b> \){idealAvg} কেজি</b> ওজনের হলে দেখতে আরও সুন্দর লাগবে ও পুরোপুরি সুস্থ থাকবেন! (বর্তমান BMI: ${bmi})`;
-        }
-    }
-    function saveUserProfile() {
-        const name = document.getElementById('user-name-input').value.trim() || appData.user.name;
-        const gender = document.getElementById('user-gender-input').value;
-        appData.user.name = name;
-        appData.user.gender = gender;
-        appData.user.feet = parseFloat(document.getElementById('calc-feet').value) || 5;
-        appData.user.inches = parseFloat(document.getElementById('calc-inches').value) || 4;
-        appData.user.age = parseFloat(document.getElementById('calc-age').value) || 24;
-        appData.user.weight = parseFloat(document.getElementById('calc-w').value) || 55;
-        appData.user.locked = true; // lock forever
+function openUserModal() {
+    document.getElementById('user-name-input').value = appData.user.name;
+    document.getElementById('user-gender-input').value = appData.user.gender;
+    document.getElementById('calc-feet').value = appData.user.feet || 5;
+    document.getElementById('calc-inches').value = appData.user.inches || 4;
+    document.getElementById('calc-age').value = appData.user.age || 24;
+    document.getElementById('calc-w').value = appData.user.weight || 55;
+    calculateProfileBMI();
+    document.getElementById('userModal').style.display = 'flex';
+}
+function closeUserModal() { document.getElementById('userModal').style.display = 'none'; }
+function previewUserAvatar(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+        appData.user.avatar = ev.target.result;
+        appData.user.locked = true;
+        document.getElementById('user-header-avatar').src = ev.target.result;
         persist();
-        renderUserProfileUI();
-        renderExercisesByGender();
-        renderDoctorReport();
-        renderPublicComments();
-        closeUserModal();
-        alert("প্রোফাইল সংরক্ষিত হয়েছে! এখন থেকে রিফ্রেশ করলেও আপনার নাম, ছবি ও তথ্য পরিবর্তন হবে না।");
-    }
-    function renderUserProfileUI() {
-        const nameEl = document.getElementById('user-header-name');
-        const genEl = document.getElementById('user-header-gender');
-        const avEl = document.getElementById('user-header-avatar');
-        if (nameEl) nameEl.innerText = appData.user.name;
-        if (genEl) genEl.innerText = (appData.user.gender === 'female' ? "নারী প্রোফাইল" : "পুরুষ প্রোফাইল") + " ও BMI • এডিট ✏️";
-        if (avEl && appData.user.avatar) avEl.src = appData.user.avatar;
-    }
+    };
+    reader.readAsDataURL(file);
+}
+function calculateProfileBMI() {
+    const feet = parseFloat(document.getElementById('calc-feet').value) || 5;
+    const inches = parseFloat(document.getElementById('calc-inches').value) || 0;
+    const weight = parseFloat(document.getElementById('calc-w').value) || 55;
+    const hM = ((feet * 30.48) + (inches * 2.54)) / 100;
+    const bmi = (weight / (hM * hM)).toFixed(1);
+    const idealMin = Math.round(18.5 * hM * hM);
+    const idealMax = Math.round(24.9 * hM * hM);
+    document.getElementById('profile-bmi-feedback').innerHTML = `আদর্শ ওজন: <b>\( {idealMin}- \){idealMax} কেজি</b> (BMI: ${bmi})`;
+}
+function saveUserProfile() {
+    appData.user.name = document.getElementById('user-name-input').value.trim() || appData.user.name;
+    appData.user.gender = document.getElementById('user-gender-input').value;
+    appData.user.feet = parseFloat(document.getElementById('calc-feet').value) || 5;
+    appData.user.inches = parseFloat(document.getElementById('calc-inches').value) || 4;
+    appData.user.age = parseFloat(document.getElementById('calc-age').value) || 24;
+    appData.user.weight = parseFloat(document.getElementById('calc-w').value) || 55;
+    appData.user.locked = true;
+    appData.isLoggedIn = true;
+    persist();
+    renderUserProfileUI();
+    renderExercisesByGender();
+    closeUserModal();
+    alert("প্রোফাইল সেভ হয়েছে! রিফ্রেশ করলেও থাকবে।");
+}
+function renderUserProfileUI() {
+    document.getElementById('user-header-name').innerText = appData.user.name || "ব্যবহারকারী";
+    document.getElementById('user-header-gender').innerText = (appData.user.gender === 'female' ? "নারী" : "পুরুষ") + " প্রোফাইল ও BMI • এডিট ✏️";
+    if (appData.user.avatar) document.getElementById('user-header-avatar').src = appData.user.avatar;
+}
 
-    // --- 17. PUBLIC COMMENTS + OWNER FULL HISTORY ---
-    function submitPublicComment() {
-        const name = document.getElementById('user-comment-name').value.trim() || appData.user.name;
-        const msg = document.getElementById('user-comment-msg').value.trim();
-        if (!msg) return alert("দয়া করে মন্তব্যটি লিখুন বা মুখে বলুন!");
-        appData.comments.push({
-            id: Date.now(),
-            userName: appData.user.name,
-            name: name,
-            msg: msg,
-            reply: "",
-            timestamp: Date.now()
-        });
+function submitPublicComment() {
+    const name = document.getElementById('user-comment-name').value.trim() || appData.user.name;
+    const msg = document.getElementById('user-comment-msg').value.trim();
+    if (!msg) return alert("মন্তব্য লিখুন!");
+    appData.comments.push({ id: Date.now(), userName: appData.user.name, name, msg, reply: "", timestamp: Date.now() });
+    persist();
+    renderPublicComments();
+    document.getElementById('user-comment-msg').value = '';
+    alert("মতামত পাঠানো হয়েছে!");
+}
+function renderPublicComments() {
+    const feed = document.getElementById('public-comments-feed');
+    if (!feed) return;
+    feed.innerHTML = '';
+    const list = appData.comments.filter(c => c.userName === appData.user.name || c.name === appData.user.name).sort((a,b)=>b.timestamp-a.timestamp);
+    if (!list.length) { feed.innerHTML = '<div style="font-size:0.75rem;color:var(--text-muted);">কোনো মন্তব্য নেই।</div>'; return; }
+    list.forEach(c => {
+        const div = document.createElement('div');
+        div.className = "comment-item";
+        let dateStr = "";
+        try { dateStr = new Date(c.timestamp).toLocaleString('bn-BD', {day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}); } catch(e){}
+        div.innerHTML = `<div style="font-size:0.68rem;color:var(--text-muted);">${dateStr}</div>
+            <div><b>${c.name}:</b> ${c.msg}</div>
+            ${c.reply ? `<div class="owner-reply-box"><b>ওনার:</b> ${c.reply}</div>` : ''}`;
+        feed.appendChild(div);
+    });
+}
+
+let selectedCommentId = null;
+function renderOwnerCommentsManager() {
+    const mgr = document.getElementById('owner-comments-manager');
+    if (!mgr) return;
+    mgr.innerHTML = '';
+    if (!appData.comments.length) { mgr.innerHTML = '<div style="font-size:0.75rem;color:var(--text-muted);">কোনো কমেন্ট নেই।</div>'; return; }
+    [...appData.comments].sort((a,b)=>b.timestamp-a.timestamp).forEach(c => {
+        let dateStr = "";
+        try { dateStr = new Date(c.timestamp).toLocaleString('bn-BD', {day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}); } catch(e){}
+        const div = document.createElement('div');
+        div.className = "comment-item comment-history-row";
+        div.onclick = () => { selectedCommentId = c.id; document.querySelectorAll('.comment-history-row').forEach(r=>r.classList.remove('active-user')); div.classList.add('active-user'); };
+        div.innerHTML = `<div style="font-size:0.68rem;color:var(--text-muted);">${dateStr} • ${c.userName||c.name}</div>
+            <div><b>${c.name}:</b> ${c.msg}</div>
+            <div style="margin-top:4px;font-size:0.75rem;"><b>উত্তর:</b> ${c.reply||'দেওয়া হয়নি'}</div>
+            <div style="margin-top:6px;display:flex;gap:6px;" onclick="event.stopPropagation()">
+                <button class="btn-prime" style="padding:4px 8px;font-size:0.7rem;width:auto;" onclick="openReplyModal(${c.id},'reply')">💬 উত্তর</button>
+                <button class="btn-prime" style="padding:4px 8px;font-size:0.7rem;width:auto;background:#0284c7;" onclick="openReplyModal(${c.id},'edit')">✏️ এডিট</button>
+                <button class="btn-prime" style="background:var(--danger);padding:4px 8px;font-size:0.7rem;width:auto;" onclick="deleteCommentPermanently(${c.id})">🗑️</button>
+            </div>`;
+        mgr.appendChild(div);
+    });
+}
+function openReplyModal(id, mode) {
+    const c = appData.comments.find(x => x.id === id);
+    if (!c) return;
+    document.getElementById('reply-comment-id').value = c.id;
+    document.getElementById('reply-mode').value = mode || 'reply';
+    document.getElementById('reply-modal-title').innerText = mode === 'edit' ? '✏️ এডিট' : '💬 উত্তর';
+    document.getElementById('owner-reply-text').value = mode === 'edit' ? c.msg : (c.reply || '');
+    document.getElementById('replyModal').style.display = 'flex';
+}
+function closeReplyModal() { document.getElementById('replyModal').style.display = 'none'; }
+function saveOwnerReply() {
+    const id = document.getElementById('reply-comment-id').value;
+    const mode = document.getElementById('reply-mode').value;
+    const text = document.getElementById('owner-reply-text').value.trim();
+    const c = appData.comments.find(x => x.id == id);
+    if (!c) return;
+    if (mode === 'edit') c.msg = text; else c.reply = text;
+    persist(); renderPublicComments(); renderOwnerCommentsManager(); closeReplyModal();
+}
+function deleteCommentPermanently(id) {
+    if (confirm("ডিলিট?")) {
+        appData.comments = appData.comments.filter(c => c.id !== id);
+        persist(); renderPublicComments(); renderOwnerCommentsManager();
+    }
+}
+function openOwnerAddCommentModal() {
+    document.getElementById('owner-add-name').value = "ওনার";
+    document.getElementById('owner-add-msg').value = '';
+    document.getElementById('ownerAddCommentModal').style.display = 'flex';
+}
+function closeOwnerAddCommentModal() { document.getElementById('ownerAddCommentModal').style.display = 'none'; }
+function saveOwnerAddedComment() {
+    const name = document.getElementById('owner-add-name').value.trim() || "ওনার";
+    const msg = document.getElementById('owner-add-msg').value.trim();
+    if (!msg) return alert("লিখুন!");
+    appData.comments.push({ id: Date.now(), userName: name, name, msg, reply: "", timestamp: Date.now() });
+    persist(); renderOwnerCommentsManager(); closeOwnerAddCommentModal();
+}
+function ownerEditSelectedComment() {
+    if (!selectedCommentId && appData.comments.length) selectedCommentId = appData.comments[0].id;
+    if (selectedCommentId) openReplyModal(selectedCommentId, 'edit');
+    else alert("কমেন্ট সিলেক্ট করুন!");
+}
+function ownerRemoveSelectedComment() {
+    if (!selectedCommentId && appData.comments.length) selectedCommentId = appData.comments[0].id;
+    if (selectedCommentId) { deleteCommentPermanently(selectedCommentId); selectedCommentId = null; }
+    else alert("কমেন্ট সিলেক্ট করুন!");
+}
+
+function saveOwnerAnnouncements() {
+    const ann = document.getElementById('owner-announcement-edit').value.trim();
+    const feat = document.getElementById('owner-feature-add').value.trim();
+    if (ann) {
+        if (!appData.bannerList) appData.bannerList = [];
+        appData.bannerList.unshift(ann);
+        appData.bannerText = ann;
+        persist(); renderBanner();
+    }
+    if (feat) {
+        appData.comments.push({ id: Date.now(), userName: "ওনার", name: "ওনার (টিপস)", msg: feat, reply: "", timestamp: Date.now() });
+        persist(); renderOwnerCommentsManager();
+    }
+    alert("সংরক্ষিত হয়েছে!");
+    document.getElementById('owner-announcement-edit').value = '';
+    document.getElementById('owner-feature-add').value = '';
+}
+
+// Owner Photo
+let tempOwnerPhoto = null;
+function previewOwnerPhoto(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+        tempOwnerPhoto = ev.target.result;
+        document.getElementById('owner-panel-preview').src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+function saveOwnerPhoto() {
+    if (tempOwnerPhoto) {
+        appData.ownerPhoto = tempOwnerPhoto;
         persist();
-        renderPublicComments();
-        document.getElementById('user-comment-msg').value = '';
-        alert("আপনার মতামত ওনার মোঃ সাকিব হোসাইন নিরব এর কাছে পাঠানো হয়েছে!");
-    }
+        loadOwnerPhoto();
+        alert("ওনার পিকচার সেভ হয়েছে!");
+        tempOwnerPhoto = null;
+    } else alert("আগে ছবি সিলেক্ট করুন!");
+}
+function loadOwnerPhoto() {
+    const photo = appData.ownerPhoto || "";
+    const settingsImg = document.getElementById('owner-settings-img');
+    const panelPrev = document.getElementById('owner-panel-preview');
+    if (settingsImg && photo) settingsImg.src = photo;
+    if (panelPrev && photo) panelPrev.src = photo;
+}
 
-    function renderPublicComments() {
-        const feed = document.getElementById('public-comments-feed');
-        if (!feed) return;
-        feed.innerHTML = '';
-        const userComments = appData.comments
-            .filter(c => c.userName === appData.user.name || c.name === appData.user.name)
-            .sort((a, b) => b.timestamp - a.timestamp);
-
-        if (!userComments.length) {
-            feed.innerHTML = '<div style="font-size:0.75rem; color:var(--text-muted);">আপনার কোনো পূর্ববর্তী মন্তব্য নেই। ওনারের পরামর্শের জন্য মন্তব্য লিখুন।</div>';
-            return;
-        }
-        userComments.forEach(c => {
-            const dateStr = new Date(c.timestamp).toLocaleString('bn-BD', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
-            const div = document.createElement('div');
-            div.className = "comment-item";
-            div.innerHTML = `
-                <div style="font-size:0.68rem; color:var(--text-muted); margin-bottom:2px;">${dateStr}</div>
-                <div><b>${c.name}:</b> ${c.msg}</div>
-                ${c.reply ? `<div class="owner-reply-box"><b>ওনার মোঃ সাকিব হোসাইন নিরব:</b> ${c.reply}</div>` : `<div style="font-size:0.68rem; color:var(--text-muted); margin-top:4px;">(ওনার এখনো উত্তর দেননি)</div>`}`;
-            feed.appendChild(div);
-        });
-    }
-
-    function renderOwnerCommentsManager() {
-        const mgr = document.getElementById('owner-comments-manager');
-        if (!mgr) return;
-        mgr.innerHTML = '';
-
-        if (!appData.comments.length) {
-            mgr.innerHTML = '<div style="font-size:0.75rem; color:var(--text-muted);">কোনো নতুন মন্তব্য জমা নেই।</div>';
-            return;
-        }
-
-        // Serial history like Facebook (newest first)
-        const sorted = [...appData.comments].sort((a, b) => b.timestamp - a.timestamp);
-
-        sorted.forEach(c => {
-            const dateStr = new Date(c.timestamp).toLocaleString('bn-BD', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
-            const div = document.createElement('div');
-            div.className = "comment-item comment-history-row";
-            div.onclick = function() { focusUserThread(c.userName || c.name); };
-            div.innerHTML = `
-                <div style="font-size:0.68rem; color:var(--text-muted);">${dateStr} • ${c.userName || c.name}</div>
-                <div><b>${c.name}:</b> ${c.msg}</div>
-                <div style="margin-top:4px; font-size:0.75rem; color:var(--primary-dark);"><b>উত্তর:</b> ${c.reply || 'দেওয়া হয়নি'}</div>
-                <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;" onclick="event.stopPropagation()">
-                    <button class="btn-prime" style="padding:4px 8px; font-size:0.7rem; width:auto;" onclick="openReplyModal(${c.id}, 'reply')">💬 উত্তর</button>
-                    <button class="btn-prime" style="padding:4px 8px; font-size:0.7rem; width:auto; background:#0284c7;" onclick="openReplyModal(${c.id}, 'edit')">✏️ এডিট</button>
-                    <button class="btn-prime" style="background:var(--danger); padding:4px 8px; font-size:0.7rem; width:auto;" onclick="deleteCommentPermanently(${c.id})">🗑️ ডিলিট</button>
-                </div>`;
-            mgr.appendChild(div);
-        });
-    }
-
-    function focusUserThread(userName) {
-        // Highlight / filter to that user in the manager
-        const rows = document.querySelectorAll('.comment-history-row');
-        rows.forEach(r => r.classList.remove('active-user'));
-        // Simple visual feedback
-        alert(`এই ব্যবহারকারীর (${userName}) সব কমেন্ট হাইলাইট করা হয়েছে। উপরের তালিকায় দেখুন।`);
-    }
-
-    function openReplyModal(id, mode) {
-        const c = appData.comments.find(x => x.id === id);
-        if (!c) return;
-        document.getElementById('reply-comment-id').value = c.id;
-        document.getElementById('reply-mode').value = mode || 'reply';
-        document.getElementById('reply-modal-title').innerText = mode === 'edit' ? '✏️ কমেন্ট এডিট করুন' : '💬 কমেন্টের উত্তর দিন';
-        document.getElementById('owner-reply-text').value = mode === 'edit' ? c.msg : (c.reply || '');
-        document.getElementById('replyModal').style.display = 'flex';
-    }
-    function closeReplyModal() { document.getElementById('replyModal').style.display = 'none'; }
-    function saveOwnerReply() {
-        const id = document.getElementById('reply-comment-id').value;
-        const mode = document.getElementById('reply-mode').value;
-        const text = document.getElementById('owner-reply-text').value.trim();
-        const c = appData.comments.find(x => x.id == id);
-        if (!c) return;
-        if (mode === 'edit') {
-            c.msg = text;
-        } else {
-            c.reply = text;
-        }
-        persist();
-        renderPublicComments();
-        renderOwnerCommentsManager();
-        closeReplyModal();
-        alert(mode === 'edit' ? "কমেন্ট এডিট সফল!" : "উত্তর সফলভাবে পাঠানো হয়েছে! শুধুমাত্র ওই ব্যবহারকারীই এটি দেখতে পাবেন।");
-    }
-    function deleteCommentPermanently(id) {
-        if (confirm("কমেন্টটি কি উভয় সাইড থেকে স্থায়ীভাবে ডিলিট করতে চান?")) {
-            appData.comments = appData.comments.filter(c => c.id !== id);
-            persist();
-            renderPublicComments();
-            renderOwnerCommentsManager();
-            alert("কমেন্টটি ডিলিট করা হয়েছে!");
+// Privacy
+let tempPrivacyImage = null;
+function openPrivacyModal(id = null) {
+    document.getElementById('edit-privacy-id').value = id || '';
+    document.getElementById('privacy-modal-title').innerText = id ? "🔒 এডিট" : "🔒 নতুন নোট";
+    document.getElementById('privacy-title').value = '';
+    document.getElementById('privacy-text').value = '';
+    document.getElementById('privacy-image-preview').innerHTML = '';
+    tempPrivacyImage = null;
+    if (id) {
+        const item = appData.privacyNotes.find(x => x.id == id);
+        if (item) {
+            document.getElementById('privacy-title').value = item.title || '';
+            document.getElementById('privacy-text').value = item.text || '';
+            if (item.image) {
+                tempPrivacyImage = item.image;
+                document.getElementById('privacy-image-preview').innerHTML = `<img src="${item.image}" style="max-width:100%;max-height:120px;border-radius:8px;">`;
+            }
         }
     }
+    document.getElementById('privacyModal').style.display = 'flex';
+}
+function closePrivacyModal() { document.getElementById('privacyModal').style.display = 'none'; }
+function previewPrivacyImage(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+        tempPrivacyImage = ev.target.result;
+        document.getElementById('privacy-image-preview').innerHTML = `<img src="${ev.target.result}" style="max-width:100%;max-height:120px;border-radius:8px;">`;
+    };
+    reader.readAsDataURL(file);
+}
+function savePrivacyItem() {
+    const id = document.getElementById('edit-privacy-id').value;
+    const title = document.getElementById('privacy-title').value.trim();
+    const text = document.getElementById('privacy-text').value.trim();
+    if (!title && !text) return alert("লিখুন!");
+    if (id) {
+        const item = appData.privacyNotes.find(x => x.id == id);
+        if (item) { item.title = title; item.text = text; if (tempPrivacyImage) item.image = tempPrivacyImage; }
+    } else {
+        appData.privacyNotes.push({ id: Date.now(), title: title||"নোট", text, image: tempPrivacyImage||"", timestamp: Date.now() });
+    }
+    persist(); renderPrivacyList(); closePrivacyModal();
+}
+function deletePrivacyItem(id) {
+    if (confirm("মুছে ফেলবেন?")) {
+        appData.privacyNotes = appData.privacyNotes.filter(x => x.id !== id);
+        persist(); renderPrivacyList();
+    }
+}
+function renderPrivacyList() {
+    const box = document.getElementById('privacy-list-box');
+    if (!box) return;
+    box.innerHTML = '';
+    if (!appData.privacyNotes.length) {
+        box.innerHTML = '<div style="font-size:0.72rem;color:var(--text-muted);">কোনো নোট নেই।</div>';
+        return;
+    }
+    [...appData.privacyNotes].sort((a,b)=>b.timestamp-a.timestamp).forEach(item => {
+        const div = document.createElement('div');
+        div.className = "comment-item";
+        div.innerHTML = `\( {item.image ? `<img src=" \){item.image}" style="width:100%;max-height:100px;object-fit:cover;border-radius:6px;margin-bottom:4px;">` : ''}
+            <b>${item.title}</b>
+            <div style="font-size:0.75rem;color:var(--text-muted);margin-top:3px;white-space:pre-wrap;">${item.text||''}</div>
+            <div style="margin-top:6px;display:flex;gap:6px;">
+                <button onclick="openPrivacyModal(${item.id})" style="background:#0284c7;color:white;border:none;padding:3px 8px;border-radius:5px;font-size:0.68rem;">✏️ এডিট</button>
+                <button onclick="deletePrivacyItem(${item.id})" style="background:var(--danger);color:white;border:none;padding:3px 8px;border-radius:5px;font-size:0.68rem;">🗑️ রিমুভ</button>
+            </div>`;
+        box.appendChild(div);
+    });
+}
 
-    function openOwnerAddCommentModal() {
-        document.getElementById('owner-add-name').value = "ওনার";
-        document.getElementById('owner-add-msg').value = '';
-        document.getElementById('ownerAddCommentModal').style.display = 'flex';
-    }
-    function closeOwnerAddCommentModal() { document.getElementById('ownerAddCommentModal').style.display = 'none'; }
-    function saveOwnerAddedComment() {
-        const name = document.getElementById('owner-add-name').value.trim() || "ওনার";
-        const msg = document.getElementById('owner-add-msg').value.trim();
-        if (!msg) return alert("কমেন্ট লিখুন!");
-        appData.comments.push({
-            id: Date.now(),
-            userName: name,
-            name: name,
-            msg: msg,
-            reply: "",
-            timestamp: Date.now()
-        });
-        persist();
-        renderOwnerCommentsManager();
-        closeOwnerAddCommentModal();
-        alert("নতুন কমেন্ট/নোট এড হয়েছে!");
-    }
-
-    function saveOwnerAnnouncements() {
-        alert("ওনার ঘোষণা ও নতুন তথ্য সংরক্ষিত হয়েছে!");
-    }
-
-    // --- 18. SECRET OWNER (5-TAP) ---
-    let ownerTapCount = 0, ownerTapTimer = null;
-    function handleOwnerSecretTap() {
-        ownerTapCount++; clearTimeout(ownerTapTimer);
-        if (ownerTapCount >= 5) {
-            ownerTapCount = 0; openSecretOwnerModal();
-        } else {
-            ownerTapTimer = setTimeout(() => { ownerTapCount = 0; }, 2000);
-        }
-    }
-    function openSecretOwnerModal() {
+let ownerTapCount = 0, ownerTapTimer = null;
+function handleOwnerSecretTap() {
+    ownerTapCount++;
+    clearTimeout(ownerTapTimer);
+    if (ownerTapCount >= 5) {
+        ownerTapCount = 0;
         document.getElementById('secretOwnerModal').style.display = 'flex';
         document.getElementById('secret-pass-box').style.display = 'block';
         document.getElementById('secret-features-unlocked').style.display = 'none';
         document.getElementById('secret-password-input').value = '';
+    } else {
+        ownerTapTimer = setTimeout(() => ownerTapCount = 0, 2000);
     }
-    function closeSecretOwnerModal() { document.getElementById('secretOwnerModal').style.display = 'none'; }
-    function verifySecretPassword() {
-        const entered = document.getElementById('secret-password-input').value.trim().toUpperCase();
-        if (entered === "NEROB0909" || entered === "NEROBO9O9") {
-            document.getElementById('secret-pass-box').style.display = 'none';
-            document.getElementById('secret-features-unlocked').style.display = 'block';
-            renderOwnerCommentsManager();
-            alert("স্বাগতম ওনার মোঃ সাকিব হোসাইন নিরব! মাস্টার প্যানেল আনলক হয়েছে।");
-        } else {
-            alert("ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।");
-        }
+}
+function closeSecretOwnerModal() { document.getElementById('secretOwnerModal').style.display = 'none'; }
+function verifySecretPassword() {
+    const entered = document.getElementById('secret-password-input').value.trim().toUpperCase();
+    if (entered === "NEROB0909" || entered === "NEROBO9O9") {
+        document.getElementById('secret-pass-box').style.display = 'none';
+        document.getElementById('secret-features-unlocked').style.display = 'block';
+        renderOwnerCommentsManager();
+        renderPrivacyList();
+        loadOwnerPhoto();
+        document.getElementById('owner-announcement-edit').value = '';
+        document.getElementById('owner-feature-add').value = '';
+        alert("স্বাগতম ওনার!");
+    } else {
+        alert("ভুল পাসওয়ার্ড!");
     }
+}
 
-    // --- 19. AI CHAT ---
-    function sendChatMessage() {
-        const input = document.getElementById('chatInput');
-        const text = input.value.trim();
-        if (!text) return;
-        const chatBox = document.getElementById('chatBox');
-        const uBubble = document.createElement('div');
-        uBubble.className = "chat-bubble user";
-        uBubble.innerText = text;
-        chatBox.appendChild(uBubble);
-        input.value = "";
-        setTimeout(() => {
-            const bBubble = document.createElement('div');
-            bBubble.className = "chat-bubble bot";
-            if (text.includes("ব্যথা") || text.includes("মাথা")) {
-                bBubble.innerText = "মাথাব্যথা কমাতে ৫০০ মিলি পানি পান করে আলো নিভিয়ে ১৫ মিনিট বিশ্রাম নিন এবং ম্যাগনেসিয়াম সমৃদ্ধ খাবার গ্রহণ করুন।";
-            } else if (text.includes("ওষুধ") || text.includes("মেডিসিন")) {
-                bBubble.innerText = "মাইগ্রেনের ওষুধ সবসময় চিকিৎসকের প্রেসক্রিপশন অনুযায়ী ভরা পেটে খাওয়া উচিত। খালি পেটে চা বা কফি পরিহার করুন।";
-            } else {
-                bBubble.innerText = "আপনার স্বাস্থ্য তথ্য রেকর্ড হয়েছে। পর্যাপ্ত ঘুম, ৩.৫ লিটার পানি ও হালকা স্ট্রেচিং মাইগ্রেন নিয়ন্ত্রণে রাখবে।";
-            }
-            chatBox.appendChild(bBubble);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }, 500);
-    }
+function sendChatMessage() {
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if (!text) return;
+    const chatBox = document.getElementById('chatBox');
+    const u = document.createElement('div');
+    u.className = "chat-bubble user";
+    u.innerText = text;
+    chatBox.appendChild(u);
+    input.value = "";
+    setTimeout(() => {
+        const b = document.createElement('div');
+        b.className = "chat-bubble bot";
+        b.innerText = text.includes("ব্যথা") || text.includes("মাথা") ?
+            "৫০০ মিলি পানি পান করে ১৫ মিনিট বিশ্রাম নিন।" :
+            "পর্যাপ্ত ঘুম, পানি ও স্ট্রেচিং মাইগ্রেন নিয়ন্ত্রণে রাখে।";
+        chatBox.appendChild(b);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }, 500);
+}
 
-    // --- 20. DARK MODE & LANGUAGE ---
-    function toggleDarkMode() {
-        appData.darkMode = document.getElementById('darkToggle').checked;
-        persist(); applyTheme();
-    }
-    function applyTheme() {
-        const darkTgl = document.getElementById('darkToggle');
-        if (appData.darkMode) {
-            document.body.classList.add('dark-mode');
-            if (darkTgl) darkTgl.checked = true;
-        } else {
-            document.body.classList.remove('dark-mode');
-            if (darkTgl) darkTgl.checked = false;
-        }
-    }
-    function applyLanguage(lang) {
-        appData.lang = lang; persist();
-        alert("Selected Language: " + lang.toUpperCase() + "\n(অ্যাপের ভাষা পরিবর্তিত হয়েছে!)");
-    }
+function toggleDarkMode() {
+    appData.darkMode = document.getElementById('darkToggle').checked;
+    persist(); applyTheme();
+}
+function applyTheme() {
+    if (appData.darkMode) document.body.classList.add('dark-mode');
+    else document.body.classList.remove('dark-mode');
+    document.getElementById('darkToggle').checked = !!appData.darkMode;
+}
+function applyLanguage(lang) { appData.lang = lang; persist(); alert("Language: " + lang); }
 
-    // --- 21. INITIALIZATION ---
-    function initApp() {
-        try {
-            checkAuth();
-            updateLiveDate();
-            renderUserProfileUI();
-            renderWater();
-            renderCompliance();
-            renderRoutines();
-            renderAlarms();
-            renderExercisesByGender();
-            startExerciseAnimation();
-            renderDoctorReport();
-            renderPublicComments();
-            filterHistory('daily', document.getElementById('btn-hist-daily'));
-            applyTheme();
+function initApp() {
+    try {
+        if (appData.user && appData.user.locked) appData.isLoggedIn = true;
+        checkAuth();
+        updateLiveDate();
+        renderUserProfileUI();
+        renderBanner();
+        renderWater();
+        renderCompliance();
+        renderRoutines();
+        renderAlarms();
+        renderExercisesByGender();
+        renderCustomItems();
+        startExerciseAnimation();
+        renderDoctorReport();
+        renderPublicComments();
+        filterHistory('daily', document.getElementById('btn-hist-daily'));
+        applyTheme();
+        loadOwnerPhoto();
+        const syncTgl = document.getElementById('sync-alarm-toggle');
+        if (syncTgl) syncTgl.checked = appData.syncAlarm;
+        const pills = document.querySelectorAll('.pain-pill');
+        if (pills[appData.pain]) setPainVal(appData.pain, pills[appData.pain]);
+        else setPainVal(0, pills[0]);
+    } catch(err) { console.error(err); }
+}
 
-            const syncTgl = document.getElementById('sync-alarm-toggle');
-            if (syncTgl) syncTgl.checked = appData.syncAlarm;
-
-            const langSel = document.getElementById('lang-select');
-            if (langSel) langSel.value = appData.lang || 'bn';
-
-            const notifLbl = document.getElementById('lbl-selected-notif');
-            if (notifLbl) notifLbl.innerText = (appData.selectedNotifRingtone || "সফট চাইম").split(':')[1] || appData.selectedNotifRingtone;
-
-            const alarmLbl = document.getElementById('lbl-selected-alarm');
-            if (alarmLbl) alarmLbl.innerText = (appData.selectedAlarmRingtone || "৪৩২ হার্টজ ওয়েক-আপ").split(':')[1] || appData.selectedAlarmRingtone;
-
-            setPainVal(appData.pain, document.querySelectorAll('.pain-pill')[appData.pain] || document.querySelectorAll('.pain-pill')[0]);
-        } catch(err) {
-            console.error("Init Error:", err);
-        }
-    }
-
-    window.addEventListener('DOMContentLoaded', initApp);
-    if (document.readyState === 'complete' || document.readyState === 'interactive') {
-        initApp();
-    }
+window.addEventListener('DOMContentLoaded', initApp);
+if (document.readyState === 'complete' || document.readyState === 'interactive') initApp();
 </script>
-
 </body>
     </html>
